@@ -1,0 +1,12 @@
+# To sort directories/files by size
+du -sk *| sort -rn
+
+# To show cumulative humanreadable size
+du -sh
+
+# To show calculated total
+du -csh
+du -ch --max-depth=1 * | egrep 'M|G'	# Will show max directory depth of 1 and grep for Megs and Gigs
+
+# A script for loop to find large file locations
+for i in G M K; do du -ah | grep [0-9]$i | sort -nr -k 1; done | head -n 11

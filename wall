@@ -1,0 +1,2 @@
+# Wall is a terminal messenger
+echo "Good Morning Dave" | wall
