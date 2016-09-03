@@ -62,6 +62,8 @@ dd              delete a line
 d{motion}       delete text that {motion} moves over
 .		repeat previous command - if dw press . to delete another word
 :set number	shows number lines
+:%s/foo/bar/g	Find each occurrence of 'foo' (in all lines), and replace it with 'bar'
+:s/foo/bar/g	current line only
 
 # Preceding a motion or edition with a number repeats it n times
 # Examples:
