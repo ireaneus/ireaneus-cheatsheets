@@ -1,5 +1,6 @@
-Linux CommandLine Cheatsheets
-# command line usage
+# Linux CommandLine Cheatsheets
+command line usage
+
 cheat <cheatsheet>      # Displays specified cheatsheet
 cheat -e <cheatsheet>   # Edits specified cheatsheet
 cheat -s <keyword>      # Searches all cheatsheets by keyword
