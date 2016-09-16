@@ -1,3 +1,9 @@
-.)îÄ*&™©İ.)Ş
-š¶È^zÛ¢išÙbë¬jœ…æ­rš¶È^zĞâ²™ZÊË)yÈŸ‰ç\…æ­²µÈ^j×œ…æ­²´Gb¶Ë)yÈŸ‰ç\…æ­²µÈ^jÛ${,(­Ôj·!zÆ¥•È^jÛ!yëlo)Ë
-+uÈ^jÙKŠËljY^Æ+-Šx…æ­²¶Ç!y«]+)•¬¬¶°¢¹"b­ç-¢¸±È^jÛÜ…æ­½êìŠ‰
+# Linux CommandLine Cheatsheets
+command line usage
+
+cheat <cheatsheet>      # Displays specified cheatsheet
+cheat -e <cheatsheet>   # Edits specified cheatsheet
+cheat -s <keyword>      # Searches all cheatsheets by keyword
+cheat -l                # Lists all existing cheatsheets
+cheat -d                # Displays the working directories
+cheat -v                # cheat version
