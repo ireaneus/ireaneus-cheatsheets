@@ -1,0 +1,44 @@
+# Examples from the host file:
+some_host         ansible_port=2222     ansible_user=manager
+aws_host          ansible_ssh_private_key_file=/home/example/.ssh/aws.pem
+freebsd_host      ansible_python_interpreter=/usr/local/bin/python
+ruby_module_host  ansible_ruby_interpreter=/usr/bin/ruby.1.9.3
+
+# Non SSH connection types:
+local
+# This connector can be used to deploy the playbook to the control machine itself.
+
+docker
+# This connector deploys the playbook directly into Docker containers using the local Docker client. Following parameters are processed by this connector:
+
+ansible_host
+# The name of the Docker container to connect to.
+
+ansible_user
+# The user name to operate within the container. The user must exist inside the container.
+
+ansible_become
+# If set to true the become_user will be used to operate within the container.
+
+ansible_docker_extra_args
+# Could be a string with any additional arguments understood by Docker, which are not command specific. This parameter is mainly used to configure a remote Docker daemon to use.
+
+# Here is an example of how to instantly deploy to created containers:
+- name: create jenkins container
+  docker:
+    name: my_jenkins
+    image: jenkins
+
+- name: add container to inventory
+  add_host:
+    name: my_jenkins
+    ansible_connection: docker
+    ansible_docker_extra_args: "--tlsverify --tlscacert=/path/to/ca.pem --tlscert=/path/to/client-cert.pem --tlskey=/path/to/client-key.pem -H=tcp://myserver.net:4243"
+    ansible_user: jenkins
+  changed_when: false
+
+- name: create directory for ssh keys
+  delegate_to: my_jenkins
+  file:
+    path: "/var/jenkins_home/.ssh/jupiter"
+    state: directory
