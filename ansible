@@ -1,3 +1,20 @@
+# Ansible Options
+-v --verbose
+-i --inventory=Path	#hosts file
+--private-key=Priv_key_file
+-m --module-name
+-M directory 	#loads module directory
+-a arguments 	#to pass to module
+-k --ask-pass	#ssh password
+-K --ask-sudo-pass
+-o --one-line
+-s --sudo
+-u --remote_user=
+-U --sudo-user
+-c --connection=	#ssh or local
+-l --limit subset
+-l~REGEX	#limits hosts with regex pattern
+
 # Examples from the host file:
 some_host         ansible_port=2222     ansible_user=manager
 aws_host          ansible_ssh_private_key_file=/home/example/.ssh/aws.pem
