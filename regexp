@@ -32,6 +32,13 @@ grep -Ev '^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' phonelist.txt
 	
 # Check and do if directory doesn't exist
 [ ! -d /home/avi/Tecmint ] && exit
+
+# Brace Expansion
+echo Front-{A,B,C}-Back
+# Front-A-Back Front-B-Back Front-C-Back
+touch  file{1..5}
+# file1 file2 file3 file4 file5
+
 [ ! -d /home/avi/Tecmint ] && mkdir /home/avi/Tecmint
 
 find . -regex '.*[^-_./0-9a-zA-Z].*'
@@ -40,6 +47,3 @@ locate --regex 'bin/(bz|gz|zip)'
 # Using the ! as a logical not
 rm !(2.txt) 	# remove all files except 2.txt
 rm !(*.pdf)	# remove all files except pdf files
-
-
-
