@@ -1,4 +1,2 @@
-sudo ssh -D 8080 -f -C -N dkrenelka@erebus.feralhosting.com
-Password: FlCCQrX1mUhvZUHf
-sudo netstat -anp | grep 8080
+ssh -D 8080 -f -C -N david.haines@mimir-tech.org
 google-chrome --proxy-server="socks://localhost:8080" &
