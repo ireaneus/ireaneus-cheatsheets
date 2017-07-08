@@ -1,0 +1,40 @@
+======== Sony Knowledgebase ==========
+
+[VBlocks]
+uslaxvb1vc01 - Los Angeles - VBlock300 # El Segundo
+usphxvb1vc01 - Phoenix - VBlock700 # Chandler - default
+uspav0001    - Phoenix - Off-VBlock
+
+[OnCall]
+Taos OC		# 844-293-8267
+GSD		# 310-244-2188
+Linux Hotline	# 310-665-6447
+Solaris Hotline	# 310-665-6435
+AIX Hotline	# 310-244-4249
+Pauline Nguyen	# 310-665-6563 - 626-688-8074
+
+[P1/P2 processing]      
+## Check the system requested repair
+## if it is a development server, need to change to P3.
+## or get approval from manager, or requester is manager
+
+[weblinks]
+GoldVDI - http://appstore.spe.sony.com
+Admin Laptop - http://appstoreqa.spe.sony.com
+Sharepoint - https://share.spe.sony.com/sites/IT3/EISSE/_layouts/15/start.aspx
+Panopta - https://panopta.spe.sony.com
+Service Now - https://spe.service-now.com
+
+[Linux accounts]
+## Check account settings Section 9.2.2.1 
+## Email template for account owner
+
+[Ulimits]
+## Check processes - ps -eLf | grep svcaccount | wc
+## Check open files - lsof | grep svcaccount | wc -l
+nprocs
+nofile
+
+[Server Provisioning]
+# Create the accounts under the server provisioning CHG, but leave them out of servce_ssh_access
+# Once the PARR comes in we uncomment the service_ssh_access bits and re-run site.yml with the user_mgmt tasks.
