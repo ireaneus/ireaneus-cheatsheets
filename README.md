@@ -1,3 +1,9 @@
+# setting up .bashrc with exports
+export EDITOR='/usr/bin/vim'
+export DEFAULT_CHEAT_DIR='/home/dhaines@taos.local/linux_cheat'
+export CHEATPATH='/usr/lib/python2.7/site-packages/cheat/cheatsheets'
+export CHEATCOLORS='true'
+
 # Linux CommandLine Cheatsheets
 command line usage
 
