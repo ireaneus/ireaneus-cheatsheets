@@ -21,6 +21,9 @@ aws_host          ansible_ssh_private_key_file=/home/example/.ssh/aws.pem
 freebsd_host      ansible_python_interpreter=/usr/local/bin/python
 ruby_module_host  ansible_ruby_interpreter=/usr/bin/ruby.1.9.3
 
+# ANSIBLE Modules
+ansible -m setup all	# inventory of all systems
+
 # Non SSH connection types:
 local
 # This connector can be used to deploy the playbook to the control machine itself.

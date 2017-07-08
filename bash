@@ -4,6 +4,20 @@ chmod +x my.sh
 ./my.sh
 
 
+# To include a bash script in another bash script
+# config.sh
+USERNAME=$USER
+EMAIL="dhaines@taos.com"
+
+# main.sh
+## #!/bin/bash
+# Including config.sh, set filename with proper path.
+source config.sh
+
+echo Welcome ${USERNAME}!
+echo Your email is ${EMAIL}.
+
+
 # To implement a for loop:
 for file in *;
 do 
@@ -46,6 +60,14 @@ ctrl-b	# Move backward one character
 alt-f	# Move forward one word
 alt-b	# Move backward one word
 ctrl-l	# clear screen and move to top left
+ctrl-xx	# Move between the beginning of the 
+	# line, return to start of line and 
+	# change something then back 
+
+# bash delete text
+ctrl-d	# Delete character under the cursor
+alt-d 	# Delete all characters after the cursor
+ctrl-h	# Delet the character before the cursor
 
 # Completion commands
 alt-? 	# Display list of possible combos

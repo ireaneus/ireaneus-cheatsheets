@@ -77,13 +77,14 @@ Do remember to enable crond on boot.
 
 
 #### Comment out hashes in large configuration files
-#Here is a small tip for system administrators, who need to tackle large configuration files, which include lots of commented lines (marked by #). With this tip you can remove all those hashes and provide only an uncommented configuration view for faster lookup into the file.
+# Here is a small tip for system administrators, who need to tackle large configuration files, 
+# which include lots of commented lines (marked by #). 
+# With this tip you can remove all those hashes and provide only an uncommented configuration view for faster lookup into the file.
 
-#If you want to check the configuration file of the Squid proxy server, run the following command:
+# If you want to check the configuration file of the Squid proxy server, run the following command:
 
 cat squid.conf | egrep -v ^#
 
-#This will show only lines that do not start with a hash mark, thus giving the configuration parameter that is being used in the current set-up
 #### Comment out hashes in large configuration files
 
 
@@ -102,7 +103,8 @@ lsattr		#Lists file attributes on a second extended Linux file system.
 lsof		#Lists the file descriptors opened by all the processes. A very useful command when a process fails to close any file descriptors.
 lsb_release -a	#Here is a tip that will let you know the name of the OS, along with other details
 
-
+#### Run a command as another user ####
+/sbin/su -l user --command='service ma restart'
 
 #### View the contents of tar and rpm files
 # 1. To view the content of a tar file, issue the following command:
@@ -119,7 +121,8 @@ sudo gedit /etc/fstab
 
 # The order should be as follows: the device name, the default mount point, the file-system type, mount options, dump, and the fsck option.
 
-# The device name is the name of the HDD partition (such as /dev/sda5): the mount point is the full path of the directory where the partition is to be mounted. The file system type is the type of file system like ext4, fat, ntfs, etc. Mount options are normally given as defaults, while dump and fsck options are given as 0.
+# The device name is the name of the HDD partition (such as /dev/sda5): the mount point is the full path of the directory where the partition is to be mounted. 
+# The file system type is the type of file system like ext4, fat, ntfs, etc. Mount options are normally given as defaults, while dump and fsck options are given as 0.
 
 # I had a partition /dev/sda5 and I created the directory /media/mydisk. My partition was of type ext4, so to my /etc/fstab, I added the following command:
 
@@ -127,3 +130,15 @@ sudo gedit /etc/fstab
 sudo mount -a
 #### Auto mounting a partition on Linux
 
+#### Troubleshooting a stale NFS mount ####
+# if df -h is unresponsive try restarting nfs service
+service stop nfs
+service start nfs 
+umount nfsmount
+mount -a
+
+#### Working with log files
+# insert information about logrotate here
+
+# truncate an active log file
+sudo truncate -s 0 ${LOGFILE]

@@ -28,3 +28,6 @@ tar czvf /path/to/foo.tgz --exclude=\*.{jpg,gif,png,wmv,flv,tar.gz,zip} /path/to
 # To specify a different directory other than the current working directory
 tar -xf file_name.tar -C /target/directory
 tar -xf file_name.tar.gz --directory /target/directory
+
+# To find the files needed and compress using tar
+find . -name '*file' -mtime +0 -print | tar czvf /path/to/foo.tgz --files-from -

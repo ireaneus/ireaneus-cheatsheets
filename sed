@@ -13,6 +13,9 @@ sed -i -r 's/^\s+//g' file.txt
 # To remove empty lines and print results to stdout:
 sed '/^$/d' file.txt
 
+# To remove '#' and blank spaces in a config file
+sed '/^#\|^$\| *#/d' httpd.conf
+
 # To replace newlines in multiple lines
 sed ':a;N;$!ba;s/\n//g'  file.txt
 
@@ -151,3 +154,7 @@ sed -n '3,${p;n;n;n;n;n;n;}' # other seds
 
 # print section of file between two regular expressions (inclusive)
 sed -n '/Iowa/,/Montana/p'             # case sensitive
+
+# another example
+ip route show | sed -n '/src/p' | sed -e 's/  */ /g' | cut -d' ' -f9
+sed '/^#\|^$\| *#/d' httpd.conf

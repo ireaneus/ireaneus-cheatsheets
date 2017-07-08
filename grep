@@ -51,3 +51,21 @@ ps aux | grep -E --color 'bash|$'
 
 # To add color to grep
 export GREP_OPTIONS='--color=auto'
+
+# To search for multiple words
+grep 'opened\|closed' /var/log/secure	# grep or
+
+# Get an instance count
+grep failure /var/log/secure -c
+
+# Display the line numbers
+grep -n failure /var/log/secure
+
+# Display all entries which are not a match
+grep -v failure /var/log/secure
+
+# search across multiple files
+grep -r "username" /etc
+grep -rl "username" /etc	# List only the filenames
+grep -rL "username" /etc 	# files that do not include username
+

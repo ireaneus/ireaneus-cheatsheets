@@ -1,6 +1,10 @@
 # Display all interfaces with addresses
 ip addr
 
+# Display network IP address
+hostname -I
+hostname -i
+
 # Take down / up the wireless adapter
 ip link set dev wlan0 {up|down}
 
