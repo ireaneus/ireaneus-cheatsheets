@@ -38,3 +38,15 @@ nofile
 [Server Provisioning]
 # Create the accounts under the server provisioning CHG, but leave them out of servce_ssh_access
 # Once the PARR comes in we uncomment the service_ssh_access bits and re-run site.yml with the user_mgmt tasks.
+
+[Ansible Playbooks]
+# For new network zones and panopta monitoring 
+# Add new network zone to roles/panopta_agen/vars/main.yml
+
+[WDG team]
+# Email distribution List - IT Web Deployment
+# Service Now group - EIS - Web Development
+Edward Chiu
+Rajendher Chidrupula
+Debasis Chowdhury
+Bapurao Desai
