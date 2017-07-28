@@ -28,6 +28,9 @@ Service Now - https://spe.service-now.com
 [Linux accounts]
 ## Check account settings Section 9.2.2.1 
 ## Email template for account owner
+## PARR can be created under SNOW > Request Portal > IT-2-IT > Priv...
+## If user account is Cyberark access.  Add Cyberark: true to user_list, run cyberark_app_onboard.yml and assign to EIS - Cyberark
+
 
 [Ulimits]
 ## Check processes - ps -eLf | grep svcaccount | wc
