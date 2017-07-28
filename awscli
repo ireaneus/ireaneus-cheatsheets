@@ -29,5 +29,14 @@ aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAc
 aws iam list-attached-group-policies --group-name Developers
 aws iam list-attached-group-policies --group-name SystemAdmin
 
+# AWS CLI SSM commands
+aws ssm list-documents --output table
+aws ssm describe-instance-information --output text --query "InstanceInformationList[*]"
+aws ssm send-command --document-name "AWS-RunShellScript" --comment "listing services" --instance-ids "i-0cb92fcf5285829c1" --parameters commands="service --status-all" --region us-west-2 --output text
+aws ssm list-command-invocations --command-id "command ID" --details
 
+aws ssm describe-document --name "AWS-RunShellScript" --query "[Document.Name,Document.Description]"
+aws ssm describe-document --name "AWS-RunShellScript" --query "Document.Parameters[*]"
 
+aws ssm describe-instance-information --instance-information-filter-list key=InstanceIds,valueSet=i-0cb92fcf5285829c1
+aws ssm describe-instance-information --instance-information-filter-list key=AgentVersion,valueSet=LATEST
