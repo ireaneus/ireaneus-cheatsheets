@@ -69,3 +69,8 @@ NAT instance mubt be in public subnet
 There must be a route out of the private subnet to the NAT instance
 HA
 NAT instance behind security group
+
+# Custom VPC and ELBs
+MyELB
+Create 2 public subnets on 2 seperate AZs
+
