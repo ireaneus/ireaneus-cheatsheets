@@ -6,17 +6,22 @@ usphxvb1vc01 - Phoenix - VBlock700 # Chandler - default
 uspav0001    - Phoenix - Off-VBlock
 
 [OnCall]
-Taos OC		# 844-293-8267
-GSD		# 310-244-2188
+Taos OC		    # 844-293-8267
+GSD		        # 310-244-2188
 Linux Hotline	# 310-665-6447
 Solaris Hotline	# 310-665-6435
-AIX Hotline	# 310-244-4249
+AIX Hotline	    # 310-244-4249
 Pauline Nguyen	# 310-665-6563 - 626-688-8074
 
 [P1/P2 processing]      
 ## Check the system requested repair
 ## if it is a development server, need to change to P3.
 ## or get approval from manager, or requester is manager
+## Send acknowledgement email even if L3 has done so already
+After escalating a P1/P2 ticket to L2/L3 (section 4), email Ram Venigalla (specifically) to inform him that a) we received a P1/P2 and b) it’s being escalated. This will get Ram in the loop.
+
+[Email requests to EIS teams]
+## Emails sent to EIS –Intel and/or EIS-Unix from app teams (section 1.5) require an acknowledgement sent back to requester. The response can be as simple as “we got your email and we’re looking into it.” The recipients should include the requester, the team the email was sent to (Intel vs. Unix), Ram Venigalla (specifically)
 
 [weblinks]
 GoldVDI - http://appstore.spe.sony.com
