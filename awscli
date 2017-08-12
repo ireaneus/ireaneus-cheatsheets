@@ -45,3 +45,26 @@ aws ssm describe-document --name "AWS-RunShellScript" --query "[Document.Name,Do
 aws ssm describe-document --name "AWS-RunShellScript" --query "Document.Parameters[*]"
 aws ssm describe-instance-information --instance-information-filter-list key=InstanceIds,valueSet=i-0cb92fcf5285829c1
 aws ssm describe-instance-information --instance-information-filter-list key=AgentVersion,valueSet=LATEST
+
+# AWS CLI All Resources
+acm                            cognito-idp                    elb                            lightsail                      servicecatalog 
+apigateway                     cognito-sync                   elbv2                          logs                           ses 
+application-autoscaling        configservice                  emr                            machinelearning                shield 
+appstream                      configure                      es                             marketplacecommerceanalytics   sms 
+athena                         cur                            events                         marketplace-entitlement        snowball 
+autoscaling                    datapipeline                   firehose                       meteringmarketplace            sns 
+batch                          deploy                         gamelift                       mturk                          sqs 
+budgets                        devicefarm                     glacier                        opsworks                       ssm 
+clouddirectory                 directconnect                  greengrass                     opsworks-cm                    stepfunctions 
+cloudformation                 discovery                      health                         organizations                  storagegateway 
+cloudfront                     dms                            iam                            pinpoint                       sts 
+cloudhsm                       ds                             importexport                   polly                          support 
+cloudsearch                    dynamodb                       inspector                      rds                            swf 
+cloudsearchdomain              dynamodbstreams                iot                            redshift                       waf 
+cloudtrail                     ec2                            iot-data                       rekognition                    waf-regional 
+cloudwatch                     ecr                            kinesis                        resourcegroupstaggingapi       workdocs 
+codebuild                      ecs                            kinesisanalytics               route53                        workspaces 
+codecommit                     efs                            kms                            route53domains                 xray 
+codepipeline                   elasticache                    lambda                         s3                             
+codestar                       elasticbeanstalk               lex-models                     s3api                          
+cognito-identity               elastictranscoder              lex-runtime                    sdb
