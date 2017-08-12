@@ -43,6 +43,11 @@ Service Now - https://spe.service-now.com
 nprocs
 nofile
 
+[Storage Stanza]
+## use - path: /mount point as the 1st line.
+## when adding or extending drive space, run pvcreate, vgcreate/vgextend, lvcreate/lvextend.  lvs --units m vgs --units m
+## to create a proper storage stanza that code review will approve
+
 [Server Provisioning]
 # Create the accounts under the server provisioning CHG, but leave them out of servce_ssh_access
 # Once the PARR comes in we uncomment the service_ssh_access bits and re-run site.yml with the user_mgmt tasks.
