@@ -57,7 +57,7 @@ ssh ec2-user@privatei -i pem
 Launch a NAT instance - EC2 - Launch instance - community AMI - most recent instance
 Configure network MyVPC Subnet MyPublicSubnet Name - MyNAT - Security Group existing - MyWebSG
 
-MyNAT Actions - Disable Source / destinations check
+MyNAT Actions -Networking - Disable Source / destinations check
 MyWebSG - https rule
 VPC - Route table - Main route table MyVPC route - 0.0.0.0/0 - MyNAT
 Nat gateway - Main route table MyVPC route - 0.0.0.0/0 - NAT gateway 
