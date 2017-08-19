@@ -1,3 +1,25 @@
+Read the following: FAQ, Getting started
+
+# Compute                           # Network & Content Deliver                 # Management Tools
+EC2                                 VPC                                         CloudWatch
+EC2 Container Service               CloudFront                                  CloudFormation
+Lightsail                           Direct connections                          CloudTrail
+Elastic Beanstalk                   Route 53                                    Config
+Lamda
+Batch
+
+# Storage                           # Security, Identity & Compliance           # Messaging
+S3                                  IAM                                         Simple Queue Service
+EFS                                 Inspector                                   Simple Notification Service
+Glacier                             Certificate Manager                         SES
+Storage Gateway                     Directory Service
+                                    WAF & Shield
+# Database                          Artifact                                    # Desktop & App Streaming
+RDS                                 Amazon Macie                                WorkSpaces
+DynamoDB                            CloudHSM                                    AppStream 2.0
+ElasticCache
+Redshift
+
 Amazon Glacier is designed for: (Choose 2 answers)
 A. active database storage.
 B. infrequently accessed data.
@@ -60,7 +82,3 @@ A/B
 D
 E
 A
-
-# Whitepapers
-Overview of AWS in my s3 bucket
-Overview of Security processes
