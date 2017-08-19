@@ -2,21 +2,22 @@
 
 # Compute                           # Network & Content Deliver                 # Management Tools
 [x] EC2                             VPC                                         CloudWatch
-EC2 Container Service               CloudFront                                  CloudFormation
-Lightsail                           Direct connections                          CloudTrail
-Elastic Beanstalk                   Route 53                                    Config
-Lamda
-Batch
+[x] EC2 Container Service           CloudFront                                  CloudFormation
+[x] Lightsail                       Direct connections                          CloudTrail
+[x] Elastic Beanstalk               Route 53                                    Config
+[x] Lamda
+[x] Batch
 
 # Storage                           # Security, Identity & Compliance           # Messaging
 S3                                  IAM                                         Simple Queue Service
 EFS                                 Inspector                                   Simple Notification Service
-Glacier                             Certificate Manager                         SES
+EBS                                 CloudHSM                                    SES                                 
+Glacier                             Certificate Manager                         
 Storage Gateway                     Directory Service
                                     [x] WAF & Shield
 # Database                          Artifact                                    # Desktop & App Streaming
 RDS                                 Amazon Macie                                WorkSpaces
-DynamoDB                            CloudHSM                                    AppStream 2.0
+DynamoDB                                                                        AppStream 2.0
 ElasticCache
 Redshift
 
