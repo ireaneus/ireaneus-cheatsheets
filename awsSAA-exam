@@ -1,7 +1,7 @@
-Read the following: FAQ, Getting started
+## Read the following: FAQ, What is, Getting started
 
 # Compute                           # Network & Content Deliver                 # Management Tools
-EC2                                 VPC                                         CloudWatch
+[x] EC2                             VPC                                         CloudWatch
 EC2 Container Service               CloudFront                                  CloudFormation
 Lightsail                           Direct connections                          CloudTrail
 Elastic Beanstalk                   Route 53                                    Config
@@ -13,7 +13,7 @@ S3                                  IAM                                         
 EFS                                 Inspector                                   Simple Notification Service
 Glacier                             Certificate Manager                         SES
 Storage Gateway                     Directory Service
-                                    WAF & Shield
+                                    [x] WAF & Shield
 # Database                          Artifact                                    # Desktop & App Streaming
 RDS                                 Amazon Macie                                WorkSpaces
 DynamoDB                            CloudHSM                                    AppStream 2.0
