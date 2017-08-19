@@ -15,9 +15,12 @@ EBS                                 CloudHSM                                    
 Glacier                             Certificate Manager                         
 Storage Gateway                     Directory Service
                                     [x] WAF & Shield
-# Database                          Artifact                                    # Desktop & App Streaming
-RDS                                 Amazon Macie                                WorkSpaces
-DynamoDB                                                                        AppStream 2.0
+                                    Amazon Macie
+                                    Artifact
+
+# Database                          # Desktop & App Streaming
+RDS                                 WorkSpaces
+DynamoDB                            AppStream 2.0
 ElasticCache
 Redshift
 
