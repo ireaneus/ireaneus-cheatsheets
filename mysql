@@ -16,3 +16,23 @@ CREATE DATABASE owa CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # To add a user and give rights on the given database
 GRANT ALL PRIVILEGES ON database.* TO 'user'@'localhost'IDENTIFIED BY 'password' WITH GRANT OPTION;
+
+# Show commands
+show databases;
+show tables;        # after connecting to database
+
+# To connect to a database
+use database;
+
+# To show fields of a table
+describe tablename;
+
+# Delete tables and databases
+drop table name;
+drop database name;
+
+# View all content of a table
+select * from tablename;
+select fieldname from tablename;
+select fieldname, fieldname from tablename where fieldname="value";
+select count(*) from table;
