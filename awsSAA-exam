@@ -9,7 +9,7 @@
 [x] Batch
 
 # Storage                           # Security, Identity & Compliance           # Messaging
-S3                                  IAM                                         Simple Queue Service
+[x] S3                              IAM                                         Simple Queue Service
 EFS                                 Inspector                                   Simple Notification Service
 EBS                                 CloudHSM                                    SES                                 
 Glacier                             Certificate Manager                         
@@ -24,6 +24,11 @@ DynamoDB                            AppStream 2.0
 ElasticCache
 Redshift
 
+# S3 Notes
+All regions provide read-after-write consistency for PUTS of new objects and eventual consistency for overwrite PUTS and DELETES
+Default provision 100 buckets per AWS account
+
+# Exam Sample
 Amazon Glacier is designed for: (Choose 2 answers)
 A. active database storage.
 B. infrequently accessed data.
