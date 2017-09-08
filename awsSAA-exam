@@ -30,6 +30,10 @@ on it will replicate older versions of the file.
 
 When deleting an object you can enable MFA Authentication - versioning enabled.
 
+All regions provide read-after-write consistency for PUTS of new objects and eventual consistency for overwrite PUTS and DELETES
+Default provision 100 buckets per AWS account
+
+# Exam Sample
 Amazon Glacier is designed for: (Choose 2 answers)
 A. active database storage.
 B. infrequently accessed data.
