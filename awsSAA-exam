@@ -9,7 +9,7 @@
 [x] Batch
 
 # Storage                           # Security, Identity & Compliance           # Messaging
-S3                                  IAM                                         Simple Queue Service
+[x] S3                              IAM                                         Simple Queue Service
 EFS                                 Inspector                                   Simple Notification Service
 EBS                                 CloudHSM                                    SES                                 
 Glacier                             Certificate Manager                         
@@ -19,10 +19,16 @@ Storage Gateway                     Directory Service
                                     Artifact
 
 # Database                          # Desktop & App Streaming
-RDS                                 WorkSpaces
+[x] RDS                             WorkSpaces
 DynamoDB                            AppStream 2.0
 ElasticCache
 Redshift
+
+# S3 notes
+Cross Region replication only replicates new files and versions.  If an existing file is updated the with versioning
+on it will replicate older versions of the file.
+
+When deleting an object you can enable MFA Authentication - versioning enabled.
 
 Amazon Glacier is designed for: (Choose 2 answers)
 A. active database storage.
