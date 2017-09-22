@@ -53,6 +53,9 @@ When your fleet of EC2 instances requires high network throughput and low latenc
 # In SWF, what does a "domain" refer to?
 A collection of related workflows
 
+# SQS Notes
+# what is long polling used for?
+
 
 # Exam Sample
 Amazon Glacier is designed for: (Choose 2 answers)
