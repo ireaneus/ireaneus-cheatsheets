@@ -1,0 +1,18 @@
+# What happens when I type this at a shell prompt: “telnet www.wikipedia.org?”
+How much time do I have to answer? Fifteen minutes? Great. I’ll walk you through every step and connection in the process.
+
+# A stakeholder gives you a six-hour task that must be completed today. Later, another user gives you a six-hour project with the same deadline. Neither user will budge. What do you do?
+I’d come up with a few solutions and run them by my manager.
+
+# An HTTP monitor says the website is down. You can telnet to the port. What do you do?
+If the Web page is up when I telnet to the port, I’d ask how long the monitor has been down. Then, I’d check to see if the outage was due to flapping, a system outage or a system overload that occurred during back-up. I’ll modify the monitor, once I identify the issue. Should I describe my troubleshooting process?
+
+# How have you used your knowledge of operating systems to optimize the network?
+I’ve used an operating systems to track files, manage data input and output on multiple devices and allocate resources such as CPU, RAM, disk, network, video and sound to various processes. Beyond the basics, I’ve used my knowledge of various operating systems to improve system design and architecture and run apps more efficiently. May I share an example?
+
+# Name three characteristics of a systems admin that you possess
+I like helping people. I’m curious about how systems work and I’m passionate about fixing things right.
+
+# What do you do when your initial solution to a problem fails?
+I always have a Plan B and a Plan C in case my initial solutions fails. Here’s an example.
+
