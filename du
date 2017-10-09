@@ -4,6 +4,7 @@ du -sk *| sort -rn
 # To show cumulative humanreadable size
 du -sh
 du -xsh		# x is used to exclude NFS partition within the partition that is being scanned
+du -Sm /var/log | sort -rn | sed '{11,$D; =}' | sed 'N; s/\n/ /' | awk '{printf $1 ":" "\t" $2 "\t" $3 "\n"}'
 
 # To show calculated total
 du -csh
