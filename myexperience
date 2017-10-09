@@ -1,0 +1,40 @@
+######  ACCOMPLISHMENTS  ######
+
+# Micron Technology MSCII automation
+OS/2 Warp platform, built with NFS share exported, Remote desktop software.
+
+# Micron Technology Imaging automation
+OS/2 Warp platform, used REXX scripting to backup images to corporate network drive from imaging equipment
+
+# Woodgrain Millwork
+Developed ITIL standards for desktop support using documented configuration processes.  Created standard ticketing system.  
+Started to implement SCCM patch management for desktop systems.
+
+# Taos Mountain Inc.
+Hired on to begin Management services Operations Center administration positions
+.  Position was to perform server monitoring and develop processes to implement solutions to Server monitoring alerts.
+.  Deployed Opsview to several client environments to monitor servers.
+.  Configured Nagios for clients that had that monitoring solution in place.
+.  Developed Patch management to several clients.
+.  Actively involved in rebuilding Sony Pictures Linux infrastructure after their environment was hacked.  Managing strong security measures.
+.  Developed standard Runbook documentation used for all clients.  Describing standard escalation procedures, process repair, Server provisioning, patch management, backup procedures.
+.  Worked as a Junior DBA to assist in Oracle database administration.  Configured RMAN backups, and worked in ASM disk quota management
+
+######  ACCOMPLISHMENTS  ######
+
+######  Platform Management  ######
+
+# Windows Server 2008 R2 system administration
+Active directory, GPO management, OU and file sharing management.  Patch management using wsus, sccm.  KACE
+
+# Linux Server administration
+Red Hat, CentOS, Ubuntu, Debian, and OpenSuse system administration
+ssh security management using ssh-key authentication
+Security patch management using ansible.
+ansible and github configuration management
+user and group configuration management including sudo privs
+VM server provisioning, Network management, security management, using IPtables, Firewall, and SELinux, also software application install and environment configuration settings for users, using ulimits, sysctl
+
+######  Platform Management  ######
+
+
