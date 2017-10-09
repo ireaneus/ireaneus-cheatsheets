@@ -45,3 +45,9 @@ the settings listed below:
 23. mount -t xfs /dev/mapper/VolumeName-LogicalName /home
 24. xfs_growfs /home
 25. df -h
+
+# Remove a bad hdd.
+26. remove bad drive.
+27. lvremove /dev/vg/lv
+28. vgreduce --removemissing
+
