@@ -37,6 +37,7 @@ Default provision 100 buckets per AWS account
 
 # IAM notes
 AWS account default limit of 20 EC2 instances.
+Use an IAM role to manage temporary credentials for applications that run on an EC2 instance. When you use a role, you don't have to distribute long-term credentials to an EC2 instance.
 
 
 # DynamoDB
