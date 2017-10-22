@@ -24,30 +24,33 @@ DynamoDB                            AppStream 2.0
 ElasticCache
 Redshift
 
+###  EC2 notes  ###
+# Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides secure, resizable compute capacity in the cloud. It is designed to make web-scale cloud computing easier for developers. 
 
-# S3 notes
-Cross Region replication only replicates new files and versions.  If an existing file is updated the with versioning
+# The use of a placement group is ideal _______
+ - When your fleet of EC2 instances requires high network throughput and low latency within a single availability zone.
+
+
+### S3 notes  ###
+# Amazon S3 is a repository for Internet data. Amazon S3 provides access to reliable, fast, and inexpensive data storage infrastructure. It is designed to make web-scale computing easy by enabling you to store and retrieve any amount of data, at any time, from within Amazon EC2 or anywhere on the web
+
+ - Cross Region replication only replicates new files and versions.  If an existing file is updated the with versioning
 on it will replicate older versions of the file.
-
-When deleting an object you can enable MFA Authentication - versioning enabled.
-
-All regions provide read-after-write consistency for PUTS of new objects and eventual consistency for overwrite PUTS and DELETES
-Default provision 100 buckets per AWS account
+ - When deleting an object you can enable MFA Authentication - versioning enabled.
+ - All regions provide read-after-write consistency for PUTS of new objects and eventual consistency for overwrite PUTS and DELETES
+ - Default provision 100 buckets per AWS account
 
 
-# IAM notes
-AWS account default limit of 20 EC2 instances.
-Use an IAM role to manage temporary credentials for applications that run on an EC2 instance. When you use a role, you don't have to distribute long-term credentials to an EC2 instance.
+### IAM notes  ###
+# AWS Identity and Access Management (IAM) enables you to securely control access to AWS services and resources for your users. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources.
+ - AWS account default limit of 20 EC2 instances.
+ - Use an IAM role to manage temporary credentials for applications that run on an EC2 instance. When you use a role, you don''t have to distribute long-term credentials to an EC2 instance.
 
 
 # DynamoDB
 # Your design team is about to implement an urgently needed collection and analysis solution. The data you will collect from an array of 50,000 anonymous data collectors will be summarized each day but rarely used again. The data will be pulled from collectors approximately once an hour. The Dev responsible for the DynamoDB design is concerned about how to design the Partition and Local keys to ensure efficient use of the DynamoDB tables. What advice would you provide.
-Create a new table each day, and reconfigure the old table for infrequent use after the summation is complete.
+ - Create a new table each day, and reconfigure the old table for infrequent use after the summation is complete.
 
-
-# EC2 Notes
-# The use of a placement group is ideal _______
-When your fleet of EC2 instances requires high network throughput and low latency within a single availability zone.
 
 
 # SWF Notes
