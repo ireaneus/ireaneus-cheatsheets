@@ -1,4 +1,38 @@
 Everops Interview
 
+
+* DevOps -  Ansible, Puppet, Jenkins, Git, Python, Perl, Shell, Ruby, PowerShell, 
+* Cloud: AWS, and specialized clouds. Lambda, Cloudwatch, Disaster recovery, S3, EC2, ELB, 
+* Server - Linux & Windows - LDAP, BIND, HDFS, EXT, XFS, Kubernetes, Docker 
+* Web Tier -  Node.js, Apache, Tomcat, SSL 
+* Data Tier - Hadoop, Cloudera, Kafka, Redis, Elasticsearch, MySQL, Cassandra, Mongo,  
+* Monitoring & Support - Splunk, Pagerduty, Confluence 
+* Network - IPSEC, OpenVPN, Palo Alto Networks, Cisco, Juniper, Linux-based, HP, OSPF, WAN, MPLS, DDOS 
+
+# Woodgrain Millwork
+Developed ITIL standards for desktop support using documented configuration processes.  Created standard ticketing system.  
+Started to implement SCCM patch management for desktop systems.
+
+# Taos Mountain Inc.
+Hired on to begin Management services Operations Center administration positions
+.  Position was to perform server monitoring and develop processes to implement solutions to Server monitoring alerts.
+.  Deployed Opsview to several client environments to monitor servers.
+.  Configured Nagios for clients that had that monitoring solution in place.
+.  Developed Patch management to several clients.
+.  Actively involved in rebuilding Sony Pictures Linux infrastructure after their environment was hacked.  Managing strong security measures.
+.  Developed standard Runbook documentation used for all clients.  Describing standard escalation procedures, process repair, Server provisioning, patch management, backup procedures.
+.  Worked as a Junior DBA to assist in Oracle database administration.  Configured RMAN backups, and worked in ASM disk quota management
+
+######  ACCOMPLISHMENTS  ######
+#  I worked for Silverspring Networks mostly on their oracle database systems.  Helped in designing their Disaster recovery procedures for their oracle databases.
+
+#  Seasoned, experienced Operations Center adminstrator with several years experience working with several clients
+#  Passionate in learning new technologies, Command line is my best friend
+#  Fast track training for google cloud architect, AWS Solutions Architect Associate, AWS Developer and AWS SysOps
+
+
+With that being said, what else will it take to get me onboard today?
+
+
 # How do you print in Javascript
 document.write() document.print()
