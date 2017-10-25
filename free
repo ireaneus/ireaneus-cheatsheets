@@ -14,3 +14,7 @@
 
      --help     display this help and exit
  -V, --version  output version information and exit
+
+# Top memory usage display
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head
+ps -eo pmem,pcpu,vsize,pid,cmd | sort -k 1 -nr | head -5
