@@ -1,0 +1,1021 @@
+
+
+: [2141] dhaines@lasssnpr01jmp01:~ $ ; ssh cpflprd-oracle.cpf.ssnsgs.net
+
+
+
+[dhaines@lasssnpr01ora11 ~]$ sudo -i 0-u oracpflprd
+======================================
+Current ORACLE_HOME set to CPFLPRD
+======================================
+/home/oracpflprd - CPFLPRD > sqlplus rdonly/rdonly
+
+SQL*Plus: Release 11.2.0.3.0 Production on Fri May 30 21:45:35 2014
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, Automatic Storage Management, OLAP, Data Mining
+and Real Application Testing options
+
+SQL> Set linesize 200
+set pages 100
+col event format A40
+col machine format A20
+col username format A20
+select
+username,sid,serial#,event,blocking_session,seconds_in_wait,sql_id,prev_sql_id,machine
+from v$session
+where blocking_session is not null
+/SQL> SQL> SQL> SQL> SQL>   2    3    4    5  
+
+USERNAME    SID    SERIAL# EVENT    BLOCKING_SESSION SECONDS_IN_WAIT SQL_ID   PREV_SQL_ID MACHINE
+-------------------- ---------- ---------- ---------------------------------------- ---------------- --------------- ------------- ------------- --------------------
+CPFLPRDNEM   1996        363 enq: TX - row lock contention39713345 4rt7p7hkxkz6f 4rt7p7hkxkz6f lascpflpr01vmw01
+
+SQL> /
+
+USERNAME    SID    SERIAL# EVENT    BLOCKING_SESSION SECONDS_IN_WAIT SQL_ID   PREV_SQL_ID MACHINE
+-------------------- ---------- ---------- ---------------------------------------- ---------------- --------------- ------------- ------------- --------------------
+CPFLPRDNEM   1996        363 enq: TX - row lock contention39713353 4rt7p7hkxkz6f 4rt7p7hkxkz6f lascpflpr01vmw01
+
+SQL> Set pages 100
+col event format A40
+SQL> SQL> col username format A20
+SQL> alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
+
+Session altered.
+
+SQL> select
+  2  s.username,s.sid,s.serial#,s.event,s.blocking_session,s.seconds_in_wait,s.process,p.spid,s.status,s.sql_id,s.prev_sql_id,logon_time,machine
+from v$session s,v$process p
+  3    4  where s.sid in (select blocking_session from v$session where blocking_session is not null)
+and s.paddr=p.addr(+)
+  5    6  /
+
+USERNAME    SID    SERIAL# EVENT    BLOCKING_SESSION SECONDS_IN_WAIT PROCESS      SPID       STATUSSQL_ID
+-------------------- ---------- ---------- ---------------------------------------- ---------------- --------------- ------------------------ ------------------------ -------- -------------
+PREV_SQL_ID   LOGON_TIME MACHINE
+------------- ------------------ --------------------
+CPFLPRDNEM   3971      11155 SQL*Net message from client  58 1234      3849       INACTIVE
+96nmw0amyqfv0 30-MAY-14 15:00:00 lascpflpr01vmw01
+
+
+SQL> /
+
+USERNAME    SID    SERIAL# EVENT    BLOCKING_SESSION SECONDS_IN_WAIT PROCESS      SPID       STATUSSQL_ID
+-------------------- ---------- ---------- ---------------------------------------- ---------------- --------------- ------------------------ ------------------------ -------- -------------
+PREV_SQL_ID   LOGON_TIME MACHINE
+------------- ------------------ --------------------
+CPFLPRDNEM   3971      11155 SQL*Net message from client  65 1234      3849       INACTIVE
+96nmw0amyqfv0 30-MAY-14 15:00:00 lascpflpr01vmw01
+
+
+SQL> Set pages 100 
+col event format A40
+SQL> SQL> col username format A20 
+SQL> alter session set nls_date_format='DD-MON-YY HH24:MI:SS'; 
+select 
+
+Session altered.
+
+SQL>   2  s.username,s.sid,s.serial#,s.event,s.blocking_session,s.seconds_in_wait,s.process,p.spid,s.status,s.sql_id,s.prev_sql_id,logon_time,machine,port
+  3  from v$session s LEFT JOIN v$process p ON (s.paddr = p.addr)
+  4  where s.sid in (select blocking_session from v$session where 
+blocking_session is not null);  5  
+
+USERNAME    SID    SERIAL# EVENT    BLOCKING_SESSION SECONDS_IN_WAIT PROCESS      SPID       STATUSSQL_ID
+-------------------- ---------- ---------- ---------------------------------------- ---------------- --------------- ------------------------ ------------------------ -------- -------------
+PREV_SQL_ID   LOGON_TIME MACHINE    PORT
+------------- ------------------ -------------------- ----------
+CPFLPRDNEM   3971      11155 SQL*Net message from client  87 1234      3849       INACTIVE
+96nmw0amyqfv0 30-MAY-14 15:00:00 lascpflpr01vmw01   60868
+
+
+SQL> Break on sid skip 1
+set pages 2000
+
+select sid,sql_id,sql_text
+from v$open_cursor
+where sid in (select blocking_session from v$session where
+blocking_session is not null)
+order by sid
+/SQL> SQL> SQL>   2    3    4    5    6  
+
+       SID SQL_ID SQL_TEXT
+---------- ------------- ------------------------------------------------------------
+      3971 701rd6ccu0qn9 SELECT t.thresh_id id, t.thresh_name name, t.thresh_type typ
+   4rt7p7hkxkz6f INSERT INTO nms_object_samples (nms_dev_id,nms_obj_inst_id,n
+   96nmw0amyqfv0 SELECT NULL AS table_cat,  o.owner AS table_schem,
+   4vs91dcv7u1p6 insert into sys.aud$( sessionid,entryid,statement,ntimestamp
+
+
+SQL> set colsep ","
+set pagesize 0
+set linesize 2000
+select * from v$session;SQL> SQL> SQL> 
+00000005455E27B8,  1,     1, 0,00000005451F8578,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4160       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (RBAL)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15409,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 620846,     2379154,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451F8578,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+00000005495BB6E8,  2,     3, 0,00000005451FC838,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4359       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (Q000)    ,BACKGROUND,00   , 0,, ,    ,,00000005536AA780,139075864,cv959u044n88s,0,30-MAY-14 21:49:22, 16778724,       , , ,     ,Streams      , 1811062742,QMON Slave   , 1721432626,, 1312,       5715, 1,     11913,       0,      59,09-MAY-14 21:18:56, 1816229,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     64933,  378,Streams AQ: qmn slave idle wait      ,Type       , 1,0000000000000001,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  4,WAITING       ,3597405,    56402595,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451FC838,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054163C498,  4,    11,   6572474,0000000545200AF8,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26958,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:13, 16780065,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529900, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792872,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792872,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545200AF8,   6
+
+
+
+00000005455DF810,  5,   693,   6572481,0000000545204DB8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26970,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:14, 17682307,       , , ,     ,device_pkg      , 1077022221,proc_uiq_meter_prog_cnt_upd   ,  574581727,inserting uiq_job_schedule_param,     53182781,     188064, 7,   1162874,       0,      94,10-MAY-14 03:48:15,      11,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     28295,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 11,WAITING       ,       10739376,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545204DB8,   2
+
+
+
+00000005495B8740,  6, 63435,   6786219,00000005452220F8,  100,CPFLPRD_DMS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,     100,CPFLPRD_DMS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18886,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:46:56, 16987502,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      59,30-MAY-14 21:46:56,     149,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,149,WAITING       ,      149319800,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452220F8, 214
+
+
+
+000000055D59ED18,  7,  8045,   6574000,00000005452158B8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  33382,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:22, 17682311,       , , ,     ,uiq_job_pkg      , 1439157162,submit_result   ,  760600295,inserting uiq_job_schedule_param,     53182785, -1, 0, 0,       0,      94,10-MAY-14 07:06:45,       3,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     38651,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  3,WAITING       ,2727233,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452158B8,  55
+
+
+
+00000005416394F0,  8,   183,   6572550,00000005452115F8,   96,CPFLPRD_FWU_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      96,CPFLPRD_FWU_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27220,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556F29B08,     2906384947,agy5n72qmrujm,0,30-MAY-14 21:49:25, 16845632,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      14,10-MAY-14 03:51:12,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     12012,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 669752,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452115F8,   3
+
+
+
+00000005495B5798, 10,   263,   6572521,000000054520D338,   89,CPFLPRDNEM  ,    6,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27100,unknown       ,JDBC Thin Client        ,USER  ,000000055B4A7040,1415712054,ggwz8dda6439q,0,    ,,000000055B4A7040,     1415712054,ggwz8dda6439q,0,30-MAY-14 21:38:31, 16779415,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53161116, -1, 0, 0,       0,      94,10-MAY-14 03:49:58,     654,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     18363,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,654,WAITING       ,      654304276,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520D338,   7
+
+
+
+0000000541636548, 12, 42565,   6767889,000000054521DE38,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  37028,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 20:50:20, 16785442,       , , ,     ,device_group_pkg      , 2422529842,search   , 1766209817,,     53073818, -1, 0, 0,       0,      94,29-MAY-14 02:10:21,    3545,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       131,  352,SQL*Net message from client      ,driver id       ,1413697536,0000000054435000,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       3545,WAITING       ,     3544847135,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521DE38,  86
+
+
+
+00000005455D98C0, 13,   667,   6572726,0000000545219B78,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27989,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:49:11, 17393733,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182780, -1, 0, 0,       0,      14,10-MAY-14 04:09:17,      14,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     49359,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 14,WAITING       ,       13985538,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545219B78,  53
+
+
+
+00000005455D6918, 17, 26183,   6637024,000000054522E938,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  43098,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       13,18-MAY-14 20:15:39, 22856754,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     21292891, -1, 0, 0,       0,      94,16-MAY-14 08:00:05, 1042426,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     20629,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1042426,WAITING       ,     1.0424E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054522E938,   1
+
+
+
+000000055D595E20, 19, 24157,   6778361,0000000545209078,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  35041,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F501C48,     1566162593,1ajj8gpfpmgp1,0,30-MAY-14 08:59:59, 16777710,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     51731733, -1, 0, 0,       0,      14,30-MAY-14 03:00:00,   46165,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1495,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      46166,WAITING       ,     4.6166E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545209078, 249
+
+
+
+000000054968EE80,284,     1, 0,0000000541244FA0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4164       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (ASMB)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     59084,  386,ASM background timer      ,        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2400065,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541244FA0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055D675458,285,     3, 0,0000000541249260,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4361       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (Q001)    ,BACKGROUND,00   , 0,, ,    ,,000000054FDC8430,     1023521005,cb21bacyh3c7d,2,09-MAY-14 21:18:56, 16777222,       , , ,     ,Streams      , 1811062742,QMON Slave   , 1721432626,, 1312, -1, 0, 0,       0,      59,09-MAY-14 21:18:56, 1816229,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 2,  372,Streams AQ: waiting for time management ,        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,    1816230,WAITING       ,     1.8162E+12,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541249260,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,or cleanup tasks      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054170FC30,286,   765,   6572482,00000005412517E0,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26971,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000557B36FE0,     2631306719,1r68jpyfdd3fz,1,30-MAY-14 21:49:23, 16958194,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_reset   , 3193244088,inserting uiq_job_schedule_param,     53182785, -1, 0, 0,       0,      94,10-MAY-14 03:48:15,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      8839,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2068993,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005412517E0,   3
+
+
+
+00000005456B2FA8,287, 61235,   6774529,000000054124D520,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  45907,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 20:13:15, 16785436,       , , ,     ,device_group_pkg      , 2422529842,search   , 1766209817,,     53002434, -1, 0, 0,       0,      94,29-MAY-14 17:50:21,    5770,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,97,  352,SQL*Net message from client      ,driver id       ,1413697536,0000000054435000,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       5770,WAITING       ,     5770135386,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124D520,  95
+
+
+
+000000054968BED8,288, 29293,   6596326,00000005412622E0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  64580,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:24, 31065198,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,12-MAY-14 12:00:00,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     13642,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1176479,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005412622E0, 189
+
+
+
+000000055D6724B0,289,   443,   6572556,000000054125E020,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  27233,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:24, 17682312,       , , ,     ,uiq_job_pkg      , 1439157162,add_member_exec_monitor   , 2969408341,inserting uiq_job_schedule_param,     53182785, -1, 0, 0,       0,      94,10-MAY-14 03:51:45,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     13285,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 727591,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054125E020,   7
+
+
+
+00000005456B0000,291,   515,   6572522,0000000541259D60,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27101,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4F1730,     1224914357,151nwv14h5ddp,2,30-MAY-14 21:43:03, 16836951,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53170572, -1, 0, 0,       0,      94,10-MAY-14 03:49:58,     382,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     29122,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,381,WAITING       ,      381385965,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541259D60,   2
+
+
+
+000000055D66F508,293, 34679, 0,0000000541255AA0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,28410       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (W001)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,KTSJ      , 4150380559,KTSJ Slave   ,  796006397,,     53181867, -1, 0, 0,       0,       9,30-MAY-14 21:48:35,      51,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,12,  258,Space Manager: slave idle wait      ,Slave ID        , 1,0000000000000001,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1058268,     3941732,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541255AA0, 124
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000549685F88,296, 19501,   6638407,000000054126A860,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  48803,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000557224C50,     1869229875,2c1d7hxrqnbtm,0,30-MAY-14 21:49:13, 17141323,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_reset   , 3193244088,inserting uiq_job_schedule_param,     53182781, -1, 0, 0,       0,      94,16-MAY-14 11:06:45,      12,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     12702,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 12,WAITING       ,       12088229,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126A860,  87
+
+
+
+000000055D66C560,297, 47299,   6786220,000000054126EB20,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18899,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F5FE0B0,     1846503297,9s97h85r0ytw1,0,30-MAY-14 21:48:56, 16845618,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182224, -1, 0, 0,       0,      14,30-MAY-14 21:46:59,      29,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,41,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 29,WAITING       ,       28808872,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126EB20, 179
+
+
+
+00000005456AA0B0,299, 35871,   6785293,00000005412665A0,   83,CPFLPRDS1_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  55209,unknown       ,JDBC Thin Client        ,USER  ,000000055B588B38,3857017174,4962aamkyauaq,0,    ,,000000055B588B38,     3857017174,4962aamkyauaq,0,30-MAY-14 21:48:44, 16781796,       , , ,     ,task_pkg      , 1333350145,add_schedule_summary    , 3778952861,,     53181873, -1, 0, 0,       0,      94,30-MAY-14 19:36:45,      41,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       751,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 41,WAITING       ,       41299302,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005412665A0, 154
+
+
+
+000000055D748BF0,567,     1, 0,000000055D1C2E68,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4113       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (PMON)    ,BACKGROUND,00   , 0,, ,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:34, 1816253,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15589,    1,pmon timer      ,duration        ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1261103,     1738897,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C2E68,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+00000005417E33C8,568,     1, 0,000000055D1C7128,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4168       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (MMON)    ,BACKGROUND,00   , 0,, ,    ,,000000054FEC3CD0,     3489409389,aykvshm7zsabd,0,30-MAY-14 21:49:22, 16837716,       , , ,     ,      ,  0,   ,      0,,   53,      12713, 2,      2315,       0,      59,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     14062,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 273234,     2726766,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1C7128,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054975F670,570,   351,   6572524,000000055D1DBEE8,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27175,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:29:11, 17393623,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142961, -1, 0, 0,       0,      14,10-MAY-14 03:50:04,    1214,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48859,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1214,WAITING       ,     1213997596,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1DBEE8,   3
+
+
+
+000000055D745C48,571,   345,   6572483,000000055D1D3968,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26972,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000557224C50,     1869229875,2c1d7hxrqnbtm,0,30-MAY-14 21:49:23, 17141324,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_reset   , 3193244088,inserting uiq_job_schedule_param,     53182785, -1, 0, 0,       0,      94,10-MAY-14 03:48:15,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     17816,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2071693,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D3968,   5
+
+
+
+000000054975C6C8,574, 24763,   6780991,000000055D1E4468,   89,CPFLPRDNEM  ,    2,2147483644,000000053EDFA7F0,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  48250,unknown       ,JDBC Thin Client        ,USER  ,000000055B57C350, 635010254,4rt7p7hkxkz6f,0,    ,,000000055B57C350,635010254,4rt7p7hkxkz6f,0,30-MAY-14 14:59:59, 16800566,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     52418513, -1, 0, 0,       0,      94,30-MAY-14 09:00:00,   24566,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      2106,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      24565,WAITING       ,     2.4565E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E4468, 170
+
+
+
+00000005417DD478,576,  2199,   6785294,000000055D1E8728,   85,CPFLPRDS2_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  55210,unknown       ,JDBC Thin Client        ,USER  ,0000000556E497A0,  79039803,6fft2bw2bc39v,0,    ,,0000000556E497A0, 79039803,6fft2bw2bc39v,0,30-MAY-14 21:48:44, 16781796,       , , ,     ,task_pkg      , 1333350145,set_run_details1   , 3818393020,,     53181873, -1, 0, 0,       0,      94,30-MAY-14 19:36:45,      41,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       795,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 41,WAITING       ,       41278304,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E8728,  59
+
+
+
+00000005457807F0,577,   289,   6572559,000000055D1E01A8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  27235,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:20, 17682310,       , , ,     ,uiq_job_pkg      , 1439157162,submit_result   ,  760600295,inserting uiq_job_schedule_param,     53182781, -1, 0, 0,       0,      94,10-MAY-14 03:51:45,       5,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     46939,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  5,WAITING       ,4734966,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E01A8,   2
+
+
+
+000000055D73FCF8,579, 17187,   6659138,000000055D1EC9E8,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   9484,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:23, 31065190,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,18-MAY-14 11:45:00,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     62786,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2187860,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EC9E8, 153
+
+
+
+00000005417DA4D0,580, 10343,   6581041,000000055D1D7C28,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  63458,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:23, 31065193,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,11-MAY-14 00:00:03,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     52866,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1918965,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D7C28, 199
+
+
+
+000000054577D848,581,   243,   6574643,000000055D1CF6A8,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  36057,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,1,13-MAY-14 07:08:02, 19076661,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,      6778119, -1, 0, 0,       0,      94,10-MAY-14 08:31:34, 1521683,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     55511,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1521683,WAITING       ,     1.5217E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1CF6A8,  66
+
+
+
+0000000549756778,582, 16399,   6767023,000000055D1F4F68,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   9208,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:25, 31065207,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182789, -1, 0, 0,       0,      94,29-MAY-14 00:00:03,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     52398,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 150040,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1F4F68, 185
+
+
+
+000000055D73CD50,583, 13165,   6622727,000000055D1F0CA8,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  46791,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:23, 31065191,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,15-MAY-14 00:00:03,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      2120,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2172004,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1F0CA8, 223
+
+
+
+00000005417D7528,584, 32079,   6786093,000000055D1CB3E8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  14990,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:28:44, 16987380,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142465, -1, 0, 0,       0,      15,30-MAY-14 21:28:45,    1241,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1241,WAITING       ,     1240834173,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1CB3E8, 205
+
+
+
+00000005418B6B60,850,     1, 0,00000005491DB700,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4116       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (PSP0)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:34, 1816253,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     49624,    7,rdbms ipc message       ,timeout       ,       100,0000000000000064,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 770520,      229480,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491DB700,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000545859ED8,851,     1, 0,00000005491DF9C0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4172       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (MMNL)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     42581,    7,rdbms ipc message       ,timeout       ,       100,0000000000000064,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 507512,      492488,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491DF9C0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055D8193E0,853,     7, 0,00000005491E3C80,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4892       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (SMCO)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,KTSJ      , 4150380559,KTSJ Coordinator   , 1420644966,, 1608, -1, 0, 0,       0,       9,09-MAY-14 21:21:14, 1816091,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     21185,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       ,  56488,     2943512,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491E3C80,   4
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+00000005418B3BB8,854, 62933,   6786224,0000000549209540,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  19012,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F6B8BE0,     1331624989,a40jz8t7pxz0x,0,30-MAY-14 21:49:08, 16837770,       , , ,     ,uiq_job_pkg      , 1439157162,search_from_tmp   , 3277797847,,     53182224, -1, 0, 0,       0,      94,30-MAY-14 21:47:34,      17,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,59,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 17,WAITING       ,       16917898,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549209540, 124
+
+
+
+0000000545856F30,855,  8459,   6759474,00000005491F8A40,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  60913,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:24, 31065194,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,28-MAY-14 08:01:34,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15275,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1684972,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F8A40, 145
+
+
+
+000000055D816438,857,   181,   6572475,00000005491E7F40,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26959,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:13, 16780066,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529903, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792872,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792872,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E7F40,   6
+
+
+
+00000005418B0C10,858,   657,   6574157,00000005491FCD00,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  34011,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,1,13-MAY-14 07:10:05, 19077631,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,      6784426, -1, 0, 0,       0,      94,10-MAY-14 07:30:00, 1521560,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      6748,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1521560,WAITING       ,     1.5216E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FCD00,  65
+
+
+
+0000000545853F88,859, 64299,   6785982,00000005491EC200,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  11241,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:10:44, 16987273,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53115092, -1, 0, 0,       0,      15,30-MAY-14 21:10:45,    2321,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2321,WAITING       ,     2320824612,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491EC200,  17
+
+
+
+000000054982CEB8,860, 17551,   6604780,0000000549200FC0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  36358,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:24, 31065196,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,13-MAY-14 07:37:34,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      9680,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1433007,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549200FC0,  26
+
+
+
+00000005418ADC68,862,  7253,   6781819,00000005491F4780,   85,CPFLPRDS2_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  10777,unknown       ,JDBC Thin Client        ,USER  ,0000000557042DA8,3690900451,9md3hqbdzxaz3,0,    ,,0000000557042DA8,     3690900451,9md3hqbdzxaz3,0,30-MAY-14 21:48:44, 16781796,       , , ,     ,task_pkg      , 1333350145,add_schedule_summary    , 3778952861,,     53181873, -1, 0, 0,       0,      94,30-MAY-14 11:04:44,      41,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      3880,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 41,WAITING       ,       41293122,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F4780, 187
+
+
+
+0000000545850FE0,863, 37215,   6786068,00000005491F04C0,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  14130,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:24:44, 16987356,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53133852, -1, 0, 0,       0,      15,30-MAY-14 21:24:45,    1481,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1481,WAITING       ,     1480853462,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F04C0,  55
+
+
+
+0000000549829F10,864, 16153,   6654272,000000054920D800,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  52044,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:24, 31065200,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,18-MAY-14 00:00:03,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1163,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 930846,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054920D800, 202
+
+
+
+00000005418AACC0,866, 63505,   6786203,0000000549205280,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18577,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055352F780,761106464,6n3d18hqpv410,1,30-MAY-14 21:45:21, 16778225,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53179577, -1, 0, 0,       0,      94,30-MAY-14 21:45:21,     244,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 9,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,244,WAITING       ,      244290190,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549205280,  37
+
+
+
+000000054592D670,      1133,     1, 0,00000005451F5368,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4123       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (VKTM)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816253,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 1,    3,VKTM Logical Idle Wait      ,        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,    1816251,WAITING       ,     1.8163E+12,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451F5368,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+00000005499065A0,      1134,    31,   6572462,0000000545201BA8,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26890,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,6,19-MAY-14 07:16:04, 23169485,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     22523848, -1, 0, 0,       0,      94,10-MAY-14 03:47:07, 1002801,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     44374,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1002801,WAITING       ,     1.0028E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545201BA8,   5
+
+
+
+000000055D8ECB78,      1135, 33961,   6786005,0000000545216968,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  12021,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:14:44, 16987295,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53115854, -1, 0, 0,       0,      15,30-MAY-14 21:14:45,    2081,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2081,WAITING       ,     2080849714,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545216968,  83
+
+
+
+0000000541987350,      1136, 17185,   6744844,0000000545227468,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   9233,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:23, 31065189,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,26-MAY-14 22:00:03,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48775,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2429294,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545227468, 170
+
+
+
+000000054592A6C8,      1137,  3059,   6786231,00000005452231A8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  19241,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:48:44, 16987514,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181876, -1, 0, 0,       0,      15,30-MAY-14 21:48:45,      41,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 41,WAITING       ,       40853869,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452231A8, 212
+
+
+
+00000005499035F8,      1138,   577,   6572528,000000054520E3E8,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  27190,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4BCDA8,     2242357517,crxwzb62uga8d,0,30-MAY-14 21:48:42, 16845599,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181867,     444116,10,    323065,       0,      14,10-MAY-14 03:50:18,      43,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     22527,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 44,WAITING       ,       43594735,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520E3E8,   2
+
+
+
+0000000549900650,      1142, 19785,   6783814,00000005452126A8,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,   8861,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 21:45:00, 16785455,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53179205, -1, 0, 0,       0,      94,30-MAY-14 16:00:00,     265,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       957,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,266,WAITING       ,      266045854,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452126A8, 238
+
+
+
+000000055D8E6C28,      1143, 23147,   6786020,000000054520A128,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  12481,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:16:45, 16987309,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53124270, -1, 0, 0,       0,      15,30-MAY-14 21:16:45,    1960,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1961,WAITING       ,     1960849944,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520A128,  83
+
+
+
+0000000541981400,      1144, 26319,   6659139,000000054521EEE8,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   9485,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:25, 31065202,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,18-MAY-14 11:45:00,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     56176,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 680306,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521EEE8, 253
+
+
+
+0000000545924778,      1145, 62715,   6694130,00000005451FD8E8,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   7927,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4B6608,429939337,701rd6ccu0qn9,0,30-MAY-14 21:39:59, 16780738,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53169602, -1, 0, 0,       0,      94,21-MAY-14 21:40:00,     566,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       679,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,566,WAITING       ,      566159423,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005451FD8E8,   9
+
+
+
+00000005498FD6A8,      1146,  5001,   6783662,000000054521AC28,   83,CPFLPRDS1_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,   3965,unknown       ,JDBC Thin Client        ,USER  ,000000055B6AE830,2367447962,8gt414q6jsswu,0,    ,,000000055B6AE830,     2367447962,8gt414q6jsswu,0,30-MAY-14 21:48:44, 16781796,       , , ,     ,task_pkg      , 1333350145,set_run_details1   , 3818393020,,     53181873, -1, 0, 0,       0,      94,30-MAY-14 15:36:45,      41,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     12159,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 41,WAITING       ,       41285892,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521AC28,  96
+
+
+
+000000055D8E3C80,      1147, 30159,   6786059,0000000545205E68,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  13737,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:22:44, 16987347,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53133240, -1, 0, 0,       0,      15,30-MAY-14 21:22:45,    1601,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1601,WAITING       ,     1600856499,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545205E68, 102
+
+
+
+00000005499D9D38,      1416,     1, 0,0000000541241D90,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4131       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (GEN0)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15423,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  3,WAITING       ,2961732,       38268,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541241D90,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055D9C0310,      1417,   105,   6572463,000000054124E5D0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26891,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,1,13-MAY-14 07:09:50, 19077511,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,      6784413,     191118, 4,    527031,       0,      94,10-MAY-14 03:47:08, 1521575,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     34012,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1521576,WAITING       ,     1.5216E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124E5D0,   7
+
+
+
+0000000541A5AAE8,      1418,  2187,   6572488,0000000541252890,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26996,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:29:11, 17393622,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142961, -1, 0, 0,       0,      14,10-MAY-14 03:48:39,    1214,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     31865,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1214,WAITING       ,     1214007743,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541252890,   4
+
+
+
+000000055D9BD368,      1421,  8897,   6581043,000000054125F0D0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  63461,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:23, 31065187,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785,  0, 3,       240,       0,      94,11-MAY-14 00:00:03,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     21770,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  3,WAITING       ,2684427,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054125F0D0,  25
+
+
+
+0000000541A57B40,      1422, 52581,   6722016,0000000541256B50,   89,CPFLPRDNEM  ,    6,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  13120,unknown       ,JDBC Thin Client        ,USER  ,000000055B524E88,1397156846,5r0d9sx9nduzf,2,    ,,000000055B524E88,     1397156846,5r0d9sx9nduzf,2,30-MAY-14 20:51:03, 16792923,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53074178, -1, 0, 0,       0,      94,24-MAY-14 15:05:02,    3502,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48765,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       3502,WAITING       ,     3501866361,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541256B50, 184
+
+
+
+000000055D9BA3C0,      1425,  1033,   6574216,0000000541267650,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  34254,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000557B36FE0,     2631306719,1r68jpyfdd3fz,1,30-MAY-14 21:49:13, 16958193,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_reset   , 3193244088,inserting uiq_job_schedule_param,     53182781, -1, 0, 0,       0,      94,10-MAY-14 07:36:45,      12,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     63503,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 12,WAITING       ,       12099427,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541267650,  50
+
+
+
+0000000541A54B98,      1426,   421,   6786204,000000054126B910,  100,CPFLPRD_DMS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,     100,CPFLPRD_DMS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18578,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BAD72D8,     3041171194,2z6y49aun95ru,3,30-MAY-14 21:46:56, 16780261,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181661, -1, 0, 0,       0,      94,30-MAY-14 21:45:21,     149,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,149,WAITING       ,      149349159,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126B910, 137
+
+
+
+00000005459F7F10,      1427, 19183,   6786173,000000054124A310,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  17596,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:40:44, 16987458,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53170338, -1, 0, 0,       0,      15,30-MAY-14 21:40:45,     521,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,521,WAITING       ,      520852814,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124A310, 141
+
+
+
+00000005499D0E40,      1428, 12953,   6584448,000000054126FBD0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  14022,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:25, 31065203,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,11-MAY-14 08:00:02,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     10420,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 663621,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126FBD0,  17
+
+
+
+0000000541A51BF0,      1430, 19817,   6730318,000000054125AE10,   89,CPFLPRDNEM  ,    6,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  12155,unknown       ,JDBC Thin Client        ,USER  ,000000055B524E88,1397156846,5r0d9sx9nduzf,2,    ,,000000055B524E88,     1397156846,5r0d9sx9nduzf,2,30-MAY-14 20:51:03, 16792924,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53074178, -1, 0, 0,       0,      94,25-MAY-14 11:05:01,    3502,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     49045,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       3502,WAITING       ,     3501863607,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054125AE10, 146
+
+
+
+00000005459F4F68,      1431, 29923,   6780989,0000000541263390,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  48248,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B57C350,635010254,4rt7p7hkxkz6f,0,30-MAY-14 14:59:59, 16800561,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     52418513, -1, 0, 0,       0,      14,30-MAY-14 09:00:00,   24566,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1822,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      24566,WAITING       ,     2.4566E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541263390, 209
+
+
+
+000000055DA93AA8,      1699,     1, 0,000000055D1C3F18,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4135       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (DIAG)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     44745,   73,DIAG idle wait      ,component       , 5,0000000000000005,where    ,      1,0000000000000001,wait time(millisec) ,1000,00000000000003E8, 2723168908,      6,Idle,  0,  1,WAITING       , 685199,      314801,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C3F18,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000541B2E280,      1700,     1, 0,000000055D1C81D8,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4182       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (MARK)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     44857,   66,wait for unread message on broadcast cha,channel context       ,2.3074E+10,000000055F570C18,channel handle    ,2.2654E+10,000000054649C580, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       ,  17221,      982779,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C81D8,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,nnel      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055DA90B00,      1703,  5561,   6574219,000000055D1E97D8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  34255,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:18, 17682309,       , , ,     ,uiq_job_pkg      , 1439157162,set_next_run    ,  972369245,inserting uiq_job_schedule_param,     53182781, -1, 0, 0,       0,      94,10-MAY-14 07:36:45,       7,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     41013,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  7,WAITING       ,6748583,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E97D8,  47
+
+
+
+0000000541B2B2D8,      1704,   103,   6572466,000000055D1D0758,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26942,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,1,13-MAY-14 07:08:14, 19076752,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,      6778122, -1, 0, 0,       0,      94,10-MAY-14 03:47:45, 1521671,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     59854,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1521672,WAITING       ,     1.5217E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D0758,  12
+
+
+
+0000000545ACE650,      1705,  1313,   6572506,000000055D1D8CD8,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27034,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:29:11, 17393620,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142961, -1, 0, 0,       0,      14,10-MAY-14 03:49:11,    1214,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      3969,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1214,WAITING       ,     1214012482,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D8CD8,  68
+
+
+
+0000000549AA7580,      1706, 58729,   6781790,000000055D1E5518,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,   9743,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B612470,     4151149014,0bt1r6zvqv0fq,1,30-MAY-14 16:59:59, 16777716,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     52643878, -1, 0, 0,       0,      14,30-MAY-14 11:00:00,   17366,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       269,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      17366,WAITING       ,     1.7366E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E5518, 179
+
+
+
+000000055DA8DB58,      1707, 44165,   6786207,000000055D1EDA98,   34,RDONLY  ,    3,2147483644, ,  ,ACTIVE  ,DEDICATED,      34,RDONLY        ,oracpflprd      ,27034       ,lasssnpr01ora11.las.,      0,pts/0      ,sqlplus@lasssnpr01ora11.las.ssnsgs.net (TNS V1-V,USER  ,000000055B5A7EA0,4075969482,c7t6usrtg4qya,1,30-MAY-14 21:49:25,16777232,00000004C5CF1720,     1409911856,g02q3sja0m31h,0,30-MAY-14 21:48:55, 16777218,       , , ,     ,SQL*Plus      , 3669949024,   ,      0,,     53182946, -1, 0, 0,       0,       5,30-MAY-14 21:45:35,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NOT IN WAIT,   ,    ,NOT IN WAIT,,       ,71,  348,SQL*Net message to client       ,driver id       ,1650815232,0000000062657100,#bytes    ,      1,0000000000000001, ,   0,00      , 2000153315,      7,Network , -1,  0,WAITED SHORT TIME  ,      0,    ,     36,SYS$USERS,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EDA98,  16
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000541B28330,      1708, 33839,   6786082,000000055D1E1258,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  14598,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:26:45, 16987369,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142255, -1, 0, 0,       0,      15,30-MAY-14 21:26:45,    1360,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1361,WAITING       ,     1360839923,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E1258, 180
+
+
+
+0000000545ACB6A8,      1709,  3853,   6572530,000000055D1DCF98,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  27192,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4BCDA8,     2242357517,crxwzb62uga8d,0,30-MAY-14 21:49:07, 16845600,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182224,     444116,10,    323058,       0,      14,10-MAY-14 03:50:19,      18,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     38423,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 18,WAITING       ,       17820654,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1DCF98,   5
+
+
+
+0000000549AA45D8,      1710,  2881,   6572490,000000055D1D4A18,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26997,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556E00E70,416121595,cqah7n4ccv0rv,       29,30-MAY-14 21:46:59, 17398362,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      94,10-MAY-14 03:48:39,     146,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     56898,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,147,WAITING       ,      146653800,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D4A18,   2
+
+
+
+000000055DA8ABB0,      1711,  7547,   6786045,000000055D1CC498,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  13344,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:20:44, 16987334,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53133098, -1, 0, 0,       0,      15,30-MAY-14 21:20:45,    1721,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1721,WAITING       ,     1720858631,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1CC498,  74
+
+
+
+000000055DA87C08,      1715, 45315,   6705134,000000055D1F1D58,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  24631,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:22, 31065185,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,23-MAY-14 00:00:04,       3,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     10121,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  3,WAITING       ,2940850,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1F1D58, 136
+
+
+
+0000000541C01A18,      1982,  2903,   6572631,00000005491FDDB0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27464,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,9,18-MAY-14 10:05:40, 22568165,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     20113417, -1, 0, 0,       0,      94,10-MAY-14 04:00:03, 1079025,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     18261,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1079025,WAITING       ,     1.0790E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FDDB0,  48
+
+
+
+0000000545BA4D90,      1983,     1, 0,00000005491DC7B0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4138       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (DBRM)    ,BACKGROUND,00   , 0,, ,    ,,0000000557DE0A78,     1270881739,10t8dxp5w07fb,1,09-MAY-14 21:59:59, 16777224,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15464,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1258333,     1741667,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491DC7B0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000549B7DCC0,      1984,   647,   6572449,00000005491E4D30,   83,CPFLPRDS1_AMM  ,    3,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26878,unknown       ,JDBC Thin Client        ,USER  ,00000005574CCB88,3441169219,07379d76js4u3,0,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:00, 16780040,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529631, -1, 0, 0,       0,      94,10-MAY-14 03:47:01, 1792944,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792944,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E4D30,  30
+
+
+
+0000000541BFEA70,      1986, 29333,   6674561,000000054920E8B0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  63693,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       12,22-MAY-14 16:12:08, 25466306,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     31211753, -1, 0, 0,       0,      94,20-MAY-14 00:00:03,  711437,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48364,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,     711437,WAITING       ,     7.1144E+11,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054920E8B0, 173
+
+
+
+0000000545BA1DE8,      1987,    83,   6572489,00000005491ED2B0,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26998,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:29:11, 17393621,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142961, -1, 0, 0,       0,      14,10-MAY-14 03:48:39,    1214,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      2407,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1214,WAITING       ,     1214013064,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491ED2B0,   2
+
+
+
+0000000549B7AD18,      1988,   837,   6572465,00000005491E8FF0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26943,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       12,22-MAY-14 11:10:33, 25323795,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     30699771, -1, 0, 0,       0,      94,10-MAY-14 03:47:45,  729532,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     63232,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,     729532,WAITING       ,     7.2953E+11,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E8FF0,   5
+
+
+
+0000000541BFBAC8,      1990,   131,   6572507,00000005491F1570,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27039,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055299C108,439870060,6bux5t8d3gsmc,       29,30-MAY-14 21:29:11, 16780233,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53142961, -1, 0, 0,       0,      14,10-MAY-14 03:49:13,    1214,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     39636,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1214,WAITING       ,     1214009842,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F1570,   5
+
+
+
+0000000549B77D70,      1992,  9971,   6786181,0000000549202070,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  17841,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F5FE0B0,     1846503297,9s97h85r0ytw1,0,30-MAY-14 21:49:20, 16845619,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182781, -1, 0, 0,       0,      14,30-MAY-14 21:41:59,       5,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       136,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  5,WAITING       ,5480622,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549202070,  28
+
+
+
+000000055DB5E348,      1993, 21633,   6786227,00000005491E0A70,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  19082,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:47:56, 16987510,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181860, -1, 0, 0,       0,      59,30-MAY-14 21:47:56,      89,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 89,WAITING       ,       89492061,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E0A70, 249
+
+
+
+0000000545B9BE98,      1995, 22985,   6778299,0000000549206330,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  33060,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 21:30:20, 16785453,       , , ,     ,device_group_pkg      , 2422529842,search   , 1766209817,,     53151053, -1, 0, 0,       0,      94,30-MAY-14 02:50:21,    1145,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,55,  352,SQL*Net message from client      ,driver id       ,1413697536,0000000054435000,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1145,WAITING       ,     1144886842,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549206330,  53
+
+
+
+0000000549B74DC8,      1996,   363,   6783414,00000005491F5830,   89,CPFLPRDNEM  ,    2,2147483644,0000000539C19F80,000000055E35CAA0,ACTIVE  ,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  60872,unknown       ,JDBC Thin Client        ,USER  ,000000055B57C350, 635010254,4rt7p7hkxkz6f,0,30-MAY-14 20:49:59,16800845,000000055B57C350,635010254,4rt7p7hkxkz6f,0,30-MAY-14 20:44:59, 16800841,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53064213, -1, 0, 0,       0,      94,30-MAY-14 15:00:01,    3566,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,VALID ,  1,3971,VALID,       1,   3971,      1905,  240,enq: TX - row lock contention      ,name|mode       ,1415053316,0000000054580004,usn<<16 | slot    , 196620,000000000003000C,sequence ,    159860,0000000000027074, 4217450380,      1,Application,  0,       3566,WAITING       ,     3566136126,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F5830,  33
+
+
+
+000000055DB5B3A0,      1997, 23685,   6785799,00000005491F9AF0,   81,CPFLPRDM_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   5689,unknown       ,JDBC Thin Client        ,USER  ,000000055B6F3410,1989348050,aqzmd5pv962qk,0,    ,,000000055B6F3410,     1989348050,aqzmd5pv962qk,0,30-MAY-14 21:49:08, 16898092,       , , ,     ,uiq_job_pkg      , 1439157162,search   , 1766209817,,     53182224, -1, 0, 0,       0,      94,30-MAY-14 20:45:00,      17,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1840,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 17,WAITING       ,       16932363,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F9AF0, 171
+
+
+
+0000000545C78528,      2265,     1, 0,00000005451F6418,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4142       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (DIA0)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     37130,   73,DIAG idle wait      ,component       , 5,0000000000000005,where    ,      1,0000000000000001,wait time(millisec) ,1000,00000000000003E8, 2723168908,      6,Idle,  0,  1,WAITING       , 562333,      437667,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451F6418,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000541CD2208,      2268,  2897,   6785957,00000005451FA6D8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  10366,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:06:45, 16987248,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53106176, -1, 0, 0,       0,      15,30-MAY-14 21:06:45,    2560,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2561,WAITING       ,     2560862469,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005451FA6D8, 246
+
+
+
+0000000545C75580,      2269,   377,   6572491,0000000545206F18,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26999,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556E016F0,     2191203655,a0w8jry19q7a7,       31,30-MAY-14 21:46:59, 16829041,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      14,10-MAY-14 03:48:39,     146,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     63979,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,147,WAITING       ,      146667947,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545206F18,   2
+
+
+
+0000000549C4E4B0,      2270,   125,   6572450,00000005451FE998,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26879,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:00, 16780041,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529625, -1, 0, 0,       0,      59,10-MAY-14 03:47:01, 1792945,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 6,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792945,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005451FE998,  55
+
+
+
+0000000541CCF260,      2272,    87,   6572512,000000054520B1D8,   89,CPFLPRDNEM  ,    6,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27072,unknown       ,JDBC Thin Client        ,USER  ,000000055B4A7040,1415712054,ggwz8dda6439q,0,    ,,000000055B4A7040,     1415712054,ggwz8dda6439q,0,30-MAY-14 21:38:31, 16779414,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53161116, -1, 0, 0,       0,      94,10-MAY-14 03:49:37,     654,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     19417,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,654,WAITING       ,      654327390,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520B1D8,   7
+
+
+
+0000000545C725D8,      2273,  2975,   6572575,0000000545213758,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27288,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4F1730,     1224914357,151nwv14h5ddp,2,30-MAY-14 21:34:15, 16836943,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53152170, -1, 0, 0,       0,      94,10-MAY-14 03:53:40,     910,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     20070,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,909,WAITING       ,      909404353,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545213758,  12
+
+
+
+0000000549C4B508,      2274, 61201,   6786215,000000054521FF98,   83,CPFLPRDS1_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  18847,unknown       ,JDBC Thin Client        ,USER  ,0000000552152268, 884129652,71zbbtsub5gvn,0,    ,,0000000552152268,884129652,71zbbtsub5gvn,0,30-MAY-14 21:46:44, 16783258,       , , ,     ,device_state_pkg      , 3119814295,set_24_hr_alarm_counts   , 3654259614,,     53181657, -1, 0, 0,       0,      94,30-MAY-14 21:46:45,     160,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,160,WAITING       ,      160453249,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521FF98,  74
+
+
+
+000000055DC31AE0,      2275, 60927,   6786196,000000054521BCD8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  18382,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:44:44, 16987480,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53171128, -1, 0, 0,       0,      15,30-MAY-14 21:44:45,     281,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,281,WAITING       ,      280855279,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521BCD8,  23
+
+
+
+0000000545C6F630,      2277, 58041,   6772889,000000054520F498,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  59366,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 20:10:20, 16785435,       , , ,     ,device_group_pkg      , 2422529842,search   , 1766209817,,     53001828, -1, 0, 0,       0,      94,29-MAY-14 13:50:21,    5945,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,93,  352,SQL*Net message from client      ,driver id       ,1413697536,0000000054435000,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       5945,WAITING       ,     5944920487,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520F498,  77
+
+
+
+0000000541CC9310,      2280, 45821,   6785969,0000000545202C58,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  10761,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:08:44, 16987260,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53106389, -1, 0, 0,       0,      15,30-MAY-14 21:08:45,    2440,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2441,WAITING       ,     2440866371,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545202C58, 121
+
+
+
+0000000545C6C688,      2281, 33781,   6785479,0000000545217A18,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  60127,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F501C48,     1566162593,1ajj8gpfpmgp1,0,30-MAY-14 20:59:59, 16777722,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53092305, -1, 0, 0,       0,      14,30-MAY-14 20:00:00,    2966,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       255,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2966,WAITING       ,     2966141850,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545217A18, 139
+
+
+
+0000000549D24BF0,      2548,     1, 0,0000000541242E40,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4146       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (MMAN)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     15362,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       ,  32351,     2967649,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541242E40,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055DD0B1C8,      2549,     3, 0,0000000541247100,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4194       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (O000)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:38, 1816247,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     63983,   68,class slave wait      ,slave id        , 868865944,0000000033C9D798,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 939297,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541247100,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000545D48D18,      2551, 55931,   6766174,000000054126C9C0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  47522,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:25, 31065205,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182789, -1, 0, 0,       0,      94,28-MAY-14 22:00:03,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     64224,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 420939,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126C9C0,  12
+
+
+
+0000000549D21C48,      2552,   285,   6572451,000000054124B3C0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26880,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:01, 16780042,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529628, -1, 0, 0,       0,      59,10-MAY-14 03:47:01, 1792944,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792945,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124B3C0,  50
+
+
+
+000000055DD08220,      2553,  4793,   6572471,000000054124F680,   83,CPFLPRDS1_AMM  ,    3,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26955,unknown       ,JDBC Thin Client        ,USER  ,00000005574CCB88,3441169219,07379d76js4u3,0,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:13, 16780063,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529903, -1, 0, 0,       0,      94,10-MAY-14 03:48:00, 1792872,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792871,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124F680,  29
+
+
+
+0000000541DA29F8,      2554,   957,   6572492,0000000541253940,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27000,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:49:11, 17393732,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182780, -1, 0, 0,       0,      14,10-MAY-14 03:48:39,      14,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     50223,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 14,WAITING       ,       14010758,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541253940,  23
+
+
+
+0000000545D45D70,      2555, 38987,   6732779,0000000541260180,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  24022,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551E5B010,     3592943208,509105zb2gxm8,4,30-MAY-14 21:44:24, 16779983,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53171099, -1, 0, 0,       0,      94,25-MAY-14 17:05:00,     301,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      4264,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,301,WAITING       ,      300733415,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541260180, 128
+
+
+
+0000000549D1ECA0,      2556, 56495,   6786201,0000000541268700,  100,CPFLPRD_DMS_APP  ,    6,2147483644, ,  ,INACTIVE,DEDICATED,     100,CPFLPRD_DMS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18574,unknown       ,JDBC Thin Client        ,USER  ,0000000557CABFD8,3084875367,98hsf1yvxyxm7,       26,    ,,0000000557CABFD8,     3084875367,98hsf1yvxyxm7,       26,30-MAY-14 21:46:56, 16780261,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      94,30-MAY-14 21:45:21,     149,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,30,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,149,WAITING       ,      149343936,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541268700,  54
+
+
+
+000000055DD05278,      2557,   119,   6572513,0000000541257C00,   89,CPFLPRDNEM  ,    2,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27073,unknown       ,JDBC Thin Client        ,USER  ,000000055B5D2FB8,   5530290,chb1dgn058spk,1,    ,,000000055B5D2FB8,  5530290,chb1dgn058spk,1,30-MAY-14 21:43:03, 16790305,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53170572, -1, 0, 0,       0,      94,10-MAY-14 03:49:37,     382,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     30771,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,381,WAITING       ,      381400115,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541257C00,   2
+
+
+
+0000000541D9FA50,      2558, 26349,   6642399,0000000541274F40,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  64869,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,9,18-MAY-14 08:18:14, 22517258,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     19900743, -1, 0, 0,       0,      94,16-MAY-14 19:45:00, 1085471,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     14465,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1085472,WAITING       ,     1.0855E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541274F40, 238
+
+
+
+0000000549D1BCF8,      2560,   361,   6786119,0000000541264440,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  15856,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:32:44, 16987405,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53151554, -1, 0, 0,       0,      15,30-MAY-14 21:32:45,    1001,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1001,WAITING       ,     1000867528,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541264440, 248
+
+
+
+000000055DD022D0,      2561, 10039,   6604720,000000054125BEC0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  36180,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,0,16-MAY-14 10:44:50, 21223829,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     14550892, -1, 0, 0,       0,      94,13-MAY-14 07:30:34, 1249475,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     17981,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1249475,WAITING       ,     1.2495E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054125BEC0, 121
+
+
+
+000000055DDDE960,      2831,     1, 0,000000055D1C4FC8,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4148       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (DBW0)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     12937,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,2070582,      929418,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C4FC8,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000541E79138,      2832,     3, 0,000000055D1C9288,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4285       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (ARC0)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:43, 1816242,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     18815,    7,rdbms ipc message       ,timeout       ,     29739,000000000000742B,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,163,WAITING       ,      163179420,   134210580,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C9288,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000545E1C4B0,      2833,    25,   6572452,000000055D1CD548,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26881,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000552107CD8,     1531489488,8cn2195dnjb6h,0,10-MAY-14 03:47:05, 16777219,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529662,     191088, 4,    603327,       0,      94,10-MAY-14 03:47:01, 1792940,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      3800,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792940,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1CD548,  11
+
+
+
+000000055DDDB9B8,      2835, 60687,   6715693,000000055D1EEB48,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  12010,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:24, 31065201,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,24-MAY-14 00:00:03,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     42606,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 930109,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EEB48, 141
+
+
+
+0000000545E19508,      2837, 21563,   6786106,000000055D1E65C8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  15463,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:30:44, 16987393,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53151415, -1, 0, 0,       0,      15,30-MAY-14 21:30:45,    1121,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1121,WAITING       ,     1120844665,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E65C8,  68
+
+
+
+000000055DDD8A10,      2839,     7,   6572514,000000055D1D9D88,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27074,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4F2080,461818757,5gg3m4wdsdkw5,0,30-MAY-14 21:09:59, 16780243,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53114389, -1, 0, 0,       0,      94,10-MAY-14 03:49:37,    2366,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1592,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2366,WAITING       ,     2366177975,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D9D88,   3
+
+
+
+0000000545E16560,      2841,  5199,   6572494,000000055D1D5AC8,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27001,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055299C108,439870060,6bux5t8d3gsmc,       29,30-MAY-14 21:49:11, 16780235,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182780, -1, 0, 0,       0,      14,10-MAY-14 03:48:40,      14,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     41839,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 14,WAITING       ,       14011759,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D5AC8,  10
+
+
+
+0000000549DEF490,      2842, 55969,   6785996,000000055D1E2308,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  11629,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:12:44, 16987286,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53115234, -1, 0, 0,       0,      15,30-MAY-14 21:12:45,    2201,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2201,WAITING       ,     2200863470,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E2308,  86
+
+
+
+000000055DDD5A68,      2843, 40783,   6691505,000000055D1D1808,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  54740,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551E5B010,     3592943208,509105zb2gxm8,4,30-MAY-14 20:51:03, 16779981,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53074178, -1, 0, 0,       0,      94,21-MAY-14 15:19:20,    3502,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     38509,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       3502,WAITING       ,     3501879702,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D1808, 166
+
+
+
+0000000541E70240,      2844,  5115,   6596210,000000055D1DE048,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  64128,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:23, 31065192,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,12-MAY-14 11:45:00,       2,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     10542,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1957960,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1DE048, 153
+
+
+
+0000000549DEC4E8,      2846, 52211,   6766170,000000055D1EA888,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  47517,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:24, 31065195,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785,     466894, 5,   8735329,       0,      94,28-MAY-14 22:00:02,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     54698,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1687319,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EA888,  90
+
+
+
+0000000541F4C8D0,      3114,     1, 0,00000005491DD860,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4150       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (DBW1)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     45604,    7,rdbms ipc message       ,timeout       ,       300,000000000000012C,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1603882,     1396118,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491DD860,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000545EEFC48,      3115,     3, 0,00000005491E1B20,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4289       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (ARC1)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:44, 1816241,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      6611,    7,rdbms ipc message       ,timeout       ,     30000,0000000000007530,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,266,WAITING       ,      266372282,    33627718,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491E1B20,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000541F49928,      3118,   237,   6572569,00000005491F2620,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  27269,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,00000005577B9428,     2386557891,89g8c5a73zyy3,0,30-MAY-14 21:44:24, 16779748,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53171099, -1, 0, 0,       0,      94,10-MAY-14 03:52:48,     301,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     54375,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,301,WAITING       ,      300736517,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F2620, 104
+
+
+
+0000000545EECCA0,      3119, 42227,   6786158,00000005491FABA0,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  17103,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:38:44, 16987443,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53161125, -1, 0, 0,       0,      15,30-MAY-14 21:38:45,     641,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,641,WAITING       ,      640872760,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FABA0,  95
+
+
+
+0000000549EC5BD0,      3120, 16181,   6604949,00000005492073E0,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  37049,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,9,18-MAY-14 10:05:08, 22567911,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     20112422,     451161, 5,   7858749,       0,      94,13-MAY-14 08:00:00, 1079057,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     11344,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1079057,WAITING       ,     1.0791E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005492073E0, 119
+
+
+
+000000055DEAC1A8,      3121, 57625,   6786187,00000005491FEE60,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  17992,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:42:44, 16987471,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53170480, -1, 0, 0,       0,      15,30-MAY-14 21:42:45,     401,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,401,WAITING       ,      400867293,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FEE60, 186
+
+
+
+0000000541F46980,      3122,   137,   6572536,00000005491F68E0,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  27198,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,00000005522B8C78,240054168,dvts69c74xvws,1,30-MAY-14 21:48:52, 16837629,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181880,     444116,10,    323103,       0,      14,10-MAY-14 03:50:21,      33,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     26405,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 33,WAITING       ,       32924671,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F68E0,  22
+
+
+
+0000000545EE9CF8,      3123,    91,   6572493,00000005491EE360,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27002,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556E032C0,     3465602783,429jqmv791tqz,       50,30-MAY-14 21:46:59, 16803748,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      14,10-MAY-14 03:48:40,     146,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     31853,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,147,WAITING       ,      146732040,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491EE360,  28
+
+
+
+0000000549EC2C28,      3124,   109,   6572476,00000005491EA0A0,   85,CPFLPRDS2_AMM  ,    3,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26960,unknown       ,JDBC Thin Client        ,USER  ,00000005574CCB88,3441169219,07379d76js4u3,0,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:13, 16780067,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529915, -1, 0, 0,       0,      94,10-MAY-14 03:48:14, 1792871,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792871,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491EA0A0,  73
+
+
+
+000000055DEA9200,      3125, 14471,   6596152,0000000549203120,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  63916,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:25, 31065206,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182789, -1, 0, 0,       0,      94,12-MAY-14 11:36:48,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      7858,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 194271,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549203120, 217
+
+
+
+0000000541F439D8,      3126,   349,   6572453,00000005491E5DE0,   85,CPFLPRDS2_AMM  ,    3,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26882,unknown       ,JDBC Thin Client        ,USER  ,00000005574CCB88,3441169219,07379d76js4u3,0,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:01, 16780044,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529643, -1, 0, 0,       0,      94,10-MAY-14 03:47:01, 1792944,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792944,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E5DE0, 112
+
+
+
+0000000541F40A30,      3130, 27043,   6684990,000000054920F960,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  51032,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       10,21-MAY-14 17:34:54, 24824555,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     28838747, -1, 0, 0,       0,      94,21-MAY-14 00:00:02,  792871,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      2406,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,     792871,WAITING       ,     7.9287E+11,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054920F960,  68
+
+
+
+0000000545FC33E0,      3397,     1, 0,00000005451F74C8,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4152       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (LGWR)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     50626,    7,rdbms ipc message       ,timeout       ,       270,000000000000010E,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 621294,     2078706,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451F74C8,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000549F9C310,      3398,     1, 0,00000005451FB788,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4291       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (ARC2)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:44, 1816241,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     47433,    7,rdbms ipc message       ,timeout       ,      6000,0000000000001770,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0, 29,WAITING       ,       29319252,    30680748,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005451FB788,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054201D0C0,      3400,    19,   6572454,00000005451FFA48,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26883,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:01, 16780045,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529637, -1, 0, 0,       0,      59,10-MAY-14 03:47:01, 1792944,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792944,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005451FFA48,   9
+
+
+
+0000000549F99368,      3402, 11175,   6786033,000000054520C288,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  12876,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:18:44, 16987322,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53124486, -1, 0, 0,       0,      15,30-MAY-14 21:18:45,    1841,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1841,WAITING       ,     1840861981,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054520C288,  80
+
+
+
+000000055DF7F940,      3403, 56769,   6781385,0000000545221048,   89,CPFLPRDNEM  ,    2,2147483644,000000053F01ACF0,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  60986,unknown       ,JDBC Thin Client        ,USER  ,000000055B57C350, 635010254,4rt7p7hkxkz6f,0,    ,,000000055B57C350,635010254,4rt7p7hkxkz6f,0,30-MAY-14 15:59:59, 16800620,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     52532336, -1, 0, 0,       0,      94,30-MAY-14 10:00:00,   20965,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1625,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      20966,WAITING       ,     2.0966E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545221048, 246
+
+
+
+0000000545FBD490,      3405,   151,   6572477,0000000545203D08,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26961,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:14, 16780068,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529909, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792871,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792871,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545203D08,  19
+
+
+
+0000000549F963C0,      3406,  5787,   6786100,0000000545214808,   81,CPFLPRDM_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  15236,unknown       ,JDBC Thin Client        ,USER  ,000000055B6F3410,1989348050,aqzmd5pv962qk,0,    ,,000000055B6F3410,     1989348050,aqzmd5pv962qk,0,30-MAY-14 21:49:08, 16898093,       , , ,     ,uiq_job_pkg      , 1439157162,search   , 1766209817,,     53182224, -1, 0, 0,       0,      94,30-MAY-14 21:30:00,      17,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       634,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 17,WAITING       ,       16937128,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545214808, 190
+
+
+
+000000055DF7C998,      3407,   155,   6572495,0000000545207FC8,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27003,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556E016F0,     2191203655,a0w8jry19q7a7,       31,30-MAY-14 21:46:59, 16829040,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      14,10-MAY-14 03:48:43,     146,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     60639,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,147,WAITING       ,      146686554,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545207FC8,   4
+
+
+
+0000000542017170,      3408, 40143,   6786202,000000054521CD88,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  18575,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055352F780,761106464,6n3d18hqpv410,0,30-MAY-14 21:45:21, 16778224,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53179574, -1, 0, 0,       0,      94,30-MAY-14 21:45:21,     244,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 9,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,244,WAITING       ,      244332692,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054521CD88, 161
+
+
+
+0000000545FBA4E8,      3409,  6911, 0,0000000545218AC8,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,22738       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (CJQ0)    ,BACKGROUND,00   , 0,, ,    ,,000000054F990C90,     3679126745,5ms6rbzdnq16t,       21,30-MAY-14 21:49:25, 16936873,       , , ,     ,      ,  0,   ,      0,,     53152170, -1, 0, 0,       0,      59,30-MAY-14 21:34:12,     914,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       205,    7,rdbms ipc message       ,timeout       ,       500,00000000000001F4,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 128661,     4871339,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000545218AC8, 108
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000549F93418,      3410,  1723,   6581042,0000000545210548,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  63460,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:24, 31065199,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,11-MAY-14 00:00:03,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     26308,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1189481,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000545210548, 130
+
+
+
+000000055DF76A48,      3415,   543,   6767024,00000005452295C8,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,   9209,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:22, 31065183,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182785, -1, 0, 0,       0,      94,29-MAY-14 00:00:03,       3,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     41400,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  3,WAITING       ,3210683,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005452295C8, 126
+
+
+
+000000054A06FAA8,      3680,     1, 0,0000000541243EF0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4154       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (CKPT)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     32607,    7,rdbms ipc message       ,timeout       ,       100,0000000000000064,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 947642,       52358,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,0000000541243EF0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055E056080,      3681,     1, 0,00000005412481B0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4293       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (ARC3)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:44, 1816241,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     16628,    7,rdbms ipc message       ,timeout       ,     30000,0000000000007530,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,155,WAITING       ,      155401137,   144598863,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005412481B0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+0000000546093BD0,      3683,    87,   6572498,00000005412549F0,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27006,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B4C5920,572983026,0jzryywj2f1rk,       31,30-MAY-14 21:46:59, 17475174,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181664, -1, 0, 0,       0,      94,10-MAY-14 03:48:45,     146,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     61970,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,147,WAITING       ,      146672448,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005412549F0,  12
+
+
+
+000000055E0530D8,      3685,    13,   6572478,0000000541250730,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26962,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:14, 16780069,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529912, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792871,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792871,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541250730,   6
+
+
+
+00000005420ED8B0,      3686,   101,   6572515,0000000541258CB0,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27075,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B5D3B60,387520470,6cx2xw8bjk5yq,       26,30-MAY-14 21:43:03, 16805165,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53170572, -1, 0, 0,       0,       5,10-MAY-14 03:49:37,     382,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     32172,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,381,WAITING       ,      381413723,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541258CB0,   8
+
+
+
+0000000546090C28,      3687,  1235,   6572545,000000054125CF70,   96,CPFLPRD_FWU_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      96,CPFLPRD_FWU_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27215,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000556F29B08,     2906384947,agy5n72qmrujm,0,30-MAY-14 21:49:01, 16845631,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182224, -1, 0, 0,       0,      14,10-MAY-14 03:51:00,      24,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     11995,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 24,WAITING       ,       24466730,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054125CF70,   8
+
+
+
+000000054A069B58,      3688,  2081,   6572455,000000054124C470,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26884,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:47:01, 16780046,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529640, -1, 0, 0,       0,      59,10-MAY-14 03:47:01, 1792944,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 6,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792944,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054124C470,  16
+
+
+
+00000005420EA908,      3690,  9329,   6778052,0000000541261230,   89,CPFLPRDNEM  ,    2,2147483644,0000000533F028B0,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  25459,unknown       ,JDBC Thin Client        ,USER  ,000000055B57C350, 635010254,4rt7p7hkxkz6f,0,    ,,000000055B57C350,635010254,4rt7p7hkxkz6f,0,30-MAY-14 08:10:00, 16800254,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     51731733, -1, 0, 0,       0,      94,30-MAY-14 02:15:00,   46165,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1487,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,      46166,WAITING       ,     4.6166E+10,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000541261230, 174
+
+
+
+000000054608DC80,      3691,  1411, 0,00000005412697B0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,27698       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (NSA2)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,       337752, -1, 0, 0,       0,       9,10-MAY-14 01:08:28, 1802458,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,UNKNOWN ,   ,    ,UNKNOWN,,       ,     18600,  131,LNS ASYNC end of log      ,        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 624425,      375575,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005412697B0,   4
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054A066BB0,      3692, 64971,   6784625,00000005412654F0,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  34541,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4B6608,429939337,701rd6ccu0qn9,0,30-MAY-14 21:11:59, 16780735,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53115130, -1, 0, 0,       0,      94,30-MAY-14 18:00:00,    2246,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       265,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       2246,WAITING       ,     2246190290,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005412654F0,  99
+
+
+
+000000054608ACD8,      3695,  2665,   6637021,000000054127A2B0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  43095,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,6,19-MAY-14 07:13:12, 23168124,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     22515360, -1, 0, 0,       0,      94,16-MAY-14 08:00:05, 1002973,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     58334,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1002973,WAITING       ,     1.0030E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054127A2B0,   2
+
+
+
+000000054A063C08,      3696, 18173,   6786216,000000054126DA70,   85,CPFLPRDS2_AMM  ,   47,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  18848,unknown       ,JDBC Thin Client        ,USER  ,000000054F64A180,4278136969,3xgp6azzgyc49,0,    ,,000000054F64A180,     4278136969,3xgp6azzgyc49,0,30-MAY-14 21:46:44, 16783258,       , , ,     ,device_state_pkg      , 3119814295,set_24_hr_alarm_counts   , 3654259614,,     53181657, -1, 0, 0,       0,      94,30-MAY-14 21:46:45,     160,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,160,WAITING       ,      160480945,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000054126DA70, 103
+
+
+
+000000055E129818,      3963,     1, 0,000000055D1C6078,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4156       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (SMON)    ,BACKGROUND,00   , 0,, ,    ,,000000055BCCA870,     4052085454,chsyr0gssbuqf,1,30-MAY-14 21:41:52, 16778735,       , , ,     ,      ,  0,   ,      0,,    0,  0, 3,       240,       0,      59,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48224,  256,smon timer      ,sleep time       ,       300,000000000000012C,failed    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,171,WAITING       ,      170909682,   129090318,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1C6078,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+00000005421C3FF0,      3964,     1, 0,000000055D1CA338,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4295       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (O001)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:44, 1816241,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     65061,   68,class slave wait      ,slave id        ,1.8447E+19,FFFFFFFFF779F438,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  2,WAITING       ,1727014,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1CA338,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054A140298,      3966,    59,   6572516,000000055D1DAE38,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27077,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:49:11, 17393731,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182780, -1, 0, 0,       0,      14,10-MAY-14 03:49:40,      14,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     56467,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 14,WAITING       ,       14025167,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1DAE38,   6
+
+
+
+000000055E126870,      3967,    53,   6572479,000000055D1D28B8,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26963,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:14, 16780070,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529915, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792871,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792871,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D28B8,   2
+
+
+
+00000005421C1048,      3968, 13207,   6604951,000000055D1EFBF8,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  37051,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       14,30-MAY-14 21:49:25, 31065204,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182789, -1, 0, 0,       0,      94,13-MAY-14 08:00:00,       0,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     17263,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  0,WAITING       , 454641,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EFBF8, 237
+
+
+
+000000054A13D2F0,      3970,   769,   6572456,000000055D1CE5F8,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  26885,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000552107CD8,     1531489488,8cn2195dnjb6h,1,10-MAY-14 03:47:05, 16777218,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529662,     191109, 4,    549950,       0,      94,10-MAY-14 03:47:01, 1792940,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      3795,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792940,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1CE5F8,   8
+
+
+
+000000055E1238C8,      3971, 11155,   6783413,000000055D1D6B78,   89,CPFLPRDNEM  ,    0,2147483644,0000000533E7AC78,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  60868,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 21:45:10, 16785456,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53179205, -1, 0, 0,       0,      94,30-MAY-14 15:00:00,     255,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1374,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,256,WAITING       ,      255649345,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1D6B78, 235
+
+
+
+00000005421BE0A0,      3972,  3887,   6573941,000000055D1EB938,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  33110,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       23,30-MAY-14 21:49:24, 31065197,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     53182785, -1, 0, 0,       0,      94,10-MAY-14 07:00:00,       1,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     19805,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1445870,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1EB938,   9
+
+
+
+00000005421BB0F8,      3976, 24963,   6786128,000000055D1E7678,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  16247,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:34:45, 16987414,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53152203, -1, 0, 0,       0,      15,30-MAY-14 21:34:45,     880,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,881,WAITING       ,      880873269,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E7678, 128
+
+
+
+000000054615E470,      3977, 51525, 0,000000055D1DF0F8,    0,  ,    6,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,26762       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (W000)    ,BACKGROUND,0000000553594080,3096556448,0kkhhb2w93cx0,       22,    ,,0000000553594080,     3096556448,0kkhhb2w93cx0,       22,30-MAY-14 21:48:34, 16916162,       , , ,     ,KTSJ      , 4150380559,KTSJ Slave   ,  796006397,,     53171128, -1, 0, 0,       0,      59,30-MAY-14 21:44:49,     276,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,59,  258,Space Manager: slave idle wait      ,Slave ID        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       ,1104391,     3895609,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,000000055D1DF0F8,   3
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054A1373A0,      3978, 28007,   6771337,000000055D1E33B8,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  12441,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,0000000551F11E08,     2817211232,96nmw0amyqfv0,       24,30-MAY-14 21:30:20, 16785454,       , , ,     ,device_group_pkg      , 2422529842,search   , 1766209817,,     53151053, -1, 0, 0,       0,      94,29-MAY-14 10:10:21,    1145,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,       112,  352,SQL*Net message from client      ,driver id       ,1413697536,0000000054435000,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,       1145,WAITING       ,     1144881122,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,000000055D1E33B8,  95
+
+
+
+0000000542297788,      4246,     1, 0,00000005491DE910,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4158       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (RECO)    ,BACKGROUND,00   , 0,, ,    ,,000000055BD4FBC0,     2886642122,1ptv0pqq0xafa,0,30-MAY-14 21:24:54, 16778224,       , , ,     ,      ,  0,   ,      0,,    0, -1, 0, 0,       0,       0,09-MAY-14 21:18:35, 1816250,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      2023,    7,rdbms ipc message       ,timeout       ,    180000,000000000002BF20,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,       1472,WAITING       ,     1472191983,   327808017,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491DE910,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000054623AB00,      4247,     3, 0,00000005491E2BD0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,4309       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (QMNC)    ,BACKGROUND,00   , 0,, ,    ,,0000000553898328,     2230961768,79w2cqu2gmjm8,1,09-MAY-14 21:18:56, 16777218,       , , ,     ,Streams      , 1811062742,QMON Coordinator   ,   82757951,,    2, -1, 0, 0,       0,       0,09-MAY-14 21:18:46, 1816239,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,DISABLED,DISABLED,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     64159,  377,Streams AQ: qmn coordinator idle wait   ,        , 0,00   ,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  4,WAITING       ,3637465,    24362535,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005491E2BD0,   2
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055E1FA008,      4249, 36331,   6669097,00000005491EF410,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,root      ,1234       ,lascpflpr01vmw01    ,  52659,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B520AD8,     1129560442,gamp6sp1p7fbu,2,30-MAY-14 21:44:24, 16779748,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53171099, -1, 0, 0,       0,      94,19-MAY-14 11:35:00,     301,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     38157,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,301,WAITING       ,      300746789,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491EF410, 164
+
+
+
+00000005422947E0,      4250,    67,   6572517,00000005491F36D0,   68,CPFLPRDCAAS_APP  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      68,CPFLPRDCAAS_APP       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27079,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F41F170,796375645,g4gnzqcrrgfkx,       30,30-MAY-14 21:49:11, 17393728,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53182780, -1, 0, 0,       0,      14,10-MAY-14 03:49:47,      14,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     55416,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0, 14,WAITING       ,       14028628,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F36D0,   2
+
+
+
+0000000546237B58,      4251,   721,   6572480,00000005491EB150,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26964,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B78BDE0,     2315733994,11gpntu50fkza,0,30-MAY-14 21:49:16, 17682308,       , , ,     ,uiq_job_pkg      , 1439157162,submit_result   ,  760600295,inserting uiq_job_schedule_param,     53182781, -1, 0, 0,       0,      94,10-MAY-14 03:48:14,       9,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      9512,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,  9,WAITING       ,8778062,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491EB150,   3
+
+
+
+000000054A210A88,      4252,   353,   6572617,00000005491FBC50,   89,CPFLPRDNEM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      89,CPFLPRDNEM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27448,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000054F4F2080,461818757,5gg3m4wdsdkw5,0,30-MAY-14 21:39:59, 16780246,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53169602, -1, 0, 0,       0,      94,10-MAY-14 04:00:00,     566,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1554,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,566,WAITING       ,      566189501,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FBC50,   2
+
+
+
+000000055E1F7060,      4253,   169,   6572548,00000005491F7990,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  27218,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       10,21-MAY-14 17:30:36, 24822509,       , , ,     ,device_state_pkg      , 3119814295,device_state_queue_add   ,  174184810,,     28830858, -1, 0, 0,       0,      94,10-MAY-14 03:51:08,  793129,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     42745,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,     793130,WAITING       ,     7.9313E+11,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491F7990,   2
+
+
+
+0000000542291838,      4254,   155,   6572473,00000005491E6E90,   83,CPFLPRDS1_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      83,CPFLPRDS1_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  26957,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,10-MAY-14 03:48:13, 16780064,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,       529897, -1, 0, 0,       0,      59,10-MAY-14 03:48:14, 1792872,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       , 7,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1792872,WAITING       ,     1.7929E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491E6E90,  11
+
+
+
+0000000546234BB0,      4255, 52529,   6637022,0000000549214CD0,   85,CPFLPRDS2_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      85,CPFLPRDS2_AMM       ,ssn      ,1234       ,lascpflpr01vmw01    ,  43097,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055B6BA8E8,     3708255234,3m4m5pgfhfz02,       13,18-MAY-14 20:17:07, 22857449,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     21292935, -1, 0, 0,       0,      94,16-MAY-14 08:00:05, 1042338,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,      1254,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,    1042338,WAITING       ,     1.0423E+12,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549214CD0,   2
+
+
+
+000000054A20DAE0,      4256,  2189, 0,00000005492041D0,    0,  ,    0,2147483644, ,  ,ACTIVE  ,DEDICATED,       0,SYS       ,oracpflprd      ,27735       ,lasssnpr01ora11.las.,      0,UNKNOWN       ,oracle@lasssnpr01ora11.las.ssnsgs.net (O002)    ,BACKGROUND,00   , 0,,0,    ,,00 ,0,       ,0,    , ,       , , ,     ,      ,  0,   ,      0,,       337753, -1, 0, 0,       0,       0,10-MAY-14 01:08:30, 1802455,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,     48228,   68,class slave wait      ,slave id        ,1.8447E+19,FFFFFFFFB314B348,    ,      0,00, ,   0,00      , 2723168908,      6,Idle,  0,  1,WAITING       , 932994,  -1,      0,SYS$BACKGROUND,DISABLED,FALSE,FALSE,FIRST EXEC,  0,00000005492041D0,   1
+,   ,      ,  ,  ,     ,  ,     ,, ,  ,   ,     ,,       ,      ,        ,ssnsgs.net    ,       ,      ,        ,  ,   ,  ,, ,    ,, , ,       , ,    , ,       , , ,     ,      ,   ,   ,       ,,     ,   ,  ,  ,,,   ,,   ,  ,     , ,  ,   ,    ,     ,    ,     , ,   ,    ,,,       ,  ,     ,      ,        ,  ,   ,    ,       ,, ,    ,     ,   ,       ,,   ,   ,       ,       ,    ,       ,, ,     ,     ,,   ,    ,
+
+
+
+000000055E1F1110,      4261, 17795,   6786148,00000005491FFF10,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  16712,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:36:45, 16987433,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53160918, -1, 0, 0,       0,      15,30-MAY-14 21:36:45,     760,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,10,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,761,WAITING       ,      760884966,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,00000005491FFF10,   5
+
+
+
+000000054622EC60,      4263, 26843,   6786217,0000000549208490,   81,CPFLPRDM_AMM  ,    0,2147483644, ,  ,INACTIVE,DEDICATED,      81,CPFLPRDM_AMM       ,root      ,1234       ,lascpflpr01vmw01    ,  18850,unknown       ,JDBC Thin Client        ,USER  ,00   , 0,, ,    ,,000000055BDAD2D8,     1950821498,459f3z9u4fb3u,0,30-MAY-14 21:46:45, 16987500,       , , ,     ,JDBC Thin Client      , 2546894660,   ,      0,,     53181657, -1, 0, 0,       0,      15,30-MAY-14 21:46:45,     160,NO ,NONE  ,NONE      ,NO ,  ,DISABLED,ENABLED ,ENABLED ,   0,     ,NO HOLDER  ,   ,    ,NO HOLDER,,       ,11,  352,SQL*Net message from client      ,driver id       , 675562835,0000000028444553,#bytes    ,      1,0000000000000001, ,   0,00      , 2723168908,      6,Idle,  0,161,WAITING       ,      160876123,  -1,      0,CPFLPRD.LAS.SSNSGS.NET,DISABLED,FALSE,FALSE,FIRST EXEC,100,0000000549208490, 232
+
+
+
+
+189 rows selected.
+
+SQL> select 'ALTER SYSTEM KILL SESSION '''||s.sid||','||s.serial#||''' IMMEDIATE;' "KILL STATEMENT"
+from v$session s,v$process p
+where s.sid in (select blocking_session from v$session where
+blocking_session is not null)
+and s.paddr=p.addr(+)
+/  2    3    4    5    6  
+ALTER SYSTEM KILL SESSION '3971,11155' IMMEDIATE;
+
+SQL> connec t  t / as sys d sdba 
+Connected.
+SQL> ALTER SYSTEM KILL SESSION '3971,11155' IMMEDIATE;
+
+System altered.
+
+SQL> Set linesize 200
+set pages 100
+col event format A40
+col machine format A20
+col username format A20
+select
+username,sid,serial#,event,blocking_session,seconds_in_wait,sql_id,prev_sql_id,machine
+from v$session
+where blocking_session is not null
+/SQL> SQL> SQL> SQL> SQL>   2    3    4    5  
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,SQL_ID  ,PREV_SQL_ID,MACHINE
+--------------------,----------,----------,----------------------------------------,----------------,---------------,-------------,-------------,--------------------
+CPFLPRDNEM    ,   4257,     16139,enq: TX - row lock contention   ,1142,  11,4rt7p7hkxkz6f,4rt7p7hkxkz6f,lascpflpr01vmw01
+
+
+SQL> /
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,SQL_ID  ,PREV_SQL_ID,MACHINE
+--------------------,----------,----------,----------------------------------------,----------------,---------------,-------------,-------------,--------------------
+CPFLPRDNEM    ,   4257,     16139,enq: TX - row lock contention   ,1142,  21,4rt7p7hkxkz6f,4rt7p7hkxkz6f,lascpflpr01vmw01
+
+
+SQL> Set pages 100
+SQL> col event format A40
+SQL> col username format A20
+alter session set nls_date_format='DD-MON-YY HH24:MI:SS';
+SQL> 
+Session altered.
+
+SQL> select
+s.username,s.sid,s.serial#,s.event,s.blocking_session,s.seconds_in_wait,s.process,p.spid,s.status,s.sql_id,s.prev_sql_id,logon_time,machine
+  2    3  from v$session s,v$process p
+  4  where s.sid in (select blocking_session from v$session where blocking_session is not null)
+  5  and s.paddr=p.addr(+)
+  6  /
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,PROCESS     ,SPID      ,STATUS  ,SQL_ID
+--------------------,----------,----------,----------------------------------------,----------------,---------------,------------------------,------------------------,--------,-------------
+PREV_SQL_ID  ,LOGON_TIME,MACHINE
+-------------,------------------,--------------------
+CPFLPRDNEM    ,   1142,     19785,SQL*Net message from client   ,    ,  35,1234     ,26390      ,INACTIVE,4rt7p7hkxkz6f
+4rt7p7hkxkz6f,30-MAY-14 16:00:00,lascpflpr01vmw01
+
+
+
+SQL> Set linesize 200
+set pages 100
+col event format A40
+col machine format A20
+col username format A20
+select
+username,sid,serial#,event,blocking_session,seconds_in_wait,sql_id,prev_sql_id,machine
+from v$session
+where blocking_session is not null
+/SQL> SQL> SQL> SQL> SQL>   2    3    4    5  
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,SQL_ID  ,PREV_SQL_ID,MACHINE
+--------------------,----------,----------,----------------------------------------,----------------,---------------,-------------,-------------,--------------------
+CPFLPRDNEM    ,   4257,     16139,enq: TX - row lock contention   ,1142, 110,4rt7p7hkxkz6f,4rt7p7hkxkz6f,lascpflpr01vmw01
+
+
+SQL> select 'ALTER SYSTEM KILL SESSION '''||s.sid||','||s.serial#||''' IMMEDIATE;' "KILL STATEMENT"
+from v$session s,v$process p
+where s.sid in (select blocking_session from v$session where
+blocking_session is not null)
+and s.paddr=p.addr(+)
+/  2    3    4    5    6  
+
+KILL STATEMENT
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ALTER SYSTEM KILL SESSION '1142,19785' IMMEDIATE;
+
+SQL> Set linesize 200
+set pages 100
+col event format A40
+col machine format A20
+col username format A20
+select
+username,sid,serial#,event,blocking_session,seconds_in_wait,sql_id,prev_sql_id,machine
+from v$session
+where blocking_session is not null
+/SQL> SQL> SQL> SQL> SQL>   2    3    4    5  
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,SQL_ID  ,PREV_SQL_ID,MACHINE
+--------------------,----------,----------,----------------------------------------,----------------,---------------,-------------,-------------,--------------------
+CPFLPRDNEM    ,   4257,     16139,enq: TX - row lock contention   ,1142, 180,4rt7p7hkxkz6f,4rt7p7hkxkz6f,lascpflpr01vmw01
+
+
+SQL> /
+
+USERNAME    ,    SID,   SERIAL#,EVENT   ,BLOCKING_SESSION,SECONDS_IN_WAIT,SQL_ID  ,PREV_SQL_ID,MACHINE
+--------------------,----------,----------,----------------------------------------,----------------,---------------,-------------,-------------,--------------------
+CPFLPRDNEM    ,   4257,     16139,enq: TX - row lock contention   ,1142, 194,4rt7p7hkxkz6f,4rt7p7hkxkz6f,lascpflpr01vmw01
+

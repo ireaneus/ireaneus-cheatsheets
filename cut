@@ -1,8 +1,0 @@
-# To cut out the third field of text or stdoutput that is delimited by a #:
-cut -d# -f3
-
-# Examples
-cut -d ':' -f 1 /etc/passwd | head
--d option, we are able to specify the colon character as the field delimiter.
-
-

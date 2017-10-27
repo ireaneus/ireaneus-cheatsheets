@@ -1,0 +1,58 @@
+set pages 100
+col total format 9,999,999
+col free format 9,999,999
+col used format 9,999,999
+col pctfree1 format 999.99
+col tablespace_name format A20
+SELECT allocated.tablespace_name,allocated.sze total,free.sze free ,
+(allocated.sze-free.sze) used ,ROUND((free.sze)*100/allocated.sze)
+pctfree1
+FROM
+(
+SELECT tablespace_name,round(sum(Bytes)/(1024*1024)) sze
+FROM dba_free_space
+GROUP BY tablespace_name
+) free,
+(SELECT tablespace_name,round(sum(Bytes)/(1024*1024)) sze
+FROM dba_data_files
+GROUP BY tablespace_name
+) allocated
+WHERE allocated.tablespace_name=free.tablespace_name(+)
+ORDER BY 5
+/
+
+
+SELECT owner, table_name
+FROM dba_tables
+WHERE tablespace_name = 'SYSTEM'
+AND OWNER NOT IN ('SYSTEM','SYS','OUTLN','DBSNMP');
+
+SELECT owner, index_name
+FROM dba_indexes
+WHERE tablespace_name = 'SYSTEM'
+AND OWNER NOT IN ('SYSTEM','SYS','OUTLN','DBSNMP');
+
+select owner, table_name
+from dba_tables
+where tablespace_name = 'SYSAUX'
+and owner not in ('SYSTEM','SYS','OUTLN','DBSNMP');
+
+select owner, index_name
+from dba_indexes
+where tablespace_name = 'SYSAUX'
+and owner not in ('SYSTEM','SYS','OUTLN','DBSNMP');
+
+
+
+select name,total_mb,free_mb,round((total_mb-free_mb)*100/total_mb,2) used_pct from v$asm_diskgroup;
+select name,total_mb,free_mb,round((total_mb-free_mb)*100/total_mb,2) used_pct from v$asm_diskgroup;
+
+Set lines 132
+col file_name format a60
+select file_id, file_name, bytes/(1024*1024)
+from dba_data_files
+where tablespace_name = '&ts';
+
+SELECT COUNT(*) from sys.AUD$;
+
+ALTER DATABASE DATAFILE  '+DATAOGEPROD/cprdoge/datafile/sysaux.369.799617915' RESIZE 9G;
