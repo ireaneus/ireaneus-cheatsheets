@@ -1,10 +1,7 @@
 Google Cloud Exam
+https://cloud.google.com/training/exams/
 https://cloud.google.com/certification/practice-exam/cloud-architect
 https://cloud.google.com/certification/guides/cloud-architect/#certificate-exam-guide
-
-## NEXT WEEK ## 
-# Practice test
-# Linux Academy
 
 # Google Cloud Compute
 Firebase
@@ -15,3 +12,22 @@ Google Compute Engine
 
 pre-eminanate instances - cheaper
 VPC networks span multiple regions
+
+Notice that there is an identical subnetwork and route in the learnauto network as there is in the default network. It is possible to have VMs with duplicate Internal IP addresses in the two networks.
+
+
+# GCP Command line syntax
+gcloud compute --project=valiant-sandbox-183201 networks create learnauto --description=Learn\ about\ auto-type\ networks --mode=auto
+
+gcloud compute --project=valiant-sandbox-183201 firewall-rules create learnauto-allow-ssh --description=Allows\ TCP\ connections\ from\ any\ source\ to\ any\ instance\ on\ the\ network\ using\ port\ 22. --direction=INGRESS --priority=65534 --network=learnauto --action=ALLOW --rules=tcp:22 --source-ranges=0.0.0.0/0
+
+gcloud compute --project=valiant-sandbox-183201 firewall-rules create learnauto-allow-rdp --description=Allows\ RDP\ connections\ from\ any\ source\ to\ any\ instance\ on\ the\ network\ using\ port\ 3389. --direction=INGRESS --priority=65534 --network=learnauto --action=ALLOW --rules=tcp:3389 --source-ranges=0.0.0.0/0
+
+gcloud compute --project=valiant-sandbox-183201 firewall-rules create learnauto-allow-internal --description=Allows\ connections\ from\ any\ source\ in\ the\ network\ IP\ range\ to\ any\ instance\ on\ the\ network\ using\ all\ protocols. --direction=INGRESS --priority=65534 --network=learnauto --action=ALLOW --rules=all --source-ranges=10.128.0.0/9
+
+gcloud compute --project=valiant-sandbox-183201 firewall-rules create learnauto-allow-icmp --description=Allows\ ICMP\ connections\ from\ any\ source\ to\ any\ instance\ on\ the\ network. --direction=INGRESS --priority=65534 --network=learnauto --action=ALLOW --rules=icmp --source-ranges=0.0.0.0/0
+
+gcloud compute networks subnets \
+expand-ip-range new-useast  \
+--prefix-length 23 \
+--region us-east1
