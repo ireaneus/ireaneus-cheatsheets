@@ -37,6 +37,9 @@ tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) !
 # Saving captured data
 tcpdump -w file.cap
 
+# Capture specific ports
+tcpdump -i eth0 'port 8052 or port 8056' -w file.pcap
+
 # Reading from capture file
 tcpdump -r file.cap
 
