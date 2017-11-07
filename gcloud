@@ -8,7 +8,7 @@ https://cloud.google.com/compute/docs/vpn/overview
 https://cloud.google.com/dns/overview
 https://cloud.google.com/container-engine/reference/rest/
 https://cloud.google.com/functions/docs/concepts/overview
-
+uir1bDuour1l6Oqb
 
 # Google Cloud Compute
 Firebase
@@ -16,12 +16,47 @@ Google Cloud functions
 Google App Engine
 Google Container Engine
 Google Compute Engine
+
+# GCP Dataflow
+Apache Beam
+
+# Cloud Pub/Sub
+MQ Messaging
+streaming data
+
+# Cloud Datastore
+Redis - Memcache
+
+# App engine
+Standard 
+Flexible
+
+# Cloud Dataproc
+Hadoop/spark cluster
+Hadoop - job written in Java
+Spark - job written in Python
+
+Reliable reproducable - Development Manager
+Autmation framework - Kubernetes
+IoT - BigTable, Bigquery - data warehouse
+
 # Homework
 Slide 80
 Read the networking docs
 Read app-engine slide 84
 slide 88
 slides 90 - 
+# Homework
+Slide 102 and slide 105, 107, 108, 110
+slide 115
+slide 122
+155
+slide 162, 176
+Slide 206
+
+doug@roitraining.com
+wwww.roitraining.com
+linkedin:drehnstrom
 
 pre-eminanate instances - cheaper
 VPC networks span multiple regions
@@ -29,7 +64,6 @@ CDN is cheaper for network egres traffic
 
 
 Notice that there is an identical subnetwork and route in the learnauto network as there is in the default network. It is possible to have VMs with duplicate Internal IP addresses in the two networks.
-
 
 
 #### GCP Command line syntax  ####
