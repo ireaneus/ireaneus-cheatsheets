@@ -2,6 +2,8 @@ Google Cloud Exam
 https://cloud.google.com/training/exams/
 https://cloud.google.com/certification/practice-exam/cloud-architect
 https://cloud.google.com/certification/guides/cloud-architect/#certificate-exam-guide
+https://goo.gl/oFp6ep
+
 
 # Google Cloud Compute
 Firebase
@@ -10,13 +12,24 @@ Google App Engine
 Google Container Engine
 Google Compute Engine
 
+# Homework
+Slide 80
+Read the networking docs
+Read app-engine slide 84
+slide 88
+slides 90 - 
+
 pre-eminanate instances - cheaper
 VPC networks span multiple regions
+CDN is cheaper for network egres traffic
+
 
 Notice that there is an identical subnetwork and route in the learnauto network as there is in the default network. It is possible to have VMs with duplicate Internal IP addresses in the two networks.
 
 
-# GCP Command line syntax
+
+#### GCP Command line syntax  ####
+
 gcloud compute --project=valiant-sandbox-183201 networks create learnauto --description=Learn\ about\ auto-type\ networks --mode=auto
 
 gcloud compute --project=valiant-sandbox-183201 firewall-rules create learnauto-allow-ssh --description=Allows\ TCP\ connections\ from\ any\ source\ to\ any\ instance\ on\ the\ network\ using\ port\ 22. --direction=INGRESS --priority=65534 --network=learnauto --action=ALLOW --rules=tcp:22 --source-ranges=0.0.0.0/0
@@ -31,3 +44,5 @@ gcloud compute networks subnets \
 expand-ip-range new-useast  \
 --prefix-length 23 \
 --region us-east1
+
+#### GCP Command line syntax  ####
