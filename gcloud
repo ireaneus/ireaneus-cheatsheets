@@ -8,14 +8,45 @@ https://cloud.google.com/compute/docs/vpn/overview
 https://cloud.google.com/dns/overview
 https://cloud.google.com/container-engine/reference/rest/
 https://cloud.google.com/functions/docs/concepts/overview
-uir1bDuour1l6Oqb
+
+# Exam tested on:
+# You are tested on your:
+Knowledge of what Google’s cloud services are and their use cases
+Understanding of how individual services work
+Understanding of how Google’s services are intended to fit together
+
+# Can you choose which services to use for various cases optimizing:
+Availability
+Scalability
+Security
+Price 
+
+# Sometimes Google Cloud services seem interchangeable
+BigTable or DataStore
+BigQuery or Cloud SQL
+App Engine or Container Engine
+
+# The exam asks you to make the best choice
+The right choice is not always obvious
+Look for keywords that give you a hint
+
+Automate deployments using Google App Engine
+Deploy hybrid cloud applications using Container Engine and Kubernetes
+Build microservices using Google Cloud Functions
+
 
 # Google Cloud Compute
-Firebase
-Google Cloud functions
-Google App Engine
-Google Container Engine
-Google Compute Engine
+Infrastructure as a Service (IaaS)
+High-performance virtual machines
+Flexible pricing options
+Persistent disks and snapshots
+Autoscaling
+
+# Google Container Engine
+
+# Google App Engine
+
+# Google Cloud functions
 
 # GCP Dataflow
 Apache Beam
@@ -35,6 +66,9 @@ Flexible
 Hadoop/spark cluster
 Hadoop - job written in Java
 Spark - job written in Python
+Hadoop and Spark clusters running in Google DataProc are examples
+BigQuery uses many machines to process data quickly
+
 
 Reliable reproducable - Development Manager
 Autmation framework - Kubernetes
@@ -53,6 +87,13 @@ slide 122
 155
 slide 162, 176
 Slide 206
+
+# Study plan
+Finish the Homework
+Flashcards
+Key words the services
+Re-take the exams  slides 4,
+Read the Case Studies
 
 doug@roitraining.com
 wwww.roitraining.com
