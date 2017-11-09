@@ -132,55 +132,60 @@ Can control access to buckets or objects inside buckets
   Use for data archiving, backups, and disaster recovery
 
 # Cloud SQL
-Relational database storage
-Supports MySQL and PostgreSQL (beta)
-Simple setup and automated administration
-Automated backups, maintenance, and replication
-Built-in firewall prevents access from unauthorized computers
-    # See slide 105 for docs
+A fully-managed MySQL and PostgreSQL database service that is built on the strength and reliability of Google’s infrastructure.
+Web frameworks
+Structured data
+OLTP workloads
+Websites, blogs, and content management systems (CMS)
+Business Intelligence (BI) applications
+ERP, CRM, and eCommerce applications
+Geospatial applications
 
 # Cloud Spanner
-Massively scalable relational database service
-Scales horizontally to hundreds or even thousands of servers
-Strong consistency even with many servers
-Uses atomic clocks to synchronize transactions around the globe
-Designed for extremely high availability
-Automatic replication
-NoOps
-    # See slide 107 for docs
+Cloud Spanner is a fully managed, mission-critical, relational database service that offers transactional consistency at global scale, schemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication for high availability.
+Mission-critical applications
+High transactions
+Scale + Consistency requirements
+Adtech
+Financial services
+Global supply chain
+Retail
 
 
 # Cloud Datastore
-NoSQL document database similar to MongoDB
-Completely managed, NoOps
-Supports ACID transactions across multiple entities
-Flexible indexing allows for very fast and flexible data retrieval
-Optimized for reading data quickly
-1GB per month free tier
-Redis - Memcache
-    # See slide 108 for docs
+Google Cloud Datastore is a NoSQL document database built for automatic scaling, high performance, and ease of application development. Cloud Datastore features include:
+Semi-structured application data
+Hierarchical data
+Durable key-value data
+User profiles
+Product catalogs
+Game state
 
 
 # Cloud BigTable
-Wide-column NoSQL datastore similar to Cassandra or HBase
-Requires a cluster of machines be created
-Cluster can be easily resized for scalability
-Each row in a BigTable table must have a unique key
-Only index available is the key
-Very fast data retrieval as long as the key is searched
-BigTable is optimized for extremely fast writes
-Use BigTable when application accumulates huge amounts of data quickly
-IoT applications, mobile apps, games, etc.
+Cloud Bigtable is ideal for applications that need very high throughput and scalability for non-structured key/value data, where each value is typically no larger than 10 MB. Cloud Bigtable also excels as a storage engine for batch MapReduce operations, stream processing/analytics, and machine-learning applications.
 
+You can use Cloud Bigtable to store and query all of the following types of data:
+
+Marketing data such as purchase histories and customer preferences.
+Financial data such as transaction histories, stock prices, and currency exchange rates.
+Internet of Things data such as usage reports from energy meters and home appliances.
+Time-series data such as CPU and memory usage over time for multiple servers.
+
+IoT, finance, adtech
+Personalization, recommendations
+Monitoring
+Geospatial datasets
+Graphs
 
 # Cloud BigQuery
-Data warehousing and data analysis service
-Extremely inexpensive storage
-2 cents/GB/month for the first 3 months, then 1 cent/GB/month after
-Analyze data with plain ANSI SQL 2011 queries 
-Extremely fast: jobs split across many machines 
-Easy to use: no indexes required, simple schemas
-NoOps: no need to provision anything
+A scalable, fully-managed Enterprise Data Warehouse (EDW) with SQL and fast response times.
+OLAP workloads up to petabyte-scale
+Big Data exploration and processing
+Reporting via Business Intelligence (BI) tools
+Analytical reporting on large data
+Data Science and advanced analyses
+Big Data processing using SQL
 
 # IAM
 Use more restricted rights at the higher levels
@@ -216,6 +221,7 @@ Many predefined roles exist
 Principle of least privilege
 
 # StackDriver
+Stackdriver Logging is part of the Stackdriver suite of products in Google Cloud Platform (GCP). It includes storage for logs, a user interface called the Logs Viewer, and an API to manage logs programmatically. Stackdriver Logging lets you read and write log entries, search and filter your logs, export your logs, and create logs-based metrics.
 Requests to Compute Engine, App Engine, BigQuery, Cloud SQL, Deployment Manager, Cloud VPN, and Cloud Storage are all logged
 Tools are provided to read and analyze the logs
 Have some process in place for regularly auditing the logs
