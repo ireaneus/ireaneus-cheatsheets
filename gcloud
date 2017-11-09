@@ -183,6 +183,15 @@ Easy to use: no indexes required, simple schemas
 NoOps: no need to provision anything
 
 # IAM
+Use more restricted rights at the higher levels
+Resources added at lower levels will inherit those restrictions
+Privileges can be added at lower levels when necessary
+Use service accounts and roles to secure machines and applications
+Manage users in groups when possible
+Audit your logs
+Use roles to enforce the principle of least privilege
+Use projects for separate duties
+
 # Service Accounts
 Usually a member is a human
 Service accounts are special accounts that identify machines or applications
@@ -206,13 +215,35 @@ App Engine Admin, BigQuery User, or DataStore Viewer are examples of predefined 
 Many predefined roles exist
 Principle of least privilege
 
+# StackDriver
+Requests to Compute Engine, App Engine, BigQuery, Cloud SQL, Deployment Manager, Cloud VPN, and Cloud Storage are all logged
+Tools are provided to read and analyze the logs
+Have some process in place for regularly auditing the logs
+Stackdriver can be used to monitor many different resources 
+App Engine, disks, buckets, virtual machines, and many more
+In addition to GCP resources, AWS resources can be monitored as well
+Different metrics can be monitored depending on the resource
+CPU usage, network traffic, uptime, message count, etc.
+Custom metrics can be created
+Installed on VMs to provide additional metrics not available externally
+Memory usage and uptime, for example
+Also provides metrics on common applications
+Apache, Cassandra, CouchDB, HBase, IIS, JVM, Kafka, etc.
+Logs can be exported for further analysis
+Export destinations include:
+BigQuery
+Cloud Storage
+Pub/Sub
+Can create advanced filters to specify which log entries to export
+Set a destination to Pub/Sub to immediately respond to a log export
+    # Stackdriver documentation on slide 162
 
 # GCP Dataflow
 Apache Beam
 
 # Cloud Pub/Sub
-MQ Messaging
-streaming data
+MQ Messaging - streaming data
+
 
 # Cloud Dataproc
 Hadoop/spark cluster
@@ -220,8 +251,45 @@ Hadoop - job written in Java
 Spark - job written in Python
 Hadoop and Spark clusters running in Google DataProc are examples
 
-
+# Deployment manager
 Reliable reproducable - deployment Manager
+Cloud Launcher
+
+All operations problems are treated as software problems though
+Automate repetitive tasks
+Fix problems with code
+
+# Blue/Green Deployment
+Allow new revisions to be deployed with less risk and no downtime
+There are two copies of the production environment
+Blue environment is taking requests
+Green environment is idle
+When deploying a new version:
+Update new version to green environment leaving the blue environment in place
+Test the green environment
+When testing is complete, move the workload to the green environment
+Green is now blue; can turn the old environment off
+Blue-Green deployments also make rolling back to old versions easier
+App Engine completely automates blue-green deployments
+Multiple versions of App Engine apps can exist simultaneously
+Can easily request any version by including the version in the URL
+Testing can be done on new versions before migrating the load to them
+
+# A/B Testing
+A/B testing allows multiple versions of a program to run at the same time
+Test the new version with a portion of the users 
+Compare usage and errors of the two versions
+Allows developers to get feedback and testing from real users prior to fully committing to a new version
+In App Engine, use traffic-splitting 
+for A/B testing
+
+# Canary Release
+A new version of a service is put into production alongside old versions
+A small subset of select traffic is routed to the canary release
+Canary releases help developers know how a new version will perform when put into production
+Canary releases are easy to pull back if they fail their testing
+Use a microservice architecture in App Engine
+Each small service can be deployed separately from the other services in the application
 
 
 # Homework
@@ -239,7 +307,7 @@ Slide 206
 Finish the labs
 Flashcards
 Key words the services
-Re-take the exams  slides 4, 90, 114
+Re-take the exams  slides 4, 90, 114, 147, 195, 208
 Read the Case Studies
 
 doug@roitraining.com
