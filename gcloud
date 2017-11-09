@@ -115,7 +115,7 @@ Incredibly fast and scalable
 Very inexpensive (first 2 million requests per month are free)
 
 # Cloud Storage
-Blob (binary large objects) storage is for storing any type of file
+Blob (binary large objects) storage is for storing any type of file 10MB files and larger
 Relational storage is used for relational databases
 NoSQL storage is for structured data 
 Similar to relational, but simpler and often more scalable
@@ -133,59 +133,52 @@ Can control access to buckets or objects inside buckets
 
 # Cloud SQL
 A fully-managed MySQL and PostgreSQL database service that is built on the strength and reliability of Google’s infrastructure.
-Web frameworks
-Structured data
-OLTP workloads
-Websites, blogs, and content management systems (CMS)
-Business Intelligence (BI) applications
-ERP, CRM, and eCommerce applications
-Geospatial applications
+Cloud SQL delivers high performance and scalability with up to 10TB of storage capacity, 25,000 IOPS, and 208GB of RAM per instance.
+Second Generation instances support MySQL 5.6 or 5.7, and provide up to 208 GB of RAM and 10 TB data storage, with the option to automatically increase the storage size as needed.
+First Generation instances support MySQL 5.5 or 5.6, and provide up to 16 GB of RAM and 500 GB data storage.
+ACID
+No duplication
+Online transaction processing (OLTP)
 
 # Cloud Spanner
 Cloud Spanner is a fully managed, mission-critical, relational database service that offers transactional consistency at global scale, schemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication for high availability.
-Mission-critical applications
-High transactions
-Scale + Consistency requirements
-Adtech
-Financial services
-Global supply chain
-Retail
+Gain horizontal scaling without migration from relational to NoSQL databases
 
 
 # Cloud Datastore
-Google Cloud Datastore is a NoSQL document database built for automatic scaling, high performance, and ease of application development. Cloud Datastore features include:
-Semi-structured application data
-Hierarchical data
-Durable key-value data
-User profiles
-Product catalogs
-Game state
-
+Automatically scaling NoSQL Database as a Service (DBaaS) on the Google Cloud PlatformCloud Datastore features include:
+NoSQL document database similar to MongoDB
+Completely managed, NoOps
+Highly Structured data objects
+SQL queries
+.Net, Go, Java, JavaScript (Node.js), PHP, Python, Ruby
+RESTful HTTP/JSON API
+using Google App Engine
+ACID
+1GB per month free tier
 
 # Cloud BigTable
 Cloud Bigtable is ideal for applications that need very high throughput and scalability for non-structured key/value data, where each value is typically no larger than 10 MB. Cloud Bigtable also excels as a storage engine for batch MapReduce operations, stream processing/analytics, and machine-learning applications.
+Wide-column NoSQL datastore similar to Cassandra or HBase
+Requires a cluster of machines be created
+Each row in a BigTable table must have a unique key
+Go, Java
+Datasets starting at 1TB
+Hooks into BigData
+Does not support SQL queries
 
-You can use Cloud Bigtable to store and query all of the following types of data:
-
-Marketing data such as purchase histories and customer preferences.
-Financial data such as transaction histories, stock prices, and currency exchange rates.
-Internet of Things data such as usage reports from energy meters and home appliances.
-Time-series data such as CPU and memory usage over time for multiple servers.
-
-IoT, finance, adtech
-Personalization, recommendations
-Monitoring
-Geospatial datasets
-Graphs
 
 # Cloud BigQuery
 A scalable, fully-managed Enterprise Data Warehouse (EDW) with SQL and fast response times.
-OLAP workloads up to petabyte-scale
-Big Data exploration and processing
-Reporting via Business Intelligence (BI) tools
-Analytical reporting on large data
-Data Science and advanced analyses
-Big Data processing using SQL
+interactive querying online analytical processing (OLAP) workloads up to petabyte-scale
+Data warehousing and data analysis service
+Extremely inexpensive storage
+2 cents/GB/month for the first 3 months, then 1 cent/GB/month after
+Extremely fast: jobs split across many machines 
+Easy to use: no indexes required, simple schemas
+NoOps: no need to provision anything
+
+
 
 # IAM
 Use more restricted rights at the higher levels
@@ -220,29 +213,26 @@ App Engine Admin, BigQuery User, or DataStore Viewer are examples of predefined 
 Many predefined roles exist
 Principle of least privilege
 
-# StackDriver
+# StackDriver Logging
 Stackdriver Logging is part of the Stackdriver suite of products in Google Cloud Platform (GCP). It includes storage for logs, a user interface called the Logs Viewer, and an API to manage logs programmatically. Stackdriver Logging lets you read and write log entries, search and filter your logs, export your logs, and create logs-based metrics.
-Requests to Compute Engine, App Engine, BigQuery, Cloud SQL, Deployment Manager, Cloud VPN, and Cloud Storage are all logged
-Tools are provided to read and analyze the logs
-Have some process in place for regularly auditing the logs
-Stackdriver can be used to monitor many different resources 
-App Engine, disks, buckets, virtual machines, and many more
-In addition to GCP resources, AWS resources can be monitored as well
-Different metrics can be monitored depending on the resource
-CPU usage, network traffic, uptime, message count, etc.
-Custom metrics can be created
-Installed on VMs to provide additional metrics not available externally
-Memory usage and uptime, for example
-Also provides metrics on common applications
-Apache, Cassandra, CouchDB, HBase, IIS, JVM, Kafka, etc.
-Logs can be exported for further analysis
-Export destinations include:
-BigQuery
-Cloud Storage
-Pub/Sub
-Can create advanced filters to specify which log entries to export
-Set a destination to Pub/Sub to immediately respond to a log export
-    # Stackdriver documentation on slide 162
+
+# StackDriver Monitoring
+Stackdriver Monitoring collects metrics, events, and metadata from Google Cloud Platform, Amazon Web Services (AWS), hosted uptime probes, application instrumentation, and a variety of common application components including Cassandra, Nginx, Apache Web Server, Elasticsearch and many others. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts.
+Stackdriver Monitoring is available in two service tiers, Basic and Premium
+
+# StackDriver Error reporting
+Stackdriver Error Reporting aggregates and displays errors produced in your running cloud services.
+Supported languages are Java, Python, JavaScript, Ruby, C#, PHP, and Go. To report errors from Android and iOS client applications, we recommend setting up Firebase Crash Reporting.
+Stackdriver Error Reporting is Generally Available for Google App Engine standard environment and is a Beta feature for Google App Engine flexible environment, Google Compute Engine, and AWS EC2.
+Reporting errors from your application can be achieved by logging application errors to Google Stackdriver Logging or by calling an API endpoint. The setup process depends on your platform; please refer to the setup guides.
+Information in Stackdriver Error Reporting is retained for 30 days.
+Error Reporting displays errors for the currently-selected Cloud Platform Console project. It does not support Stackdriver accounts.
+
+# StackDriver Trace
+Stackdriver Trace is a distributed tracing system for Google Cloud Platform that collects latency data from Google App Engine, Google HTTP(S) load balancers, and applications instrumented with the Stackdriver Trace SDKs, and displays it in near real time in the Google Cloud Platform Console.
+Quickly view a snapshot of last-day latency data for your application in the trace overview.
+Generate custom analysis reports that show an overview of latency data for all or a subset or requests, and allow you to compare two different sets of latency data.
+Traces are stored for 30 days.
 
 # GCP Dataflow
 Apache Beam
@@ -298,21 +288,9 @@ Use a microservice architecture in App Engine
 Each small service can be deployed separately from the other services in the application
 
 
-# Homework
-Slide 80
-Read the networking docs
-slide 88
-slide 94 
-# Homework
-slide 122
-155
-slide 162, 176
-Slide 206
 
 # Study plan
 Finish the labs
-Flashcards
-Key words the services
 Re-take the exams  slides 4, 90, 114, 147, 195, 208
 Read the Case Studies
 
