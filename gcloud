@@ -235,17 +235,18 @@ Generate custom analysis reports that show an overview of latency data for all o
 Traces are stored for 30 days.
 
 # GCP Dataflow
-Apache Beam
+Cloud Dataflow is a fully-managed service for transforming and enriching data in stream (real time) and batch (historical) modes with equal reliability and expressiveness -- no more complex workarounds or compromises needed. And with its serverless approach to resource provisioning and management, you have access to virtually limitless capacity to solve your biggest data processing challenges, while paying only for what you use.
 
 # Cloud Pub/Sub
-MQ Messaging - streaming data
+publish-subscribe service
+Cloud Pub/Sub is a simple, reliable, scalable foundation for stream analytics and event-driven computing systems. As part of Google Cloud’s stream analytics solution, the service ingests event streams and delivers them to Cloud Dataflow for processing and BigQuery for analysis as a data warehousing solution.
 
 
 # Cloud Dataproc
-Hadoop/spark cluster
-Hadoop - job written in Java
-Spark - job written in Python
-Hadoop and Spark clusters running in Google DataProc are examples
+Google Cloud Dataproc is a fast, easy-to-use, low-cost and fully managed service that lets you run the Apache Spark and Apache Hadoop ecosystem on Google Cloud Platform.  Cloud Dataproc provisions big or small clusters rapidly, supports many popular job types, and is integrated with other Google Cloud Platform services, such as Google Cloud Storage and Stackdriver Logging, thus helping you reduce TCO.
+Cloud Dataproc handles cluster creation, management, monitoring, and job orchestration for you.
+Cloud Dataproc provides out-of-the box and end-to-end support for many of the most popular job types, including Spark, Spark SQL, PySpark, MapReduce, Hive, and Pig jobs.
+Dataproc is based on Debian 8.
 
 # Deployment manager
 Reliable reproducable - deployment Manager
