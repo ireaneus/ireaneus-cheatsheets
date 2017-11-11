@@ -65,6 +65,7 @@ cloud during an emergency.              # Compute engine, Cloud storage, Cloud S
 
 Identify production services that can migrate to cloud
 to save capacity.
+# MySQL, Redis, Tomcat, Nginx, Apache Beam, Apache Hadoop, MQ servers, Jenkins, monitoring, bastion hosts, security scanners
 
 Use managed services whenever possible.
 
