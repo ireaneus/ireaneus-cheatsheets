@@ -48,17 +48,17 @@ security and Identity and Access Management (IAM)
 best practices for cloud.
 
 Improve business agility and speed of innovation
-through rapid provisioning of new resources.
+through rapid provisioning of new resources.    # Autoscaling through load balancers
 
 Analyze and optimize architecture for performance in
-the cloud.
+the cloud.      # app-engine - kubernetes
 
 Migrate fully to the cloud if all other requirements are
 met.
 
 # Technical Requirements
 Evaluate and choose an automation framework for
-provisioning resources in cloud.
+provisioning resources in cloud.        # Deployment Manager
 
 Support failover of the production environment to
 cloud during an emergency.
