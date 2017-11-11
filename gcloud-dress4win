@@ -61,7 +61,7 @@ Evaluate and choose an automation framework for
 provisioning resources in cloud.        # Deployment Manager
 
 Support failover of the production environment to
-cloud during an emergency.
+cloud during an emergency.              # Compute engine, Cloud storage, Cloud SQL
 
 Identify production services that can migrate to cloud
 to save capacity.
