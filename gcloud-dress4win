@@ -97,18 +97,18 @@ our next hardware refresh cycle. Our total cost of ownership
 between 30 to 50% lower than our current model
 
 
-For future phases, Dress4Win is looking at options to deploy data analytics to the Google Cloud. Which option meets their business and technical requirements?
+# For future phases, Dress4Win is looking at options to deploy data analytics to the Google Cloud. Which option meets their business and technical requirements?
 Run current jobs from the current technical environment on Google Cloud Dataproc.
 
-The Dress4Win developers are evaluating using Google Cloud Platform. They have identified some applications that can easily move to Google App Engine Flexible Environment. The developers will deploy their code using the Google Cloud SDK tools. Which two of their stated technical requirements does this solution meet? (Choose 2).
+# The Dress4Win developers are evaluating using Google Cloud Platform. They have identified some applications that can easily move to Google App Engine Flexible Environment. The developers will deploy their code using the Google Cloud SDK tools. Which two of their stated technical requirements does this solution meet? (Choose 2).
 Use managed services whenever possible.
 Evaluate and choose an automation framework for provisioning resources in the cloud.
 
-The architecture diagram below shows an event-based processing pipeline that Dress4win is building to label and compress user-uploaded images. Which GCP products should they use in boxes 1, 2 and 3?
+# The architecture diagram below shows an event-based processing pipeline that Dress4win is building to label and compress user-uploaded images. Which GCP products should they use in boxes 1, 2 and 3?
 Google Cloud Storage, Google Cloud Pub/Sub, Google Cloud Dataflow
 
-Dress4Win wants to do penetration security scanning on the test and development environments deployed to the cloud. How should they conduct the penetration testing?
+# Dress4Win wants to do penetration security scanning on the test and development environments deployed to the cloud. How should they conduct the penetration testing?
 Use the on-premises scanners to conduct penetration testing on the cloud environments routing traffic over the public internet.
 
-The Dress4Win security team has disabled external SSH access into production virtual machines (VMs) on Google Cloud Platform (GCP). The operations team needs to remotely manage the VMs, build and push Docker containers, and manage Google Cloud Storage objects. What can they do?
+# The Dress4Win security team has disabled external SSH access into production virtual machines (VMs) on Google Cloud Platform (GCP). The operations team needs to remotely manage the VMs, build and push Docker containers, and manage Google Cloud Storage objects. What can they do?
 Grant the operations engineers access to use Google Cloud Shell.

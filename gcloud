@@ -243,10 +243,8 @@ Cloud Pub/Sub is a simple, reliable, scalable foundation for stream analytics an
 
 
 # Cloud Dataproc
-Google Cloud Dataproc is a fast, easy-to-use, low-cost and fully managed service that lets you run the Apache Spark and Apache Hadoop ecosystem on Google Cloud Platform.  Cloud Dataproc provisions big or small clusters rapidly, supports many popular job types, and is integrated with other Google Cloud Platform services, such as Google Cloud Storage and Stackdriver Logging, thus helping you reduce TCO.
-Cloud Dataproc handles cluster creation, management, monitoring, and job orchestration for you.
-Cloud Dataproc provides out-of-the box and end-to-end support for many of the most popular job types, including Spark, Spark SQL, PySpark, MapReduce, Hive, and Pig jobs.
-Dataproc is based on Debian 8.
+Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores.
+Cloud Dataproc is a managed framework that runs on the Google Cloud Platform and ties together several popular tools for processing data, including Apache Hadoop, Spark, Hive, and Pig. Cloud Dataproc has a set of control and integration mechanisms that coordinate the lifecycle, management, and coordination of clusters. Cloud Dataproc is integrated with the YARN application manager to make managing and using your clusters easier.
 
 # Deployment manager
 Reliable reproducable - deployment Manager
