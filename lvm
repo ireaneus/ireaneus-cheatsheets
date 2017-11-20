@@ -51,3 +51,6 @@ the settings listed below:
 27. lvremove /dev/vg/lv
 28. vgreduce --removemissing
 
+# More information
+lvs --units m -o devices
+
