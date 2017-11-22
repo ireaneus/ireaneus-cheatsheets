@@ -113,3 +113,7 @@ Use the on-premises scanners to conduct penetration testing on the cloud environ
 
 # The Dress4Win security team has disabled external SSH access into production virtual machines (VMs) on Google Cloud Platform (GCP). The operations team needs to remotely manage the VMs, build and push Docker containers, and manage Google Cloud Storage objects. What can they do?
 Grant the operations engineers access to use Google Cloud Shell.
+
+
+#### Case Study review  #####
+
