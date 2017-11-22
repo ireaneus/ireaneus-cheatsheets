@@ -1,3 +1,19 @@
+# Ansible install and configure
+yum install python python-pip python-devel openssl git ansible
+adduser ansible
+passwd ansible
+add user ansible to wheel
+visudo - %wheel nopasswd
+su - ansible
+ssh-keygen
+ssh-copy-id localhost
+adduser ansible nodes
+ssh-copy-id nodes
+vim /etc/ansible/ansible.cfg
+# sudo_users root
+# /etc/ansible/hosts
+localhost
+
 # Ansible Options
 -v --verbose
 -i --inventory=Path	#hosts file
@@ -62,3 +78,6 @@ ansible_docker_extra_args
   file:
     path: "/var/jenkins_home/.ssh/jupiter"
     state: directory
+
+# vars playbook
+--extra-vars "varname1= varname2="
