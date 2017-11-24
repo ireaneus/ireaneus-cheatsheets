@@ -18,3 +18,11 @@ nc -x10.2.3.4:8080 -Xconnect -Pruser host.example.com 42
 
 # To choose the source IP for the testing using the -s option
 nc -zv -s source_IP target_IP Port
+
+# Example of nc server and client testing
+[ansible@usdah0003 ~]$ nc -v usdl553 3208
+nc: connect to usdl553 port 3208 (tcp) failed: Connection timed out
+
+[root@usdl553 ~]# tcpdump host usdah0003 and port 3208
+[root@usdl553 ~]# iptables -n -L | grep 3208
+ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:3208
