@@ -48,6 +48,7 @@ Disks: Standard, SSD, Local SSD - Pay for allocation
 Snapshots: mv disks different zones and regions, resize.
 Custom applications
 Lift and Shift
+N1-standard systems have CPU # in the name with 4x# for RAM
 
 # GCP Networking
 # VPC networking
@@ -131,6 +132,11 @@ Can control access to buckets or objects inside buckets
   Cost per GB is less than Nearline, but there is a higher cost for accessing data and a 3-month minimum charge
   Use for data archiving, backups, and disaster recovery
 
+# Cloud Data Transfer replication 
+Transfer google cloud buckets
+Transfer amazon s3 buckets
+1GB per stream
+
 # Cloud SQL
 A fully-managed MySQL and PostgreSQL database service that is built on the strength and reliability of Google’s infrastructure.
 Cloud SQL delivers high performance and scalability with up to 10TB of storage capacity, 25,000 IOPS, and 208GB of RAM per instance.
@@ -139,6 +145,7 @@ First Generation instances support MySQL 5.5 or 5.6, and provide up to 16 GB of 
 ACID
 No duplication
 Online transaction processing (OLTP)
+IOPS increases with increase disk space, does not require hardware modification
 
 # Cloud Spanner
 Cloud Spanner is a fully managed, mission-critical, relational database service that offers transactional consistency at global scale, schemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication for high availability.
@@ -189,6 +196,7 @@ Manage users in groups when possible
 Audit your logs
 Use roles to enforce the principle of least privilege
 Use projects for separate duties
+Cloud Platform supports SAML 2.0-based SSO, which provides seamless SSO against Cloud Platform Console, web- and command-line-based SSH, and OAuth authorization prompts, the user is prompted for their username but not their password.
 
 # Service Accounts
 Usually a member is a human
@@ -243,6 +251,7 @@ ETL - Extract Transform
 # Cloud Pub/Sub
 publish-subscribe service
 Cloud Pub/Sub is a simple, reliable, scalable foundation for stream analytics and event-driven computing systems. As part of Google Cloud’s stream analytics solution, the service ingests event streams and delivers them to Cloud Dataflow for processing and BigQuery for fanalysis as a data warehousing solution.
+Can be used to queue up and store messages up to 7 days
 
 
 # Cloud Dataproc
