@@ -64,10 +64,12 @@ Can be created for HTTP, TCP, or UDP
 Can span multiple regions or balance traffic to machines in multiple zones within a single region
 Can send traffic to multiple machines managed by one or more instance groups forming a back-end service
 Can also send requests to static content in Cloud Storage buckets
+Managed Instance group - instance group updater apply rolling updates - canary update rollback zero downtime
 
 # Cloud DNS
 Allows you to manage your domains right from GCP
 Map domains and subdomains to load balancers, cloud storage buckets, or App Engine applications
+100% SLA uptime
 
 # Cloud CDN
 Configured when setting up an HTTP(S) load balancer
@@ -75,7 +77,7 @@ CDN is cheaper for network egres traffic
 
 # Cloud VPN
 Cloud VPN allows secure access to VPC networks 
-Can use a VPN to connect a GCP network to your local network
+Can use a VPN to connect a GCP network to your local network using direct connect or interconnect see slide 54/55
 Can use a VPN to connect different GCP networks
 
 ## PaaS ##
