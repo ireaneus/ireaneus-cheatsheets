@@ -261,6 +261,7 @@ Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to u
 Cloud Dataproc is a managed framework that runs on the Google Cloud Platform and ties together several popular tools for processing data, including Apache Hadoop, Spark, Hive, and Pig. Cloud Dataproc has a set of control and integration mechanisms that coordinate the lifecycle, management, and coordination of clusters. Cloud Dataproc is integrated with the YARN application manager to make managing and using your clusters easier.
 
 # Deployment manager
+Declarative
 Reliable reproducable - deployment Manager
 Cloud Launcher
 
