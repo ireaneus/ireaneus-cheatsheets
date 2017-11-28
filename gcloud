@@ -259,6 +259,8 @@ Can be used to queue up and store messages up to 7 days
 # Cloud Dataproc
 Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores.
 Cloud Dataproc is a managed framework that runs on the Google Cloud Platform and ties together several popular tools for processing data, including Apache Hadoop, Spark, Hive, and Pig. Cloud Dataproc has a set of control and integration mechanisms that coordinate the lifecycle, management, and coordination of clusters. Cloud Dataproc is integrated with the YARN application manager to make managing and using your clusters easier.
+It can setup HDFS on cloud storage buckets
+
 
 # Deployment manager
 Reliable reproducable - deployment Manager
@@ -301,12 +303,6 @@ Use a microservice architecture in App Engine
 Each small service can be deployed separately from the other services in the application
 
 
-
-# Study plan
-Finish the labs 
-Re-take the exams  slides 4, 90, 114, 147, 195, 208
-Read the Case Studies
-9b3e1-91354-6fb5b
 
 doug@roitraining.com
 wwww.roitraining.com
