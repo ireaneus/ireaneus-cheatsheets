@@ -223,6 +223,12 @@ App Engine Admin, BigQuery User, or DataStore Viewer are examples of predefined 
 Many predefined roles exist
 Principle of least privilege
 
+# Stackdriver suite best practices
+Create a single project for stackdriver Monitoring
+Single pane of glass for all projects activities
+Determine monitoring needs in advance
+IAM controls are separate for stackdriver
+
 # StackDriver Logging
 Stackdriver Logging is part of the Stackdriver suite of products in Google Cloud Platform (GCP). It includes storage for logs, a user interface called the Logs Viewer, and an API to manage logs programmatically. Stackdriver Logging lets you read and write log entries, search and filter your logs, export your logs, and create logs-based metrics.
 Real-time log management and analysis
@@ -302,7 +308,9 @@ Canary releases are easy to pull back if they fail their testing
 Use a microservice architecture in App Engine
 Each small service can be deployed separately from the other services in the application
 
-
+# Study areas 
+BigQuery BigTable Cloud Storage
+Best practices and concepts
 
 doug@roitraining.com
 wwww.roitraining.com
