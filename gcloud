@@ -118,14 +118,11 @@ Incredibly fast and scalable
 Very inexpensive (first 2 million requests per month are free)
 
 # Cloud Storage
-Blob (binary large objects) storage is for storing any type of file 10MB files and larger
-Relational storage is used for relational databases
-NoSQL storage is for structured data 
-Similar to relational, but simpler and often more scalable
-Data warehousing is for data analysis and reporting
-Buckets can be regional or multiregional
-Data at rest stays in the region or regions specified
-Can control access to buckets or objects inside buckets
+A scalable, fully-managed, highly reliable, and cost-efficient object / blob store.
+Images, pictures, and videos, Objects and blobs, Unstructured data
+Storing and streaming multimedia
+Storage for custom data analytics pipelines
+Archive, backup, and disaster recovery
   # Nearline
   Cost per GB is less than regional, but there is a cost for accessing data and a 1-month minimum charge
   Use for data that is accessed infrequently (photos might be an example)
@@ -155,26 +152,25 @@ Gain horizontal scaling without migration from relational to NoSQL databases
 
 
 # Cloud Datastore
-Automatically scaling NoSQL Database as a Service (DBaaS) on the Google Cloud PlatformCloud Datastore features include:
-NoSQL document database similar to MongoDB
-Completely managed, NoOps
-Highly Structured data objects
-SQL queries
-.Net, Go, Java, JavaScript (Node.js), PHP, Python, Ruby
-RESTful HTTP/JSON API
-using Google App Engine
+A scalable, fully-managed NoSQL document database for your web and mobile applications.
+Semi-structured application data
+Hierarchical data
+Durable key-value data
+User profiles
+Product catalogs
+Game state
 ACID
 1GB per month free tier
 
 # Cloud BigTable
 Cloud Bigtable is ideal for applications that need very high throughput and scalability for non-structured key/value data, where each value is typically no larger than 10 MB. Cloud Bigtable also excels as a storage engine for batch MapReduce operations, stream processing/analytics, and machine-learning applications.
+A scalable, fully-managed NoSQL wide-column database that is suitable for both real-time access and analytics workloads.
 Wide-column NoSQL datastore similar to Cassandra or HBase
 Requires a cluster of machines be created
 Each row in a BigTable table must have a unique key
 Go, Java
 Datasets starting at 1TB
-Hooks into BigData
-Does not support SQL queries
+
 
 
 # Cloud BigQuery
