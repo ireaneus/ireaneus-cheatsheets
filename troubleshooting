@@ -50,6 +50,11 @@ vim /etc/security/limits.d/90-nproc.conf	# increase to same number
 
 ## Extend xfs file system
 
+## Extend ext4 file system
+sudo lsblk
+sudo growpart /dev/sda 1
+sudo resize2fs /dev/sda1
+
 ## Network interface in VM not binding/pingable
 Migrate VM to another host
 

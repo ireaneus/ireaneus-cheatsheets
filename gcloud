@@ -55,22 +55,35 @@ N1-standard systems have CPU # in the name with 4x# for RAM
 
 # GCP Networking
 # VPC networking
+You can create up to five networks per project
+Auto mode VPC networks have a single, automatically created subnet in each region of the VPC network
+For custom mode VPC networks, create a network, then create the subnets that you want within a region
+7000 VMs per VPC network
 Subnets are bound to regions
 Each subnet defines a private IP address range
+subnets are used for resource management
 Networks can span multiple regions around the world
-Shared VPC allows a network to be shared across multiple projects
+Shared VPC allows a network to be shared across multiple projects in a single organization
+VPN tunnel can be used to connect 2 separate organizations
 Machines in different networks can only communicate with public IPs
 Machines without a public IP can only be accessed within a network
+
+# Firewalls
+Single firewall for entire VPC - implied deny all ingress, implied allow all egres
+To access load-balanced servers, a firewall rule must be created for the appropriate networks
+Best practice is to create firewall rules allowing traffic only from GCP Load Balancer networks
 
 # Load Balancers
 Can be created for HTTP, TCP, or UDP
 Can span multiple regions or balance traffic to machines in multiple zones within a single region
 Can send traffic to multiple machines managed by one or more instance groups forming a back-end service
 Can also send requests to static content in Cloud Storage buckets
+Allows HTTP(S) traffic to Compute Engine instances
+Instances can be further secured by having no external IP addresses
+Load balancing uses internal IP addresses
+Leave a bastion host by which you can manage these instances
 
 Network load balancing distributes incoming traffic across multiple instances ○ Supports non-HTTP(S) protocols (TCP/UDP) ○ Can be used for HTTPS traffic when you want to terminate connection on your instances (not at HTTPS load balancer) ● Supports autoscaling with managed instance groups
-
-To access load-balanced servers, a firewall rule must be created for the appropriate networks ○ Allows HTTP(S) traffic to Compute Engine instances ● Best practice is to create firewall rules allowing traffic only from GCP Load Balancer networks ○ 130.211.0.0/22 ● Instances can be further secured by having no external IP addresses ○ Load balancing uses internal IP addresses ○ Leave a bastion host by which you can manage these instances
 
 Global Forwarding Rules ● A global forwarding rule provides a single global IP address for an application ● The rule routes traffic by IP address, port, and protocol to an HTTP or HTTPS target proxy ● A global forwarding rule can only forward to a single port ○ Supporting HTTP and HTTPS requires two rules ● Global forwarding rules can only be used by an HTTP(S) load balancer
 
@@ -170,10 +183,9 @@ A scalable, fully-managed NoSQL document database for your web and mobile applic
 Semi-structured application data
 Hierarchical data
 Durable key-value data
-User profiles
-Product catalogs
-Game state
-ACID
+Product catalogs that provide real-time inventory and product details for a retailer.
+User profiles that deliver a customized experience based on the user’s past activities and preferences.
+Transactions based on ACID properties, for example, transferring funds from one bank account to another.
 1GB per month free tier
 
 # Cloud BigTable
