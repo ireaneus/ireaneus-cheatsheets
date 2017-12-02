@@ -16,11 +16,10 @@ Knowledge of what Google’s cloud services are and their use cases
 Understanding of how individual services work
 Understanding of how Google’s services are intended to fit together
 
-# Can you choose which services to use for various cases optimizing:
-Availability
-Scalability
-Security
-Price 
+Persistent Volumes, using persistent disks in GCE, survive instance and container restarts.
+Deprecated - warning that image is not supported and may end
+Windows Server requires scripts in GCS to be public https://cloud.google.com/compute/docs/startupscript
+Endpoints Frees developers from writing wrapper to access App Engine resources from a mobile or web client
 
 # Sometimes Google Cloud services seem interchangeable
 BigTable or DataStore
@@ -34,6 +33,10 @@ Look for keywords that give you a hint
 Automate deployments using Google App Engine
 Deploy hybrid cloud applications using Container Engine and Kubernetes
 Build microservices using Google Cloud Functions
+
+# Global resources
+Global resources Global resources are accessible by any resource in any zone within the same project. When you create a global resource, you do not need to provide a scope specification. Global resources include: Firewall rules, Snapshots, networks, routes, etc. 
+Global resource, but can rely on zonal resources (such as disks) ● Can only be used with managed instance groups ● Can include some or all configuration of a regular instance ● Instance and disk names will be generated from a configurable base name ● Ephemeral external IP addresses will be automatically assigned ● Single-instance properties limit creation to 1 instance/group Properties.disks[].source properties.disks[].initializeParams.diskName properties.networkInterfaces.accessConfigs.natIP
 
 # Multi-regional resources
 Cloud storage
@@ -64,7 +67,16 @@ Can be created for HTTP, TCP, or UDP
 Can span multiple regions or balance traffic to machines in multiple zones within a single region
 Can send traffic to multiple machines managed by one or more instance groups forming a back-end service
 Can also send requests to static content in Cloud Storage buckets
-Managed Instance group - instance group updater apply rolling updates - canary update rollback zero downtime
+
+Network load balancing distributes incoming traffic across multiple instances ○ Supports non-HTTP(S) protocols (TCP/UDP) ○ Can be used for HTTPS traffic when you want to terminate connection on your instances (not at HTTPS load balancer) ● Supports autoscaling with managed instance groups
+
+To access load-balanced servers, a firewall rule must be created for the appropriate networks ○ Allows HTTP(S) traffic to Compute Engine instances ● Best practice is to create firewall rules allowing traffic only from GCP Load Balancer networks ○ 130.211.0.0/22 ● Instances can be further secured by having no external IP addresses ○ Load balancing uses internal IP addresses ○ Leave a bastion host by which you can manage these instances
+
+Global Forwarding Rules ● A global forwarding rule provides a single global IP address for an application ● The rule routes traffic by IP address, port, and protocol to an HTTP or HTTPS target proxy ● A global forwarding rule can only forward to a single port ○ Supporting HTTP and HTTPS requires two rules ● Global forwarding rules can only be used by an HTTP(S) load balancer
+
+Cloud SSL proxy advantages (vs. network load balancing with termination of SSL connections on the instances) ○ Intelligent routing ○ Reduced CPI load on instances ○ Certificate management ○ Security patching
+
+Target proxies are referenced by one or more global forwarding rules and route the incoming HTTP or HTTPS requests to a URL map. You can manage target proxies by using either the gcloud command-line tool or the REST API methods.
 
 # Cloud DNS
 Allows you to manage your domains right from GCP
@@ -108,6 +120,8 @@ Supports any language that will run in a Docker container
 Google provides preconfigured Docker containers for Python, Java, PHP, Go, Ruby, .NET, and NodeJS
 Docker containers run in a Compute Engine virtual machine
 Cannot scale to zero instances, so there is no free tier
+Autoscaling enabled but doesn't support microservices
+App Engine Flexible supports custom images
 
 # Google Cloud functions
 Serverless environments for running Node.js functions
@@ -164,12 +178,13 @@ ACID
 
 # Cloud BigTable
 Cloud Bigtable is ideal for applications that need very high throughput and scalability for non-structured key/value data, where each value is typically no larger than 10 MB. Cloud Bigtable also excels as a storage engine for batch MapReduce operations, stream processing/analytics, and machine-learning applications.
-A scalable, fully-managed NoSQL wide-column database that is suitable for both real-time access and analytics workloads.
+Cloud Bigtable is Google's NoSQL Big Data database service. It's the same database that powers many core Google services, including Search, Analytics, Maps, and Gmail. Bigtable is designed to handle massive workloads at consistent low latency and high throughput, so it's a great choice for both operational and analytical applications, including IoT, user analytics, and financial data analysis.
 Wide-column NoSQL datastore similar to Cassandra or HBase
 Requires a cluster of machines be created
 Each row in a BigTable table must have a unique key
 Go, Java
 Datasets starting at 1TB
+BigTable has full ETL capability. In this case also no need for autoscaling
 
 
 
@@ -256,7 +271,8 @@ ETL - Extract Transform
 publish-subscribe service
 Cloud Pub/Sub is a simple, reliable, scalable foundation for stream analytics and event-driven computing systems. As part of Google Cloud’s stream analytics solution, the service ingests event streams and delivers them to Cloud Dataflow for processing and BigQuery for fanalysis as a data warehousing solution.
 Can be used to queue up and store messages up to 7 days
-
+Balancing workloads in network clusters Implementing asynchronous workflows Distributing event notifications Refreshing distributed caches Logging to multiple systems Data streaming from various processes or devices Reliability improvement
+Does not work with synchronous workflows
 
 # Cloud Dataproc
 Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores.
@@ -307,7 +323,22 @@ Each small service can be deployed separately from the other services in the app
 
 # Study areas 
 BigQuery BigTable Cloud Storage
+Managed instance groups, Windows server scripts, pubsub, autoscaler, global forwarding rules
+cloud ssl proxy, load balancers, connection draining, endpoints
 Best practices and concepts
+
+# Autoscaling
+Graceful exit on autoscaling shrink event by running shutdown script to redirect incoming traffic at load balancer, and flush cache prior to exit.
+The autoscaler will collect information based on the policy, compare it to your desired target utilization, and determine if it needs to perform scaling
+Autoscaler controls managed instance group
+
+# Instance grouping
+regional managed instance groups improve your application availability by spreading your instances across three zones. 
+Managed Instance group - instance group updater apply rolling updates - canary update rollback zero downtime
+All unmanaged groups are used for is load balancing across dissimilar instances
+
+# Connection draining
+You can enable connection draining on backend services to ensure minimal interruption to your users when an instance is removed from an instance group, either manually or by an autoscaler. To enable connection draining, you set a timeout duration during which the backend service preserves existing sessions being handled by endpoints on an instance that will be removed. The backend service preserves these sessions until the timeout duration has elapsed, allowing user sessions to gracefully terminate, but preventing new connections to the instance. After the timeout duration is reached, the instance is terminated and all remaining connections are forcibly closed. You can set a timeout duration between 1 to 3600 seconds.
 
 doug@roitraining.com
 wwww.roitraining.com
