@@ -17,7 +17,9 @@ Understanding of how individual services work
 Understanding of how Google’s services are intended to fit together
 
 Persistent Volumes, using persistent disks in GCE, survive instance and container restarts.
-Deprecated - warning that image is not supported and may end
+Deprecated - Works warning
+Obsolete - new users cannot use it
+Deleted - all users cannot use it
 Windows Server requires scripts in GCS to be public https://cloud.google.com/compute/docs/startupscript
 Endpoints Frees developers from writing wrapper to access App Engine resources from a mobile or web client
 
@@ -133,7 +135,7 @@ Supports any language that will run in a Docker container
 Google provides preconfigured Docker containers for Python, Java, PHP, Go, Ruby, .NET, and NodeJS
 Docker containers run in a Compute Engine virtual machine
 Cannot scale to zero instances, so there is no free tier
-Autoscaling enabled but doesn't support microservices
+Autoscaling enabled
 App Engine Flexible supports custom images
 
 # Google Cloud functions
