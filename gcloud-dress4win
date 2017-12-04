@@ -6,8 +6,7 @@ infrastructure is now insu£cient for the application’s rapid
 growth
 
 # Solution Concept
-For the first phase of their migration to the cloud, Dress4win
-is considering moving their development and test
+For the first phase of their migration to the cloud, Dress4win is considering moving their development and test
 environments. They are also considering building a disaster
 recovery site, because their current infrastructure is at a
 single location. They are not sure which components of their
