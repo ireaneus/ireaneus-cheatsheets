@@ -24,6 +24,7 @@ Redis - metadata, social graph, caching
 Tomcat - Java micro-services    ## App Engine
 Nginx - static content          ## Storage
 Apache Beam - Batch processing  ## Data Flow
+
 # Storage appliances:
 iSCSI for VM hosts
 Fiber channel SAN - MySQL databases

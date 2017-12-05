@@ -22,6 +22,11 @@ Obsolete - new users cannot use it
 Deleted - all users cannot use it
 Windows Server requires scripts in GCS to be public https://cloud.google.com/compute/docs/startupscript
 Endpoints Frees developers from writing wrapper to access App Engine resources from a mobile or web client
+Kubernetes change the number of node in an existing cluster - gcloud container clusters resize new target number
+If asked if changing machine type in kubernetes while cluster is running - migrate to new cluster
+Continuous delivery is a DevOps software development practice where code changes are automatically built, tested, and prepared for a release to production.
+With continuous deployment, revisions are deployed to a production environment automatically without explicit approval from a developer, making the entire software release process automated
+Before you can make requests to Storage Transfer Service, you must make sure the Cloud Storage Transfer Service API is enabled for your project, and that your application is set up for authorization, using the OAuth 2.0 protocol.
 
 # Sometimes Google Cloud services seem interchangeable
 BigTable or DataStore
@@ -192,15 +197,13 @@ Transactions based on ACID properties, for example, transferring funds from one 
 
 # Cloud BigTable
 Cloud Bigtable is ideal for applications that need very high throughput and scalability for non-structured key/value data, where each value is typically no larger than 10 MB. Cloud Bigtable also excels as a storage engine for batch MapReduce operations, stream processing/analytics, and machine-learning applications.
-Cloud Bigtable is Google's NoSQL Big Data database service. It's the same database that powers many core Google services, including Search, Analytics, Maps, and Gmail. Bigtable is designed to handle massive workloads at consistent low latency and high throughput, so it's a great choice for both operational and analytical applications, including IoT, user analytics, and financial data analysis.
+Cloud Bigtable is Google's NoSQL Big Data database service. It's the same database that powers many core Google services, including Search, Analytics, Maps, and Gmail. Bigtable is designed to handle massive workloads at consistent low latency and high throughput, so it\'s a great choice for both operational and analytical applications, including IoT, user analytics, and financial data analysis.
 Wide-column NoSQL datastore similar to Cassandra or HBase
 Requires a cluster of machines be created
 Each row in a BigTable table must have a unique key
 Go, Java
 Datasets starting at 1TB
 BigTable has full ETL capability. In this case also no need for autoscaling
-
-
 
 # Cloud BigQuery
 A scalable, fully-managed Enterprise Data Warehouse (EDW) with SQL and fast response times.
@@ -211,7 +214,6 @@ Extremely inexpensive storage
 Extremely fast: jobs split across many machines 
 Easy to use: no indexes required, simple schemas
 NoOps: no need to provision anything
-
 
 
 # IAM
@@ -261,6 +263,9 @@ Real-time log management and analysis
 # StackDriver Monitoring
 Stackdriver Monitoring collects metrics, events, and metadata from Google Cloud Platform, Amazon Web Services (AWS), hosted uptime probes, application instrumentation, and a variety of common application components including Cassandra, Nginx, Apache Web Server, Elasticsearch and many others. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts.
 Stackdriver Monitoring is available in two service tiers, Basic and Premium
+Basic 7 days of logging 
+Premium 30 days of logging admin.
+400 days of non-admin logs
 
 # StackDriver Error reporting
 Stackdriver Error Reporting aggregates and displays errors produced in your running cloud services.
@@ -278,8 +283,10 @@ Traces are stored for 30 days.
 
 # GCP Dataflow
 Cloud Dataflow is a fully-managed service for transforming and enriching data in stream (real time) and batch (historical) modes with equal reliability and expressiveness -- no more complex workarounds or compromises needed. And with its serverless approach to resource provisioning and management, you have access to virtually limitless capacity to solve your biggest data processing challenges, while paying only for what you use.
+Data Flow Fully-managed data processing service, supporting both stream and batch execution of pipelines
 Apache Beam
-ETL - Extract Transform 
+ETL - The process of extracting data from source systems and bringing it into the data warehouse is commonly called ETL, which stands for extraction, transformation, and loading
+Dataflow is a unified programming model and a managed service for developing and executing a wide range of data processing patterns including ETL, batch computation, and continuous computation. Cloud Dataflow frees you from operational tasks like resource management and performance optimization.
 
 # Cloud Pub/Sub
 publish-subscribe service
@@ -295,7 +302,8 @@ It can setup HDFS on cloud storage buckets
 
 
 # Deployment manager
-Declarative
+Declarative parallel processing schema files
+yaml Declarative language
 Reliable reproducable - deployment Manager
 Cloud Launcher
 
@@ -336,10 +344,12 @@ Use a microservice architecture in App Engine
 Each small service can be deployed separately from the other services in the application
 
 # Study areas 
-BigQuery BigTable Cloud Storage
-Managed instance groups, Windows server scripts, pubsub, autoscaler, global forwarding rules
-cloud ssl proxy, load balancers, connection draining, endpoints
+deployment manager
+Cloud Storage
+Cloud endpoint
 Best practices and concepts
+CI/CD
+Tensorflow
 
 # Autoscaling
 Graceful exit on autoscaling shrink event by running shutdown script to redirect incoming traffic at load balancer, and flush cache prior to exit.
@@ -357,3 +367,22 @@ You can enable connection draining on backend services to ensure minimal interru
 doug@roitraining.com
 wwww.roitraining.com
 linkedin:drehnstrom
+
+Cloud Dataflow 	  # Serverless stream and batch data processing service
+BigQuery 	        # Serverless data warehousing services that help you to deploy advanced cloud data warehousing solutions for your enterprise
+Cloud ML Engine 	# Serverless machine learning services that automatically scales built on custom Google hardware (Tensor Processing Units)
+
+Mobile apps 	        # Firebase
+Web clients 	        # Firebase
+Web backend 	        # App Engine -> Datastore
+Microservices 	      # Cloud Functions -> Datastore
+Bots 	                # Cloud Functions
+IoT device messages 	# Cloud Pub/Sub -> Dataflow
+NoSQL database 	      # Cloud Datastore
+ETL 	                # Cloud Dataflow -> BigQuery
+Blob file storage 	  # Cloud Storage
+Analytics warehouse (SQL) 	# BigQuery
+Personalization 	    #Cloud Machine Learning Engine
+
+# Tensorflow
+TensorFlow™ is an open source software library for numerical computation using data flow graphs. Nodes in the graph represent mathematical operations, while the graph edges represent the multidimensional data arrays (tensors) communicated between them
