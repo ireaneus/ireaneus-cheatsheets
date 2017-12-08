@@ -148,3 +148,10 @@ mount -a
 
 # truncate an active log file
 sudo truncate -s 0 ${LOGFILE]
+
+# To install oracle or applications 
+# and security has locked down /tmp - noexec
+#
+TEMP=/spacious directory
+TMPDIR=/same dir
+export TEMP TMPDIR
