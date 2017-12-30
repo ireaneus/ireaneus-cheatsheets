@@ -55,6 +55,12 @@ export GREP_OPTIONS='--color=auto'
 # To search for multiple words
 grep 'opened\|closed' /var/log/secure	# grep or
 
+# To view contents of a file without the '#'
+grep ^[^#] /etc/postfix/main.cf
+
+# To view only active entries in a file 
+egrep -v "^$|^[[:space:]]*#" /etc/postfix/main.cf
+
 # Get an instance count
 grep failure /var/log/secure -c
 
