@@ -107,3 +107,10 @@ git pull --unshallow
 
 # To unpack a git file
 git clone https://github.com/pixelb/ps_mem.git
+
+# To move changes from one branch or master to another
+git stash
+git checkout -b branch
+git stash pop
+git status
+
