@@ -78,3 +78,16 @@ declare -i NEWVAR=123  # Integer only
 declare -r NEWVAR="this is readonly"
 declare +i NEWVAR="string"
 declare -p NEWVAR 	# print
+
+# Export variables
+$ MYVAR="value"
+$ echo ${MYVAR}
+value
+$ echo 'echo ${MYVAR}' > echo.sh
+$ chmod +x echo.sh
+$ ./echo.sh 
+
+$ export MYVAR="value-exported"
+$ ./echo.sh 
+value-exported
+
