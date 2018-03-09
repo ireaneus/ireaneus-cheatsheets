@@ -40,6 +40,10 @@ the settings listed below:
 23. resize2fs /dev/VolumeName/LogicalName
 24. df -h; mount -a; df -h
 
+# Extending a Logical Volume
+lvextend -L4G /dev/vgAPPS/lvca
+resize2fs /dev/vgAPPS/lvca
+
 # For xfs file system (RedHat 7.1 /home)
 22. yum install xfsprogs.x86_64
 23. mount -t xfs /dev/mapper/VolumeName-LogicalName /home
@@ -53,4 +57,5 @@ the settings listed below:
 
 # More information
 lvs --units m -o devices
-
+parted -l  		# shows size in mb
+pvresize /dev/sdc	# if vm disk has been increased
