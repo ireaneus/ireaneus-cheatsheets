@@ -35,3 +35,6 @@ tar -zcf - CentOS-7-x86_64-DVD-1503.iso | pv | nc -l -p 5555 -q 5
 
 # Computer B
 nc 192.168.1.4 5555 | pv | tar -zxf -
+
+# ncat server sending an echo command to a server on udp/8125
+[root@usdl265 ~]# echo "mycounter:10|c" | ncat -vv uspwhlg02 -u 8125

@@ -30,6 +30,14 @@ the settings listed below:
 15. mount /dev/mapper/VolumeName-LogicalName /mountemptydirectory
 16. df -h	# Displays mounted volumes
 
+# Extending a Physical Volume
+fdisk -l
+parted -l
+cfdisk /dev/sdc
+echo "- - -" > /sys/class/scsi_host/host0/scan		# added physical disk
+echo 1 > /sys/class/scsci_device/<device>/device/rescan	# added space to existing disk
+pvresize /dev/sdc
+
 # Extending a volume group
 17. create new primary partition in fdisk
 18. create a new physical volume - pvcreate /dev/sdb1 /dev/sdb2
@@ -39,6 +47,10 @@ the settings listed below:
 22. e2fsck -f /dev/VolumeName/LogicalName
 23. resize2fs /dev/VolumeName/LogicalName
 24. df -h; mount -a; df -h
+
+# Extending a Logical Volume
+lvextend -L4G /dev/vgAPPS/lvca
+resize2fs /dev/vgAPPS/lvca
 
 # For xfs file system (RedHat 7.1 /home)
 22. yum install xfsprogs.x86_64
@@ -53,4 +65,5 @@ the settings listed below:
 
 # More information
 lvs --units m -o devices
-
+parted -l  		# shows size in mb
+pvresize /dev/sdc	# if vm disk has been increased

@@ -72,3 +72,22 @@ ctrl-h	# Delet the character before the cursor
 # Completion commands
 alt-? 	# Display list of possible combos
 alt-* 	# Insert all possible completions
+
+# Declare statements
+declare -i NEWVAR=123  # Integer only
+declare -r NEWVAR="this is readonly"
+declare +i NEWVAR="string"
+declare -p NEWVAR 	# print
+
+# Export variables
+$ MYVAR="value"
+$ echo ${MYVAR}
+value
+$ echo 'echo ${MYVAR}' > echo.sh
+$ chmod +x echo.sh
+$ ./echo.sh 
+
+$ export MYVAR="value-exported"
+$ ./echo.sh 
+value-exported
+
