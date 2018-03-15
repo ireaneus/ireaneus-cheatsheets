@@ -63,6 +63,20 @@ resize2fs /dev/vgAPPS/lvca
 27. lvremove /dev/vg/lv
 28. vgreduce --removemissing
 
+# Remove Logical Volume
+lvs
+vim /etc/fstab
+umount /data01
+lvchange -an /dev/datavg/testlv
+lvremove /dev/datavg/testlv
+
+# Remove Volume Group
+vgchange -an datavg
+vgremove datavg
+
+# Delete physical volume being used by volume group
+pvremove /dev/sdb /dev/sdc
+
 # More information
 lvs --units m -o devices
 parted -l  		# shows size in mb
