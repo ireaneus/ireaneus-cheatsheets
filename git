@@ -11,6 +11,24 @@ git config --global color.ui true
 # To stage all changes for commit:
 git add --all
 
+# To stash changes locally, this will keep the changes in a separate changelist
+# called stash and the working directory is cleaned. You can apply changes
+# from the stash anytime
+git stash
+
+# To stash changes with a message
+git stash save "message"
+
+# To list all the stashed changes
+git stash list
+
+# To apply the most recent change and remove the stash from the stash list
+git stash pop
+
+# To apply any stash from the list of stashes. This does not remove the stash
+# from the stash list
+git stash apply stash@{6}
+
 # To commit staged changes
 git commit -m "Your commit message"
 
@@ -105,12 +123,29 @@ git clone --depth 1 <remote-url>
 # To unshallow a clone
 git pull --unshallow
 
-# To unpack a git file
-git clone https://github.com/pixelb/ps_mem.git
+# Create a bare branch (one that has no commits on it)
+git checkout --orphan branch_name
 
-# To move changes from one branch or master to another
-git stash
-git checkout -b branch
-git stash pop
-git status
+# Checkout a new branch from a different starting point
+git checkout -b master upstream/master
 
+# Remove all stale branches (ones that have been deleted on remote)
+# So if you have a lot of useless branches, delete them on Github and then run this
+git remote prune origin
+
+# The following can be used to prune all remotes at once
+git remote prune $(git remote | tr '\n' ' ')
+
+# Revisions can also be identified with :/text
+# So, this will show the first commit that has "cool" in their message body
+git show :/cool
+
+# Undo parts of last commit in a specific file
+git checkout -p HEAD^ -- /path/to/file
+
+# Revert a commit and keep the history of the reverted change as a separate revert commit
+git revert <commit SHA>
+
+# Pich a commit from a branch to current branch. This is different than merge as
+# this just applies a single commit from a branch to current branch
+git cherry-pick <commit SHA1>

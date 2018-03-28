@@ -29,6 +29,3 @@ yum list <package_name_or_word_to_search>
 yumdownloader --source <package name>
 
 # (You have to install yumdownloader first, which is installed by the yum-utils package)
-
-# List security packages installed
-yum updateinfo list security all | grep "RHSA-2018:0[3,4]"
