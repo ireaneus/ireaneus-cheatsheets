@@ -1,5 +1,3 @@
-# Vim cheatsheet
-
 # File management
 
 :e              reload file
@@ -25,17 +23,8 @@ B               previous start of whitespace-delimited word
 $               end of line
 gg              go to first line in file
 G               go to end of file
-
-# Vim Screen Navigation
-
-H 		Go to the first line of current screen
-M		Go to the middle line of current screen
-L		Go to the last line of current screen
-Ctrl+f		Jump forward
-:sp filename	horizontal split with another file
-:vsp filename	vertical split with another file
-Ctrl+w		move between windows
-:!<command>	jump out of terminal and execute command
+gk		move down one displayed line
+gj		move up one displayed line
 
 # Insertion
 #   To exit from insert mode use Esc or Ctrl-C
@@ -49,12 +38,13 @@ o               create a new line under the cursor
 O               create a new line above the cursor
 R               enter insert mode but replace instead of inserting chars
 :r {file}       insert from file
-Ctrl+n		insert next word - start typing word and it will fill with next available word
-Ctrl+p		insert prev word - start typing word and it will fill with prev available word
+4i		insert 4 copies of your next insert
+7r		replace 7 characters
 
 # Editing
 
 u               undo
+.		redo
 yy              yank (copy) a line
 y{motion}       yank text that {motion} moves over
 p               paste after cursor
@@ -62,12 +52,19 @@ P               paste before cursor
 <Del> or x      delete a character
 dd              delete a line
 d{motion}       delete text that {motion} moves over
-.		repeat previous command - if dw press . to delete another word
-:set number	shows number lines
-:%s/foo/bar/g	Find each occurrence of 'foo' (in all lines), and replace it with 'bar'
-:s/foo/bar/g	current line only
+v		visual copy
+Shift-v		visual copy of line
+Ctrl-v		visual block mode
 
-# Preceding a motion or edition with a number repeats it n times
+
+# Search and replace with the `:substitute` (aka `:s`) command
+
+:s/foo/bar/	replace the first match of 'foo' with 'bar' on the current line only
+:s/foo/bar/g	replace all matches (`g` flag) of 'foo' with 'bar' on the current line only
+:%s/foo/bar/g	replace all matches of 'foo' with 'bar' in the entire file (`:%s`)
+:%s/foo/bar/gc	ask to manually confirm (`c` flag) each replacement 
+
+# Preceding a motion or edition with a number repeats it 'n' times
 # Examples:
 50k         moves 50 lines up
 2dw         deletes 2 words

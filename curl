@@ -34,5 +34,8 @@ curl http://ifconfig.me/all/json
 # Limit the rate of a download
 curl --limit-rate 1000B -O http://path.to.the/file
 
-# Example of weather forecast
-curl wttr.in
+# Get your global IP
+curl httpbin.org/ip 
+
+
+curl -s google.com | egrep -ci "301 moved" > /dev/null && echo "file has moved"
