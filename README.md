@@ -1,4 +1,8 @@
+<h1>CheatSheets
+
 # setting up .bashrc with exports
+
+```sh
 export EDITOR='/usr/bin/vim'
 
 export DEFAULT_CHEAT_DIR='/home/dhaines@taos.local/linux_cheat'
@@ -6,9 +10,12 @@ export DEFAULT_CHEAT_DIR='/home/dhaines@taos.local/linux_cheat'
 export CHEATPATH='/usr/lib/python2.7/site-packages/cheat/cheatsheets'
 
 export CHEATCOLORS='true'
+```
 
 # Linux CommandLine Cheatsheets
 command line usage
+
+```sh
 
 cheat <cheatsheet>      # Displays specified cheatsheet
 
@@ -21,3 +28,4 @@ cheat -l                # Lists all existing cheatsheets
 cheat -d                # Displays the working directories
 
 cheat -v                # cheat version
+```
