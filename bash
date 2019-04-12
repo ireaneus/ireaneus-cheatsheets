@@ -1,4 +1,5 @@
-## #!/bin/bash
+```sh
+#!/usr/bin/env bash
 bash my.sh
 chmod +x my.sh
 ./my.sh
@@ -91,3 +92,4 @@ $ export MYVAR="value-exported"
 $ ./echo.sh 
 value-exported
 
+```
