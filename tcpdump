@@ -1,3 +1,4 @@
+```sh
 # TCPDump is a packet analyzer. It allows the user to intercept and display TCP/IP
 # and other packets being transmitted or received over a network. (cf Wikipedia).
 # Note: 173.194.40.120 => google.com
@@ -64,9 +65,8 @@ tcpdump -X
 # - not dst host 8.8.8.8
 # - src net 67.207.148.0 mask 255.255.255.0
 # - src net 67.207.148.0/24
-<<<<<<< HEAD
+
 
 # write to a file and capture tcp traffic to a destination IP
 # tcpdump -w ~/0001.pcap -i eth0 dst 10.192.4.11
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+```
