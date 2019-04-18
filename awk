@@ -76,7 +76,6 @@ seq 9 | sed 'H;g' | awk -v RS='' '{for(i=1;i<=NF;i++)printf("%dx%d=%d%s", i, NR,
 
 # To print the 12th column in a grep
 grep -i break-in auth.log | awk {'print $12'}
-<<<<<<< HEAD
 
 # List of commands you use most often
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
