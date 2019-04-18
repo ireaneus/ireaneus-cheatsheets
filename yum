@@ -1,3 +1,4 @@
+```sh
 # To install the latest version of a package:
 yum install <package name>
 
@@ -29,3 +30,4 @@ yum list <package_name_or_word_to_search>
 yumdownloader --source <package name>
 
 # (You have to install yumdownloader first, which is installed by the yum-utils package)
+```
