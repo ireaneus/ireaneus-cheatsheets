@@ -1,3 +1,4 @@
+```sh
 # lsmod		Lists kernel drivers loaded into memory
 # lscpu		Summary of the CPU and it features
 lscpu -a --all	offline and online CPUs
@@ -27,3 +28,4 @@ lsblk -f --fs			include filesystems
 lsblk -i			ascii tree view
 lsblk -l			list view
 lsblk -t			tree view
+```
