@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ```sql
 
 # mysql default port 3306
@@ -28,8 +27,7 @@ BDB can support transactions similar to InoDB but the execution is slower.
 # what about disk is full
 When the data disk is full and overloaded the way out is to create and soft link and move the .frm as well as the .idb files into that link location.
 
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
 # To setup mysql initially
 mysql_secure_installation
 
@@ -86,7 +84,7 @@ select * from tablename;
 select fieldname from tablename;
 select fieldname, fieldname from tablename where fieldname="value";
 select count(*) from table;
-<<<<<<< HEAD
+
 
 # View size of database
 SELECT table_schema AS "Database", 
@@ -97,5 +95,3 @@ GROUP BY table_schema;
 # What is a .frm file 
 FRM files are used to define the format of a table used with MySQL. MySQL is a cross-platform relational database. FRM files will have the same name as the table they reference, but with a .FRM extension. FRM files are created by MySQL when the table is created.
 ```
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
