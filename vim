@@ -37,7 +37,11 @@ I               insert at the beginning of the line
 o               create a new line under the cursor
 O               create a new line above the cursor
 R               enter insert mode but replace instead of inserting chars
+<<<<<<< HEAD
 :r {file}       insert from file - where the cursor is at insert another file
+=======
+:r {file}       insert from file
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 4i		insert 4 copies of your next insert
 7r		replace 7 characters
 
@@ -56,17 +60,24 @@ v		visual copy
 Shift-v		visual copy of line
 Ctrl-v		visual block mode
 
+<<<<<<< HEAD
 # Filters
 Ctrl-v		highlight block
 :!sort -k 4	sort by column 4
 
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Search and replace with the `:substitute` (aka `:s`) command
 
 :s/foo/bar/	replace the first match of 'foo' with 'bar' on the current line only
 :s/foo/bar/g	replace all matches (`g` flag) of 'foo' with 'bar' on the current line only
 :%s/foo/bar/g	replace all matches of 'foo' with 'bar' in the entire file (`:%s`)
+<<<<<<< HEAD
 :%s/foo/bar/gc	ask to manually confirm (`c` flag) each replacement
+=======
+:%s/foo/bar/gc	ask to manually confirm (`c` flag) each replacement 
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Preceding a motion or edition with a number repeats it 'n' times
 # Examples:
@@ -74,6 +85,7 @@ Ctrl-v		highlight block
 2dw         deletes 2 words
 5yy         copies 5 lines
 42G         go to line 42
+<<<<<<< HEAD
 
 
 # Working in buffers - or opening more files in VIM
@@ -90,3 +102,5 @@ Ctrl-v		highlight block
 e file.txt        # opens file like bad
 vs                # visual split screen
 map ,t :!make<cr> # mapping
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767

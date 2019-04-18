@@ -1,5 +1,8 @@
 # Command line email program
+<<<<<<< HEAD
 # Install mail-utils
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 mail -s "Test Subject" user@domain.com < /dev/null
 
 # Send an attachment through mail

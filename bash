@@ -20,7 +20,11 @@ echo Your email is ${EMAIL}.
 
 
 # To implement a for loop:
+<<<<<<< HEAD
 for file in [[ "ls -l * | wc -l" ]];
+=======
+for file in *;
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 do 
     echo $file found;
 done
@@ -35,10 +39,18 @@ in
     3*) echo "something beginning with 3 found";;
 esac
 
+<<<<<<< HEAD
 
 # debugging:
 set -x	# turn on debugging
 set +x	# turn off debugging
+=======
+# Turn on debugging:
+set -x
+
+# Turn off debugging:
+set +x
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Environment echo commands
 echo $PATH $HOME $UID $(date) $USER
@@ -62,6 +74,7 @@ alt-b	# Move backward one word
 ctrl-l	# clear screen and move to top left
 ctrl-xx	# Move between the beginning of the 
 	# line, return to start of line and 
+<<<<<<< HEAD
 	# change something then back again
 
 # bash command replacement
@@ -73,6 +86,9 @@ vi !^
 # vi anaconda-ks.cfg
 
 !grep	# run the last grep command
+=======
+	# change something then back 
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # bash delete text
 ctrl-d	# Delete character under the cursor
@@ -100,4 +116,9 @@ $ ./echo.sh
 $ export MYVAR="value-exported"
 $ ./echo.sh 
 value-exported
+<<<<<<< HEAD
 ```
+=======
+
+```
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767

@@ -81,6 +81,7 @@ ansible_docker_extra_args
 
 # vars playbook
 --extra-vars "varname1= varname2="
+<<<<<<< HEAD
 
 # system facts:
 ansible host -m setup -a 'filter=*ipv4'
@@ -97,3 +98,5 @@ The term “Facts” is commonly used in Ansible environment. They are described
 You can see all the facts via:
 
 $ ansible all- m setup
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767

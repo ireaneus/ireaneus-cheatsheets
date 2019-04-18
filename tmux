@@ -5,10 +5,17 @@ tmux
 Ctrl-b d
 
 # Restore tmux session:
+<<<<<<< HEAD
 tmux attach-session -t <target session id>  # use display session to list
 
 # Detach an already attached session (great if you are moving devices with different screen resolutions)
 tmux attach -d
+=======
+tmux attach
+
+# Detach an already attached session (great if you are moving devices with different screen resolutions)
+tmux attach -d 
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Display session:
 tmux ls

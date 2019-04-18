@@ -2,7 +2,11 @@
 du -sk *| sort -rn
 
 # To show cumulative humanreadable size
+<<<<<<< HEAD
 du -sh .	# just the current directory
+=======
+du -sh
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 du -xsh		# x is used to exclude NFS partition within the partition that is being scanned
 du -Sm /var/log | sort -rn | sed '{11,$D; =}' | sed 'N; s/\n/ /' | awk '{printf $1 ":" "\t" $2 "\t" $3 "\n"}'
 

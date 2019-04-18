@@ -16,6 +16,7 @@ ss -t dst 192.168.2.1:80
 
 # show all ssh related connection
 ss -t state established '( dport = :ssh or sport = :ssh )'
+<<<<<<< HEAD
 ss -o state established '( dport = :ssh or sport = :ssh )'
 
 # List all the tcp sockets in state FIN-WAIT-1 for our apache to network 193.233.7/24 and look at their timers.
@@ -24,3 +25,5 @@ ss -o state fin-wait-1 '( sport = :http or sport = :https )' dst 193.233.7/24
 # Display all TCP sockets with process SELinux security contexts.
 ss -t -a -Z
 
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767

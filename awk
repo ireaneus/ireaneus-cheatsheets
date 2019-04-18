@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ```sh
 #### Awk is a programming language which allows easy manipulation of structured data and the generation of formatted reports
 #### https://www.thegeekstuff.com/2010/01/awk-introduction-tutorial-7-awk-print-examples/
@@ -65,6 +66,8 @@ $ awk '$1 >200' employee.txt
 500  Randy   DBA        Technology  $6,000
 
 
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 # sum integers from a file or stdin, one integer per line:
 printf '1\n2\n3\n' | awk '{ sum += $1} END {print sum}'
 
@@ -76,6 +79,7 @@ seq 9 | sed 'H;g' | awk -v RS='' '{for(i=1;i<=NF;i++)printf("%dx%d=%d%s", i, NR,
 
 # To print the 12th column in a grep
 grep -i break-in auth.log | awk {'print $12'}
+<<<<<<< HEAD
 
 # List of commands you use most often
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
@@ -92,3 +96,5 @@ netstat -ant | awk '{print $NF}' | grep -v '[a-z]' | sort | uniq -c
 # Showbiggest files/directories, biggest first with 'k,m,g' eyecandy
 du –max-depth=1 | sort -r -n | awk '{split("k m g",v); s=1; while($1>1024){$1/=1024; s++} print int($1)" "v[s]"\t"$2}'
 ```
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 # Exclusive Activation of a Volume Group in a Cluster
 # Link --> https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/s1-exclusiveactive-HAAA.html
+=======
+# Exclusive Activation of a Volume Group in a Cluster 
+# Link --> https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/s1-exclusiveactive-HAAA.html 
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 1> vgs --noheadings -o vg_name
 2> volume_list = [ "rhel_root", "rhel_home" ]
 3> dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
@@ -14,7 +19,10 @@
 datastore it is on, the Type of disk, if it is Thin, you will want to set your new drive with
 the settings listed below:
 4. Verify independent and virtual device node match the other drives then finish
+<<<<<<< HEAD
 5. lsscsi displays scsi id: /dev/sd[x]
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Adding a new drive and creating a new volume group
 
@@ -61,7 +69,11 @@ resize2fs /dev/vgAPPS/lvca
 
 # Remove a bad hdd.
 26. remove bad drive.
+<<<<<<< HEAD
 27. lvremove -f vgAPPS/lv-Vol0				# removes logical volume
+=======
+27. lvremove /dev/vg/lv
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 28. vgreduce --removemissing
 
 # Remove Logical Volume
@@ -76,7 +88,10 @@ vgchange -an datavg
 vgremove datavg
 
 # Delete physical volume being used by volume group
+<<<<<<< HEAD
 vgreduce vgAPPS /dev/sdb /dev/sdc
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 pvremove /dev/sdb /dev/sdc
 
 # More information

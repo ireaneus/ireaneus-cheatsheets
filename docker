@@ -27,6 +27,7 @@ docker ps -a
 
 # list all images
 docker images
+<<<<<<< HEAD
 
 # Attach to a running docker image
 docker attach <imagename> 		# ctrl+c will exit the container
@@ -66,3 +67,5 @@ EXPOSE 80
 EXPOSE 22
 
 CMD ["/usr/sbin/apache2ctl","-D","FOREGROUND"]
+=======
+>>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
