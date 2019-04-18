@@ -1,10 +1,8 @@
-<<<<<<< HEAD
+```sh
 # Install nfs for nfs clients
 yum install nfs-utils nfs-utils-lib
 service nfs start   # if failed start rpcbind
 
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 # To mount / partition as read-write in repair mode:
 mount -o remount,rw /
 
@@ -16,3 +14,4 @@ mount -o uid=username,gid=usergroup /dev/sdx /mnt/xxx
 
 # To mount a remote NFS directory
 mount -t nfs example.com:/remote/example/dir /local/example/dir
+```
