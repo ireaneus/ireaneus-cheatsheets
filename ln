@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+```sh
 # Symlink, while overwriting existing destination files
 ln -sf /some/dir/exec /usr/bin/exec
 
@@ -106,10 +106,10 @@ cat dst_link.txt
 
 # Credit to The Geek Stuff
 # https://www.thegeekstuff.com/2010/10/linux-ln-command-examples/
-=======
+
 # To create a symlink:
 ln -s path/to/the/target/directory name-of-symlink
 
 # Symlink, while overwriting existing destination files
 ln -sf /some/dir/exec /usr/bin/exec
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+```
