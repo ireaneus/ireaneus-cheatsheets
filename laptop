@@ -1,0 +1,10 @@
+# setup Centos 7 
+Static IP address setup
+Ansible git cheat VS code awscli chrome
+
+# Setup Ansible client
+Create ansible user account uid 1001
+add user to wheel group
+sudoers file with nopasswd - visudo
+ssh-copy-id ansible@client-ip
+authorized_keys
