@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 ```python
 
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 # Desc: Python is a high-level programming language.
 
 # Basic example of server with python
@@ -19,7 +16,7 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 
 # Pretty print a json
 python -mjson.tool
-<<<<<<< HEAD
+
 
 ### Python Strings Built-in types
 # https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str
@@ -67,5 +64,3 @@ import argparser
 [root@server1] python3 for1.py
 #chmod u+x for1.py
 ```
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
