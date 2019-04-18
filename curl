@@ -1,3 +1,4 @@
+```sh
 # Download a single file
 curl http://path.to.the/file
 
@@ -69,7 +70,6 @@ curl john:abc123@httpbin.org/basic-auth/john/abc123
 # Setting Cookies -b
 curl --cookie "name=john;course=linux beginner" httpbin.org/cookies
 
-
 curl -s google.com | egrep -ci "301 moved" > /dev/null && echo "file has moved"
 
 # Curl supports client- side certificates. All certificates are locked with a pass phrase, which you need to enter before the certificate can be used by curl. The pass phrase can be specified on the command line or if not, entered interactively when curl queries for it. Use a certificate with curl on a HTTPS server like:
@@ -79,5 +79,6 @@ curl -s google.com | egrep -ci "301 moved" > /dev/null && echo "file has moved"
 # At times you may end up with your own CA cert store and then you can tell curl to use that to verify the server's certificate:
 
  curl --cacert ca-bundle.pem https://example.com/
-=======
+
 curl httpbin.org/ip 
+```
