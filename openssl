@@ -1,4 +1,5 @@
 
+```sh
 # The commands below may be run in sequence to generate a self-signed SSL certificate.)
 # or use digicert.com wizard
 # Note: If you're generating an Apache CSR for a Wildcard certificate, make sure your common name starts with an asterisk (e.g., *.example.com).
@@ -51,4 +52,4 @@ Comodo
 Symantec
 Digicert
 GeoTrust
-
+```
