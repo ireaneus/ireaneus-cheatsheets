@@ -1,3 +1,4 @@
+```sh
 # Basic stracing
 strace <command>
 
@@ -9,10 +10,8 @@ strace -e trace=open <command>
 
 # follow all the system calls which open a file
 strace -e trace=file <command>
-<<<<<<< HEAD
 strace -e trace=file -o/tmp/strace.out /usr/sbin/httpd -DFOREGROUND -X
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
 
 # follow all the system calls associated with process
 # management
@@ -25,8 +24,5 @@ strace -f <command>
 strace -c <command>
 
 # trace a running process (multiple PIDs can be specified)
-<<<<<<< HEAD
 strace -p <pid>
-=======
-strace -p <pid>
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+```
