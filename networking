@@ -1,9 +1,6 @@
 # Cheat sheet for networking commands
-<<<<<<< HEAD
 ## Login to Cisco router/switches
-=======
-# Login to Cisco router/switches
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
 
 # Status of interfaces
 sh int status
@@ -26,7 +23,7 @@ interface> no shut
 ifconfig | grep "inet addr:" | awk '{print $2}' | grep -v '127.0.0.1' | cut -f2 -d:
 ip addr show | grep inet | grep -v 'inet6'| grep -v '127.0.0.1' | awk '{print $2}' | cut -f1 -d/
 
-<<<<<<< HEAD
+
 # How Ping works
 Computer A sends an ICMP ECHO_REQUEST to a DNS computer B which sends an ECHO_REPLY
 Type	Code	description
@@ -104,5 +101,4 @@ Adding virtual LAN (VLAN) support to a Layer 2 switch offers some of the benefit
 A VLAN is a group of devices on one or more LANs that are configured to communicate as if they were attached to the same wire, when in fact they are located on a number of different LAN segments. Because VLANs are based on logical instead of physical connections, they are extremely flexible.
 
 VLANs define broadcast domains in a Layer 2 network. A broadcast domain is the set of all devices that will receive broadcast frames originating from any device within the set. Broadcast domains are typically bounded by routers because routers do not forward broadcast frames. Layer 2 switches create broadcast domains based on the configuration of the switch. Switches are multiport bridges that allow you to create multiple broadcast domains. Each broadcast domain is like a distinct virtual bridge within a switch.
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
