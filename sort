@@ -1,3 +1,4 @@
+```sh
 # To sort a file:
 sort file
 
@@ -26,8 +27,6 @@ sort file1.txt file2.txt file3.txt > final_sorted_list.txt
 # Examples
 ls -l /usr/bin | sort -nr -k 5 | head
 
-<<<<<<< HEAD
 # to sort by field and keys
 sort -n -t. --key=1,4
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+```
