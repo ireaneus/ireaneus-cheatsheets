@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # The commands below may be run in sequence to generate a self-signed SSL certificate.)
 # or use digicert.com wizard
 # Note: If you're generating an Apache CSR for a Wildcard certificate, make sure your common name starts with an asterisk (e.g., *.example.com).
@@ -10,15 +10,14 @@ openssl ciphers -v | awk '{print $2}' | sort | uniq
 openssl s_client connect https://
 
 ## Generate files - private and csr keys
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
 # To create a 2048-bit private key:
 openssl genrsa -out server.key 2048
 
 # To create the Certificate Signing Request (CSR):
 openssl req -new -key server.key -out server.csr
 
-<<<<<<< HEAD
+
 ## Order Your SSL/TLS Certificate
 
 Open the .csr file you created with a text editor.
@@ -30,24 +29,16 @@ Copy the text, including the -----BEGIN NEW CERTIFICATE REQUEST----- and -----EN
 # To sign a certificate using a private key and CSR:
 openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
-=======
-# To sign a certificate using a private key and CSR:
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-
 # (The above commands may be run in sequence to generate a self-signed SSL certificate.)
 
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
 # To show certificate information for a certificate signing request
 openssl req -text -noout -in server.csr
-
-# To show certificate information for generated certificate
-openssl x509 -text -noout -in server.crt 
 
 # To view certificate expiration:
 echo | openssl s_client -connect <hostname>:443 2> /dev/null | \
 awk '/-----BEGIN/,/END CERTIFICATE-----/' | \
 openssl x509 -noout -enddate
-<<<<<<< HEAD
 
 # If you use the 'openssl' tool, this is one way to get extract the CA cert for a particular server:
 
@@ -60,5 +51,4 @@ Comodo
 Symantec
 Digicert
 GeoTrust
-=======
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+
