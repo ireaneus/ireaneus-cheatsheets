@@ -19,12 +19,8 @@ export CHEATCOLORS='true'
 ## Linux CommandLine Cheatsheets
 command line usage
 
-```
-
 # Linux CommandLine Cheatsheets
 command line usage
-
-```sh
 
 cheat <cheatsheet>      # Displays specified cheatsheet
 
