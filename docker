@@ -1,3 +1,4 @@
+```sh
 # Start docker daemon
 docker -d
 
@@ -67,3 +68,4 @@ EXPOSE 80
 EXPOSE 22
 
 CMD ["/usr/sbin/apache2ctl","-D","FOREGROUND"]
+```
