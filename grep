@@ -1,3 +1,4 @@
+```sh
 # Search a file for a pattern
 grep pattern file
 
@@ -35,7 +36,6 @@ grep -f grepinput file1		# grepinput has hello
 egrep -i 'hello.*world' file1	# looks for hello world
 egrep -i 'hello|world' file1 	# looks for hello or world in lines
 egrep -iv 'hello|world' file1 	# lines that do not contain hello world
-<<<<<<< HEAD
 egrep -r 'hello|world|friend' file*	# grep or statement 
 
 # fgrep literal pattern
@@ -43,8 +43,7 @@ fgrep hello$ file1		# literal line found hello$
 
 # grep to remove cmments and empty lines in config files
 grep -v '^#\|^$' /etc/some/conf/file
-=======
 
 # fgrep literal pattern
 fgrep hello$ file1		# literal line found hello$
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
+```
