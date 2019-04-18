@@ -7,16 +7,11 @@ curl http://example.com/file.zip -o new_file.zip
 # Download multiple files
 curl -O URLOfFirstFile -O URLOfSecondFile
 
-<<<<<<< HEAD
 # Download a file and pass HTTP Authentication
 curl -u username:password URL
-=======
+
 # Download all sequentially numbered files (1-24)
 curl http://example.com/pic[1-24].jpg
-
-# Download a file and pass HTTP Authentication
-curl -u username:password URL 
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 
 # Download a file with a Proxy
 curl -x proxysever.server.com:PORT http://addressiwantto.access
@@ -40,7 +35,6 @@ curl http://ifconfig.me/all/json
 curl --limit-rate 1000B -O http://path.to.the/file
 
 # Get your global IP
-<<<<<<< HEAD
 curl httpbin.org/ip
 
 # POST REQUEST - json
@@ -87,7 +81,3 @@ curl -s google.com | egrep -ci "301 moved" > /dev/null && echo "file has moved"
  curl --cacert ca-bundle.pem https://example.com/
 =======
 curl httpbin.org/ip 
-
-
-curl -s google.com | egrep -ci "301 moved" > /dev/null && echo "file has moved"
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
