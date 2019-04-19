@@ -39,5 +39,5 @@ cheat -v                # cheat version
 
 ## Setting up Syntax highlighting
  So far it has worked with 
-  "```sh and ```" in between command blocks
+  "```sh and ```" in between command blocks<br>
   "```sql and ```" at the top of the page and bottom
