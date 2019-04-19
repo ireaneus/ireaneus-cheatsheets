@@ -1,5 +1,3 @@
-```sh
-
 # CheatSheets
 
 ## setting up .bashrc with exports
@@ -7,6 +5,8 @@
 <h1>CheatSheets
 
 # setting up .bashrc with exports
+
+```sh
 
 export EDITOR='/usr/bin/vim'
 
@@ -16,11 +16,12 @@ export CHEATPATH='/usr/lib/python2.7/site-packages/cheat/cheatsheets'
 
 export CHEATCOLORS='true'
 
-## Linux CommandLine Cheatsheets
-command line usage
+```
 
 # Linux CommandLine Cheatsheets
 command line usage
+
+```sh
 
 cheat <cheatsheet>      # Displays specified cheatsheet
 
@@ -34,9 +35,9 @@ cheat -d                # Displays the working directories
 
 cheat -v                # cheat version
 
+```
 
 ## Setting up Syntax highlighting
  So far it has worked with 
   "```sh and ```" in between command blocks
   "```sql and ```" at the top of the page and bottom
-```
