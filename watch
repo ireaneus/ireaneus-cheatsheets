@@ -12,3 +12,4 @@ watch -d date				# Display differences highlighted
 watch -n 5 'lsof -u user | wc -l'
 Every 5.0s: lsof -u user | wc -l
 
+```
