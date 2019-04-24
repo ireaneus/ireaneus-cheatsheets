@@ -103,3 +103,87 @@ Natural Language processing		# Allow your apps to process natural language with 
 # DevOps
 Azure DevOps				# Azure DevOps Services (formerly known as Visual Studio Team Services, or VSTS), provides development collaboration tools including high-performance pipelines, free private Git repositories, configurable Kanban boards, and extensive automated and cloud-based load testing
 Azure DevTest Labs			# Quickly create on-demand Windows and Linux environments you can use to test or demo your applications directly from your deployment pipelines
+
+## Azure account services
+An Azure free subscription includes a $200 credit to spend on any service for the first 30 days, free access to the most popular Azure products for 12 months, and access to more than 25 products that are always free. This is an excellent way for new users to get started. To set up a free subscription, you need a phone number, a credit card, and a Microsoft account.
+
+A Pay-As-You-Go (PAYG) subscription charges you monthly for the services you used in that billing period.
+
+An Enterprise Agreement provides flexibility to buy cloud services and software licenses under one agreement
+
+An Azure for Students subscription includes $100 in Azure credits to be used within the first 12 months plus select free services without requiring a credit card at sign-up
+
+You can create multiple subscriptions under a single Azure account. This is particularly useful for businesses because access control and billing occur at the subscription level, not the account level.
+
+One bill is generated for every Azure subscription on a monthly basis
+
+
+# Authentication with Azure Active Directory
+Azure AD is a modern identity provider that supports multiple authentication protocols to secure applications and services in the cloud.
+Azure AD is all about web-based authentication standards such as OpenID and OAuth.
+
+
+
+# Pricing for VMs - Pay as you go
+Burstable VMs—B1S	B1S1 vCPU1 GiB RAM	$0.068/hour	# normally don't use a lot of CPU, burst to handle higher workloads. Free for 12 months.
+Compute optimized—Fsv2	F2s v22 vCPU4 GiB RAM	$0.145/hour	# Fsv2 is our newest compute-optimized VM family and uses the Intel Skylake processor
+General purpose—Dv3	D2 v32 vCPU8 GiB RAM	$0.156/hour	# general purpose VMs. It's appropriate for a variety of workloads
+Memory optimized—Ev3	E2 v32 vCPU16 GiB RAM	$0.186/hour	# High memory-to-core ratio memory-optimized VM. Relational database servers, caches, in-memory analytics
+
+# Pricing for VMs - 1yr reservation
+Burstable VMs—B1S				$0.067/hour
+Compute optimized—Fsv2				$0.11/hour
+General purpose—Dv3				$0.115/hour
+Memory optimized—Ev3				$0.136/hour
+
+# Pricing for VMs - 3yr reservation
+Burstable VMs—B1S				$0.064/hour
+Compute optimized—Fsv2				$0.091/hour
+General purpose—Dv3				$0.097/hour
+Memory optimized—Ev3				$0.109/hour
+
+
+# Focus a bit extra on non technical questions like - pricing, support, SLA, subscription,cost management, pricing calculator, advisor (inlucding cloudyn).
+# Hey folks! @Mike G. just told me that there is a discount code for the Whizlabs practice test.  Use azure50, and you will get a 50% discount for the paid practice test.  Many of your peers have reported that this test was extremely helpful in their exam prep.
+#
+# https://www.whizlabs.com/microsoft-azure-certification-az-900/free-test/
+# https://docs.microsoft.com/en-us/learn/paths/azure-fundamentals/
+#
+
+# App Service costs
+You pay for the Azure compute resources your app uses while it processes requests based on the App Service Plan you choose. The App Service plan determines how much hardware is devoted to your host - for example, whether it's dedicated or shared hardware, and how much memory is reserved for it. There is even a free tier you can use to host small, low-traffic sites.
+
+Web Apps
+App Service includes full support for hosting web apps using ASP.NET, ASP.NET Core, Java, Ruby, Node.js, PHP, or Python. You can choose either Windows or Linux as the host operating system.
+
+API Apps
+Much like hosting a website, you can build REST-based Web APIs using your choice of language and framework. You get full Swagger support, and the ability to package and publish your API in the Azure Marketplace
+
+Web Jobs
+WebJobs allows you to run a program (.exe, Java, PHP, Python or Node.js) or script (.cmd, .bat, PowerShell, or Bash) in the same context as a web app, API app, or mobile app
+
+Mobile Apps
+Use the Mobile Apps feature of Azure App Service to quickly build a back-end for iOS and Android apps. With just a few clicks in the Azure portal you can:
+
+	Store mobile app data in a cloud-based SQL database
+	Authenticate customers against common social providers such as MSA, Google, Twitter and Facebook
+	Send push notifications
+	Execute custom back-end logic in C# or Node.js
+
+On the mobile app side, there is SDK support for native iOS & Android, Xamarin, and React native apps.
+
+# Serverless computing
+Azure Functions which can execute code in almost any modern language.
+Azure Logic Apps which are designed in a web-based designer and can execute logic triggered by Azure services without writing any code.
+
+-		Functions								Logic Apps
+State		Normally stateless, but Durable Functions provide state			Stateful
+Development	Code-first (imperative)							Designer-first (declarative)
+Connectivity	About a dozen built-in binding types, write code for custom bindings	Large collection of connectors, Enterprise Integration Pack for B2B scenarios, build custom connectors
+Actions		Each activity is an Azure function; write code for activity functions	Large collection of ready-made actions
+Monitoring	Azure Application Insights						Azure portal, Log Analytics
+Management	REST API, Visual Studio							Azure portal, REST API, PowerShell, Visual Studio
+Execution context	Can run locally or in the cloud					Runs only in the cloud.
+
+
+

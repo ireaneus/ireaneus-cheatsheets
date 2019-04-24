@@ -1,10 +1,8 @@
 ```sh
 # Exclusive Activation of a Volume Group in a Cluster
 # Link --> https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/s1-exclusiveactive-HAAA.html
-=======
 # Exclusive Activation of a Volume Group in a Cluster 
 # Link --> https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/s1-exclusiveactive-HAAA.html 
->>>>>>> 3ac14c3080cae69c9c27619fedeab73e9fd18767
 1> vgs --noheadings -o vg_name
 2> volume_list = [ "rhel_root", "rhel_home" ]
 3> dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
