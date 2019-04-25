@@ -172,7 +172,7 @@ Use the Mobile Apps feature of Azure App Service to quickly build a back-end for
 
 On the mobile app side, there is SDK support for native iOS & Android, Xamarin, and React native apps.
 
-# Serverless computing
+## Serverless computing
 Azure Functions which can execute code in almost any modern language.
 Azure Logic Apps which are designed in a web-based designer and can execute logic triggered by Azure services without writing any code.
 
@@ -186,4 +186,71 @@ Management	REST API, Visual Studio							Azure portal, REST API, PowerShell, Vis
 Execution context	Can run locally or in the cloud					Runs only in the cloud.
 
 
+## Storage
+# SQL, NoSQL, Blob
+Azure SQL Database 		# a relational database as a service (DaaS) based on the latest stable version of the Microsoft SQL Server database engine
+Azure Cosmos DB 		# globally distributed database service. It supports schema-less data 
+Azure Blob Storage 		# unstructured, meaning that there are no restrictions on the kinds of data it can hold
+Azure Data Lake Storage Gen2	# The Data Lake feature allows you to perform analytics on your data usage and prepare reports. Data Lake is a large repository that stores both structured and unstructured data.
+Azure Files 			# fully managed file shares in the cloud that are accessible via the industry standard Server Message Block (SMB) protocol
+Azure Queue storage 		# is a service for storing large numbers of messages that can be accessed from anywhere in the world
+Disk storage 			# provides disks for virtual machines, applications, and other services to access 
+
+Storage tiers
+		# Hot storage tier: optimized for storing data that is accessed frequently.
+		# Cool storage tier: optimized for data that is infrequently accessed and stored for at least 30 days.
+		# Archive storage tier: for data that is rarely accessed and stored for at least 180 days with flexible latency requirements.
+Encryption
+		# Azure Storage Service Encryption (SSE) to meet the organization's security and regulatory compliance
+		# Client-side encryption is where the data is already encrypted by the client libraries. 
+Replication for storage availability	# A replication type is set up when you create a storage account. The replication feature ensures that your data is durable and always available
+
+
+## Networking
+# Azure region: geographic location. East US, West US, and North Europe are examples of region
+# Virtual network: a logically isolated network on Azure
+# Network security group: A network security group, or NSG, allows or denies inbound network traffic to your Azure resources. Think of a network security group as a cloud-level firewall for your network
+
+# Azure Load Balancer: Azure Load Balancer is a load balancer service that Microsoft provides that helps take care of the maintenance for you. Load Balancer supports inbound and outbound scenarios, provides low latency and high throughput, and scales up to millions of flows for all Transmission Control Protocol (TCP) and User Datagram Protocol (UDP) applications
+
+# Azure Application Gateway:  If all your traffic is HTTP, a potentially better option is to use Azure Application Gateway. Application Gateway is a load balancer designed for web applications. It uses Azure Load Balancer at the transport level (TCP) and applies sophisticated URL-based routing rules to support several advanced scenarios.
+
+# Content Delivery Network:  A content delivery network (CDN) is a distributed network of servers that can efficiently deliver web content to users. It is a way to get content to users in their local region to minimize latency. CDN can be hosted in Azure or any other location. You can cache content at strategically placed physical nodes across the world and provide better performance to end users. Typical usage scenarios include web applications containing multimedia content, a product launch event in a particular region, or any event where you expect a high-bandwidth requirement in a region.
+
+# Azure DNS: 
+
+# Latency:
+# Traffic Manager: Traffic Manager uses the DNS server that's closest to the user to direct user traffic to a globally distributed endpoint.
+Azure Load Balancer distributes traffic within the same region to make your services more highly available and resilient. Traffic Manager works at the DNS level, and directs the client to a preferred endpoint
+
+## Security
+Azure Security Center:
+		# Free. Available as part of your Azure subscription, this tier is limited to assessments and recommendations of Azure resources only.
+		# Standard. This tier provides a full suite of security-related services including continuous monitoring, threat detection, just-in-time access control for ports, and more.
+		# After the 60-day trial period is over, Azure Security Center is $15 per node per month
+
+Azure Active Directory:
+		# Authentication. This includes verifying identity to access applications and resources, and providing functionality such as self-service password reset, multi-factor authentication (MFA), a custom banned password list, and smart lockout services.
+		# Single-Sign-On (SSO). SSO enables users to remember only one ID and one password to access multiple applications. A single identity is tied to a user, simplifying the security model. As users change roles or leave an organization, access modifications are tied to that identity, greatly reducing the effort needed to change or disable accounts.
+		# Application management. You can manage your cloud and on-premises apps using Azure AD Application Proxy, SSO, the My apps portal (also referred to as Access panel), and SaaS apps.
+		# Business to business (B2B) identity services. Manage your guest users and external partners while maintaining control over your own corporate data Business-to-Customer (B2C) identity services. Customize and control how users sign up, sign in, and manage their profiles when using your apps with services.
+		# Device Management. Manage how your cloud or on-premises devices access your corporate data.
+
+Encryption
+		# Symmetric encryption uses the same key to encrypt and decrypt the data
+		# Asymmetric encryption uses a public key and private key pair.
+		# encryption of data at rest ensures that the stored data is unreadable without the keys and secrets needed to decrypt it
+		# Encrypting data in transit protects the data from outside observers and provides a mechanism to transmit data while limiting risk of exposure.
+Types of Encryption
+Encrypt raw storage: 	# Azure Storage Service Encryption for data at rest helps you protect your data to meet your organizational security and compliance commitments
+Encrypt Virtual machine disks:	# Azure Disk Encryption is a capability that helps you encrypt your Windows and Linux IaaS virtual machine disks
+Encrypt databases: 		# Transparent data encryption (TDE) helps protect Azure SQL Database and Azure Data Warehouse against the threat of malicious activity
+Encrypt secrets:		# Azure Key Vault to protect our secrets.
+
+Firewalls:
+	# Azure Firewall is a managed, cloud-based, network security service that protects your Azure Virtual Network resources
+	# Azure Application Gateway is a load balancer that includes a Web Application Firewall (WAF) that provides protection from common, known vulnerabilities in websites
+	# Network virtual appliances (NVAs) are ideal options for non-HTTP services or advanced configurations, and are similar to hardware firewall appliances.
+
+Microsoft Azure Information Protection (MSIP or sometimes referred to as AIP) # is a cloud-based solution that helps organizations classify and optionally protect documents and emails by applying labels.
 

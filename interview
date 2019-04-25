@@ -1,0 +1,70 @@
+### Interview type information:
+
+## Cloud Services 
+IaaS 		
+		# Infrastructure as a service (IaaS) is an instant computing infrastructure, provisioned and managed over the internet.
+		# IaaS quickly scales up and down with demand, letting you pay only for what you use. It helps you avoid the expense and complexity of buying and managing your own physical servers and other datacenter infrastructure
+
+PaaS		
+		# Platform as a service (PaaS) is a complete development and deployment environment in the cloud, from simple cloud-based apps to sophisticated, cloud-enabled enterprise applications.
+		# Like IaaS, PaaS includes infrastructure—servers, storage, and networking—but also middleware, development tools, business intelligence (BI) services, database management systems, and more. PaaS is designed to support the complete web application lifecycle: building, testing, deploying, managing, and updating.
+
+SaaS		
+		# Software as a service (SaaS) allows users to connect to and use cloud-based apps over the Internet. Common examples are email, calendaring, and office tools (such as Microsoft Office 365).
+
+
+## Architecture Styles: https://docs.microsoft.com/en-us/azure/architecture/guide/architecture-styles/n-tier 
+
+# N-tier: An N-tier architecture divides an application into logical layers and physical tiers.
+N-tier architectures are typically implemented as infrastructure-as-service (IaaS) applications, with each tier running on a separate set of VMs. However, an N-tier application doesn't need to be pure IaaS. Often, it's advantageous to use managed services for some parts of the architecture, particularly caching, messaging, and data storage.
+
+Consider an N-tier architecture for:
+Simple web applications
+
+Three-tier refers to an n-tier application that has three tiers. Your e-commerce web application follows this three-tier architecture:
+
+	# The web tier provides the web interface to your users through a browser.
+	# The application tier runs business logic.
+	# The data tier includes databases and other storage that hold product information and customer orders.
+
+# Web-Queue-Worker: The core components of this architecture are a web front end that serves client requests, and a worker that performs resource-intensive tasks, long-running workflows, or batch jobs. The web front end communicates with the worker through a message queue.
+
+Other components that are commonly incorporated into this architecture include:
+
+	# One or more databases.
+	# A cache to store values from the database for quick reads.
+	# CDN to serve static content
+	# Remote services, such as email or SMS service. Often these are provided by third parties.
+	# Identity provider for authentication.
+
+# Microservices: A microservices architecture consists of a collection of small, autonomous services. Each service is self-contained and should implement a single business capability
+
+Consider this architecture style for:
+
+	# Large applications that require a high release velocity.
+	# Complex applications that need to be highly scalable.
+	# Applications with rich domains or many subdomains.
+	# An organization that consists of small development teams
+
+# CQRS: Command and Query Responsibility Segregation (CQRS) is an architecture style that separates read operations from write operations.
+CQRS addresses these problems by separating reads and writes into separate models, using commands to update data, and queries to read data.
+
+# Event-driven: An event-driven architecture consists of event producers that generate a stream of events, and event consumers that listen for the events.
+An event driven architecture can use a pub/sub model or an event stream model.
+
+# Big data: A big data architecture is designed to handle the ingestion, processing, and analysis of data that is too large or complex for traditional database systems.
+
+Consider this architecture style when you need to:
+
+	# Store and process data in volumes too large for a traditional database.
+	# Transform unstructured data for analysis and reporting.
+	# Capture, process, and analyze unbounded streams of data in real time, or with low latency.
+	# Use Azure Machine Learning or Microsoft Cognitive Services.
+
+# Big compute: The term big compute describes large-scale workloads that require a large number of cores, often numbering in the hundreds or thousands. Scenarios include image rendering, fluid dynamics, financial risk modeling, oil exploration, drug design, and engineering stress analysis, among others.
+
+
+## Authentication and Authorization
+Authentication		# is the process of establishing the identity of a person or service looking to access a resource. It involves the act of challenging a party for legitimate credentials, and provides the basis for creating a security principal for identity and access control use. It establishes if they are who they say they are.
+
+Authorization		# is the process of establishing what level of access an authenticated person or service has. It specifies what data they're allowed to access and what they can do with it.
