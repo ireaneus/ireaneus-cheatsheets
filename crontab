@@ -21,3 +21,4 @@ SHELL=/bin/bash
 
 # read the crontab of every user in passwd
 for user in $(cut -f1 -d: /etc/passwd); do crontab -u $user -l; done
+for user in $(cut -f1 -d: /etc/passwd); do echo $user; crontab -u $user -l; done
