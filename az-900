@@ -254,3 +254,123 @@ Firewalls:
 
 Microsoft Azure Information Protection (MSIP or sometimes referred to as AIP) # is a cloud-based solution that helps organizations classify and optionally protect documents and emails by applying labels.
 
+
+##  Azure Policy
+Azure Policy		# is a service in Azure that you use to define, assign, and, manage standards for resources in your environment. It can prevent the creation of disallowed resources, ensure new resources have specific settings applied, and run evaluations of your existing resources to scan for non-compliance.
+
+Policy definition:	# expresses what to evaluate and what action to take. For example, you could ensure all public websites are secured with HTTPS, prevent a particular storage type from being created, or force a specific version of SQL Server to be used.
+
+Initiatives:		# Initiatives work alongside policies in Azure Policy. An initiative definition is a set or group of policy definitions to help track your compliance state for a larger goal. Even if you have a single policy, we recommend using initiatives if you anticipate increasing the number of policies over time.
+
+Enterprise governance management	# Access management occurs at the Azure subscription level. This allows an organization to configure each division of the company in a specific fashion based on their responsibilities and requirements
+
+Azure Blueprints	# allows you to define a repeatable set of Azure resources that implement and adhere to your organization's standards, patterns, and requirements
+
+Compliance Manager	# is a workflow-based risk assessment dashboard within the Trust Portal that enables you to track, assign, and verify your organization's regulatory compliance activities related to Microsoft professional services and Microsoft cloud services such as Office 365, Dynamics 365, and Azure.
+
+Microsoft Privacy Statement: 	# The Microsoft privacy statement explains what personal data Microsoft processes, how Microsoft processes it, and for what purposes.
+
+Microsoft Trust Center:		# Trust Center is a website resource containing information and details about how Microsoft implements and supports security, privacy, compliance, and transparency in all Microsoft cloud products and services
+
+Service Trust Portal (STP):	# hosts the Compliance Manager service, and is the Microsoft public site for publishing audit reports and other compliance-related information relevant to Microsoft’s cloud services
+
+Azure Monitor:		# Azure Monitor maximizes the availability and performance of your applications by delivering a comprehensive solution for collecting, analyzing, and acting on telemetry from your cloud and on-premises environments.
+
+Azure Service Health:	# Azure Service Health is a suite of experiences that provide personalized guidance and support when issues with Azure services affect you. It can notify you, help you understand the impact of issues, and keep you updated as the issue is resolved. Azure Service Health can also help you prepare for planned maintenance and changes that could affect the availability of your resources.
+
+
+## Azure Resource Manager
+Resource groups		# A resource group is a logical container for resources deployed on Azure.
+			# Logical grouping is the aspect that we're most interested in here, since there's a lot of disorder among our resources.
+			# If you delete a resource group, all resources contained within are also deleted. Organizing resources by life cycle can be useful in non-production environments
+			# Resource groups are also a scope for applying role-based access control (RBAC) permissions
+			# Azure portal
+			# Azure PowerShell
+			# Azure CLI
+			# Templates
+			# Azure SDKs (like .NET, Java)
+			# A resource can have up to 15 tags. The name is limited to 512 characters for all types of resources except storage accounts, which have a limit of 128 characters
+
+Azure Policy		# Azure Policy is a service you can use to create, assign, and manage policies. These policies apply and enforce rules that your resources need to follow.
+
+role-based access control (RBAC)	# RBAC provides fine-grained access management for Azure resources, enabling you to grant users the specific rights they need to perform their jobs. RBAC is considered a core service and is included with all subscription levels at no cost
+					# Segregate duties within your team and grant only the amount of access to users that they need to perform their jobs. Instead of giving everybody unrestricted permissions in your Azure subscription or resources, allow only specific actions at a particular scope.
+					# When planning your access control strategy, grant users the lowest privilege level that they need to do their work.
+					# Use Resource Locks to ensure critical resources aren't modified or deleted (more on that next!)
+
+resource locks		# Resource locks are a setting that can be applied to any resource to block modification or deletion. Resource locks can set to either Delete or Read-only
+
+
+##  Predict costs and optimize spending
+Enterprise 		# Enterprise customers sign an Enterprise Agreement with Azure that commits them to spend a negotiated amount on Azure services, which they typically pay annually. Enterprise customers also have access to customized Azure pricing.
+
+Web direct		# Direct Web customers pay general public prices for Azure resources, and their monthly billing and payments occur through the Azure website.
+
+Cloud Solution Provider 	# Cloud Solution Provider (CSP) typically are Microsoft partner companies that a customer hires to build solutions on top of Azure. Payment and billing for Azure usage occur through the customer's CSP.
+
+Usage Meters:		# When you provision an Azure resource, Azure creates one or more meter instances for that resource. The meters track the resources' usage, and generate a usage record that is used to calculate your bill.
+
+Resource type:		# Each meter tracks a particular kind of usage. For example, a meter might track bandwidth usage (ingress or egress network traffic in bits-per-second), the number of operations, size (storage capacity in bytes), or similar items.
+
+Services: 		# The Azure team develops and offers first-party products and services, while products and services from third-party vendors are available in the Azure Marketplace . Different billing structures apply to each of these categories.
+
+Azure billing zones:	# Most of the time inbound data transfers (data going into Azure datacenters) are free. For outbound data transfers (data going out of Azure datacenters), the data transfer pricing is based on Billing Zones.
+Zone		Areas
+Zone 1		United States, Europe, Canada, UK, France
+Zone 2		Asia Pacific, Japan, Australia, India, Korea
+Zone 3		Brazil
+DE Zone 1	Germany
+# In most zones, the first outbound 5 GB per month is free. After that, you are billed a fixed price per GB.
+
+Azure pricing calculator:  	# The Azure pricing calculator is a free web-based tool that allows you to input Azure services and modify properties and options of the services. It outputs the costs per service and total cost for the full estimate.
+
+Region				# Lists the regions from which you can provision a product. Southeast Asia, central Canada, the western United States, and Northern Europe are among the possible regions available for some resources.
+Tier				# Sets the type of tier you wish to allocate to a selected resource, such as Free Tier, Basic Tier, etc.
+Billing Options			# Highlights the billing options available to different types of customer and subscriptions for a chosen product.
+Support Options			# Allows you to pick from included or paid support pricing options for a selected product.
+Programs and Offers		# Allows you to choose from available price offerings according to your customer or subscription type.
+Azure Dev/Test Pricing		# Lists the available development and test prices for a product. Dev/Test pricing applies only when you run resources within an Azure subscription that is based on a Dev/Test offer.
+
+Products. 			# This tab is where you'll do most of your activity. This tab has all the Azure services listed and is where you'll add or remove services to put together your estimate.
+Estimates. 			# This tab has all of your previously saved estimates. We'll go through this process in a moment.
+FAQ. 				# Just as it says, this tab has answers to some frequently asked questions.
+
+Azure Advisor:		# is a free service built into Azure that provides recommendations on high availability, security, performance, and cost. Advisor analyzes your deployed services and looks for ways to improve your environment across those four areas
+Reduce costs by eliminating unprovisioned Azure ExpressRoute circuits
+Buy reserved instances to save money over pay-as-you-go.
+Right-size or shutdown underutilized virtual machines
+
+Azure Cost Management:		# Azure Cost Management is another free, built-in Azure tool that can be used to gain greater insights into where your cloud money is going. You can see historical breakdowns of what services you are spending your money on and how it is tracking against budgets that you have set. You can set budgets, schedule reports, and analyze your cost areas.
+
+Cloudyn:		# Cloudyn, a Microsoft subsidiary, allows you to track cloud usage and expenditures for your Azure resources and other cloud providers including Amazon Web Services and Google. Easy-to-understand dashboard reports help with cost allocation and chargebacks
+
+Azure TCO calculator	# If you are starting to migrate to the cloud, a useful tool you can use to predict your cost savings is the Total Cost of Ownership (TCO) calculator
+
+Azure credits:
+Spending limits:
+Use reserved instances
+low-cost locations and regions
+cost-saving offers
+right-size underutilized virtual machines
+deallocate virtual machines in off hours
+delete unused virt mach
+migrate to PaaS or SaaS services
+
+# Licensing costs
+Azure Hybrid Benefit for Windows Server		# To be eligible for this benefit, your Windows licenses must be covered by Software Assurance. The following guidelines will also apply:
+
+Each two-processor 	# license or each set of 16-core licenses is entitled to two instances of up to 8 cores or one instance of up to 16 cores.
+
+Standard Edition 	# licenses can only be used once either on-premises or in Azure. That means you can't use the same license for an Azure VM and a local computer.
+
+Datacenter Edition 	# benefits allow for simultaneous usage both on-premises and in Azure so that the license will cover two running Windows machines.
+
+Azure Hybrid Benefit for SQL Server:		# Azure Hybrid Benefit for SQL Server is an Azure-based benefit that enables you to use your SQL Server licenses with active Software Assurance to pay a reduced rate.
+
+Standard Edition per core licenses with active Software Assurance 	# you can get one vCore in the General Purpose service tier for every one license core you own on-premises.
+
+Enterprise Edition per core licenses with active Software Assurance	# you can get one vCore in the Business Critical service tier for every one license core you own on-premises. Note that the Azure Hybrid Benefit for SQL Server for the Business Critical service tier is available only to customers who have Enterprise Edition licenses.
+
+highly virtualized Enterprise Edition per core licenses with active Software Assurance	# you can get four vCores in the General Purpose service tier for every one license core you own on-premises. This is a unique virtualization benefit available only on Azure SQL Database.
+
+
