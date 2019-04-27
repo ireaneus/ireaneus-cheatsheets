@@ -1,15 +1,19 @@
 #####  Microsoft AZ-900 Certification notes
+### Azure Services 
+Public Preview
+Private Preview:
+
 ###  Compliance Offerings
-# Criminal Justice Information Services - CJIS
-# Cloud Security Alliance (CSA) STAR Certification
-# General Data Protection Regulation (GDPR)
-# EU Model Clauses
-# Health Insurance Portability and Accountability Act (HIPAA)
-# International Organization for Standardization(ISO) and the International Electrotechnical Commission (IEC)
-# Multi-Tier Cloud Security (MTCS) Singapore
-# Service Organization Controls (SOC) 1,2, and 3.
-# National Institute of Standards and Technology (NIST) Cybersecurity Framework (CSF)
-# UK Government G-Cloud
+Criminal Justice Information Services - CJIS
+Cloud Security Alliance (CSA) STAR Certification
+General Data Protection Regulation (GDPR)
+EU Model Clauses
+Health Insurance Portability and Accountability Act (HIPAA)
+International Organization for Standardization(ISO) and the International Electrotechnical Commission (IEC)
+Multi-Tier Cloud Security (MTCS) Singapore
+Service Organization Controls (SOC) 1,2, and 3.
+National Institute of Standards and Technology (NIST) Cybersecurity Framework (CSF)
+UK Government G-Cloud
 
 ## Economies of scale - lower power, cooling, network costs
 
@@ -21,7 +25,7 @@ Storage, backup, and recovery
 
 # Platform as a service (PaaS)
 Development framework
-Analytics or business intelligence
+Analytics or business intelligence 
 
 # Software as a service (SaaS)
 
@@ -207,21 +211,22 @@ Replication for storage availability	# A replication type is set up when you cre
 
 
 ## Networking
-# Azure region: geographic location. East US, West US, and North Europe are examples of region
-# Virtual network: a logically isolated network on Azure
-# Network security group: A network security group, or NSG, allows or denies inbound network traffic to your Azure resources. Think of a network security group as a cloud-level firewall for your network
+Azure region: 			# geographic location. East US, West US, and North Europe are examples of region
+Virtual network: 		# a logically isolated network on Azure
+Network security group: 	# A network security group, or NSG, allows or denies inbound network traffic to your Azure resources. Think of a network security group as a cloud-level firewall for your network
 
-# Azure Load Balancer: Azure Load Balancer is a load balancer service that Microsoft provides that helps take care of the maintenance for you. Load Balancer supports inbound and outbound scenarios, provides low latency and high throughput, and scales up to millions of flows for all Transmission Control Protocol (TCP) and User Datagram Protocol (UDP) applications
+Azure Load Balancer: 		# Azure Load Balancer is a load balancer service that Microsoft provides that helps take care of the maintenance for you. Load Balancer supports inbound and outbound scenarios, provides low latency and high throughput, and scales up to millions of flows for all Transmission Control Protocol (TCP) and User Datagram Protocol (UDP) applications
 
-# Azure Application Gateway:  If all your traffic is HTTP, a potentially better option is to use Azure Application Gateway. Application Gateway is a load balancer designed for web applications. It uses Azure Load Balancer at the transport level (TCP) and applies sophisticated URL-based routing rules to support several advanced scenarios.
+Azure Application Gateway:  	# If all your traffic is HTTP, a potentially better option is to use Azure Application Gateway. Application Gateway is a load balancer designed for web applications. It uses Azure Load Balancer at the transport level (TCP) and applies sophisticated URL-based routing rules to support several advanced scenarios.
 
-# Content Delivery Network:  A content delivery network (CDN) is a distributed network of servers that can efficiently deliver web content to users. It is a way to get content to users in their local region to minimize latency. CDN can be hosted in Azure or any other location. You can cache content at strategically placed physical nodes across the world and provide better performance to end users. Typical usage scenarios include web applications containing multimedia content, a product launch event in a particular region, or any event where you expect a high-bandwidth requirement in a region.
+Content Delivery Network:  	# A content delivery network (CDN) is a distributed network of servers that can efficiently deliver web content to users. It is a way to get content to users in their local region to minimize latency. CDN can be hosted in Azure or any other location. You can cache content at strategically placed physical nodes across the world and provide better performance to end users. Typical usage scenarios include web applications containing multimedia content, a product launch event in a particular region, or any event where you expect a high-bandwidth requirement in a region.
 
-# Azure DNS: 
+Azure DNS: 
 
-# Latency:
-# Traffic Manager: Traffic Manager uses the DNS server that's closest to the user to direct user traffic to a globally distributed endpoint.
-Azure Load Balancer distributes traffic within the same region to make your services more highly available and resilient. Traffic Manager works at the DNS level, and directs the client to a preferred endpoint
+Latency:
+Traffic Manager: 		# Traffic Manager uses the DNS server that's closest to the user to direct user traffic to a globally distributed endpoint
+
+Azure Load Balancer 		# distributes traffic within the same region to make your services more highly available and resilient. Traffic Manager works at the DNS level, and directs the client to a preferred endpoint
 
 ## Security
 Azure Security Center:
@@ -229,12 +234,14 @@ Azure Security Center:
 		# Standard. This tier provides a full suite of security-related services including continuous monitoring, threat detection, just-in-time access control for ports, and more.
 		# After the 60-day trial period is over, Azure Security Center is $15 per node per month
 
-Azure Active Directory:
+Azure Active Directory Identity Protection:
 		# Authentication. This includes verifying identity to access applications and resources, and providing functionality such as self-service password reset, multi-factor authentication (MFA), a custom banned password list, and smart lockout services.
 		# Single-Sign-On (SSO). SSO enables users to remember only one ID and one password to access multiple applications. A single identity is tied to a user, simplifying the security model. As users change roles or leave an organization, access modifications are tied to that identity, greatly reducing the effort needed to change or disable accounts.
 		# Application management. You can manage your cloud and on-premises apps using Azure AD Application Proxy, SSO, the My apps portal (also referred to as Access panel), and SaaS apps.
 		# Business to business (B2B) identity services. Manage your guest users and external partners while maintaining control over your own corporate data Business-to-Customer (B2C) identity services. Customize and control how users sign up, sign in, and manage their profiles when using your apps with services.
 		# Device Management. Manage how your cloud or on-premises devices access your corporate data.
+
+Azure Advanced Threat protection: 
 
 Encryption
 		# Symmetric encryption uses the same key to encrypt and decrypt the data
@@ -277,7 +284,7 @@ Service Trust Portal (STP):	# hosts the Compliance Manager service, and is the M
 Azure Monitor:		# Azure Monitor maximizes the availability and performance of your applications by delivering a comprehensive solution for collecting, analyzing, and acting on telemetry from your cloud and on-premises environments.
 
 Azure Service Health:	# Azure Service Health is a suite of experiences that provide personalized guidance and support when issues with Azure services affect you. It can notify you, help you understand the impact of issues, and keep you updated as the issue is resolved. Azure Service Health can also help you prepare for planned maintenance and changes that could affect the availability of your resources.
-
+			# Resource Health can view the Virtual Machine blade
 
 ## Azure Resource Manager
 Resource groups		# A resource group is a logical container for resources deployed on Azure.
