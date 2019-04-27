@@ -109,6 +109,9 @@ Azure DevOps				# Azure DevOps Services (formerly known as Visual Studio Team Se
 Azure DevTest Labs			# Quickly create on-demand Windows and Linux environments you can use to test or demo your applications directly from your deployment pipelines
 
 ## Azure account services
+
+Azure Management group:			# manages subscritions, resources ..
+
 An Azure free subscription includes a $200 credit to spend on any service for the first 30 days, free access to the most popular Azure products for 12 months, and access to more than 25 products that are always free. This is an excellent way for new users to get started. To set up a free subscription, you need a phone number, a credit card, and a Microsoft account.
 
 A Pay-As-You-Go (PAYG) subscription charges you monthly for the services you used in that billing period.
@@ -152,7 +155,7 @@ Memory optimized—Ev3				$0.109/hour
 #
 # https://www.whizlabs.com/microsoft-azure-certification-az-900/free-test/
 # https://docs.microsoft.com/en-us/learn/paths/azure-fundamentals/
-#
+# https://www.microsoft.com/en-us/learning/exam-AZ-900.aspx
 
 # App Service costs
 You pay for the Azure compute resources your app uses while it processes requests based on the App Service Plan you choose. The App Service plan determines how much hardware is devoted to your host - for example, whether it's dedicated or shared hardware, and how much memory is reserved for it. There is even a free tier you can use to host small, low-traffic sites.
