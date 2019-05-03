@@ -16,10 +16,18 @@ sed -i -r 's/^\s+//g' file.txt
 # To remove empty lines and print results to stdout:
 sed '/^$/d' file.txt
 
+# To delete lines that begin with a character
+sed -i '/^usisi01/d' file
+sed -i '/usisi01/d' /etc/fstab		# removes all instances including remarked out entries
+
+# If you want to create a new file with the deleted entries removed from the original
+sed '/usisi01/d' file > newfile
+
 # To replace newlines in multiple lines
 sed ':a;N;$!ba;s/\n//g'  file.txt
 
 
 # viewing the ntp.conf
 sed -i.$(date +%F) '/^#/d;/^$/d' /etc/ntp.conf	# -i in place edit creating a backup with date extension formatted  # Delete commented and blank lines
+
 ```
