@@ -1,3 +1,4 @@
+```sh
 #####  Microsoft AZ-900 Certification notes
 ### Azure Services 
 Public Preview
@@ -17,7 +18,9 @@ UK Government G-Cloud
 
 ## Economies of scale - lower power, cooling, network costs
 
-# Infrastructure as a Service(IaaS)
+### Infrastructure as a Service(IaaS)
+## Definition: Managed by cloud - networking,storage,servers,virtualization.  Managed by Client - OS,Middleware,runtime,data,applications 
+
 Migrating workloads
 Test and development
 Website hosting
@@ -388,4 +391,4 @@ Enterprise Edition per core licenses with active Software Assurance	# you can ge
 
 highly virtualized Enterprise Edition per core licenses with active Software Assurance	# you can get four vCores in the General Purpose service tier for every one license core you own on-premises. This is a unique virtualization benefit available only on Azure SQL Database.
 
-
+```

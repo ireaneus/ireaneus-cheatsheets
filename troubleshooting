@@ -212,4 +212,14 @@ export TEMP TMPDIR
 
 ######  Identify who logged in last locally
 lastlog -b 30
+
+
+######  Problems restarting Apache/httpd service
+apachectl start|restart|stop|status|configtest  	# as apache owner
+systemctl status httpd -l
+journalctl -xe
+
+# clear semiphores
+ipcs -s | grep webops | awk ' { print $2 } ' | xargs ipcrm sem
+
 ```

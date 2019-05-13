@@ -20,6 +20,12 @@ sed '/^$/d' file.txt
 sed -i '/^usisi01/d' file
 sed -i '/usisi01/d' /etc/fstab		# removes all instances including remarked out entries
 
+# To delete lines from a file
+sed -i '$d' file1			# delete last line
+sed -i '1d' file1			# delete first line
+sed -i 'm,nd' file1			# remove lines from m to n '2,4d' 2 to 4
+sed -i '2,4!d' file1			# remove all lines except range
+
 # If you want to create a new file with the deleted entries removed from the original
 sed '/usisi01/d' file > newfile
 
