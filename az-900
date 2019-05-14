@@ -26,15 +26,50 @@ Test and development
 Website hosting
 Storage, backup, and recovery
 
-# Platform as a service (PaaS)
+#### Platform as a service (PaaS)
+## Definition:  is a complete development and deployment environment in the cloud - OS, Middleware and runtime.  Client managed Data, applications
 Development framework
 Analytics or business intelligence 
 
-# Software as a service (SaaS)
+### Software as a service (SaaS)
+# Definition:  provides a complete software solution that you purchage on a pay as you go.
+Salesforce, Office365
+
 
 IaaS requires the most user management of all the cloud services. The user is responsible for managing the operating systems, data, and applications.
 PaaS requires less user management. The cloud provider manages the operating systems, and the user is responsible for the applications and data they run and store.
 SaaS requires the least amount of management. The cloud provider is responsible for managing everything, and the end user just uses the software.
+
+### Public, private, hybrid cloud
+# Public
+Multi-tenant implementation
+Owned and operated by Service provider
+Bound by multi-tenant data management policies
+Similar self-service and automation capabilities as private cloud
+
+# Private cloud
+# A private cloud consists of computing resources used exclusively by one business or organization.
+On site datacenter or isolated in a public datacenter
+Flexibility
+upfront capital expenses
+
+# Hybrid Cloud
+Often called “the best of both worlds,” hybrid clouds combine on-premises infrastructure, or private clouds, with public clouds so organizations can reap the advantages of both
+
+## public cloud best use
+Transitioning to cloud
+new applications
+standard workloads
+not as much customization
+
+Private
+Highly secure
+customization
+
+Hybrid
+transition to cloud
+enhanced security
+some data apps system on prem.
 
 
 ### 8 services
