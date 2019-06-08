@@ -24,4 +24,8 @@ ls -lt
 ls -lt -r --reverse
 
 ls -1 	# displays only filenames
+
+# Display files sorted by size
+ls -lst | sort -n
+
 ```

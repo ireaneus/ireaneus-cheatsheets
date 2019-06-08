@@ -63,4 +63,26 @@ import argparser
 #!/usr/bin/env python 3.6
 [root@server1] python3 for1.py
 #chmod u+x for1.py
+
+### troubleshooting using doctest
+python3.7 -m doctest -v tasker.py
+
+### setting up pipenv and installing flask
+pipenv --python=$(which python3.7) install flask
+pipenv shell
+(projectname)[root@server1]	#pipenv shell available across ssh
+
+### Setting up flask webserver environment
+(tickets) [cloud_user@ip-10-0-1-129 tickets]$ export FLASK_ENV=development
+(tickets) [cloud_user@ip-10-0-1-129 tickets]$ export FLASK_APP='.'
+(tickets) [cloud_user@ip-10-0-1-129 tickets]$ flask run --host=0.0.0.0 --port=3000
+ * Serving Flask app "." (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://0.0.0.0:3000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 332-333-866
+
+
 ```

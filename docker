@@ -1,4 +1,102 @@
-```sh
+```docker
+
+#### Docker Quick Start
+### Installation methods
+# https://get.docker.com/	# script to install
+# https://github.com/docker/docker-install
+
+## Installation Centos
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo	# Community edition / Enterprise
+sudo yum install docker-ce
+sudo systemctl enable docker
+sudo systemctl start docker
+
+
+## DockerHub public and private images
+# Running a docker
+sudo docker run hello-world
+sudo usermod -a -G docker cloud_user
+
+# building a new docker image
+docker pull ubuntu:16.04   # https://github.com/tianon/docker-brew-ubuntu-core/blob/010bf9649b1d10e2c34b159a9a9b338d0fdd4939/xenial/Dockerfile
+
+#### Dockerfile
+FROM ubuntu:16.04
+LABEL maintainer="bwdave@protonmail.com"
+RUN apt-get update
+RUN apt-get install -y python3
+#### Dockerfile
+
+docker build .
+# intermediate container images per run statement
+
+
+## Docker Lifecycle
+docker run 		# starts docker container runs it and stops it
+docker run -it		# interactive running
+docker container start	# starts and runs a detached session
+docker restart <containerid/name>
+docker attach		# attaches to running docker
+docker attach <imagename> 		# ctrl+c will exit the container
+docker stop <imagename>
+
+# docker commands
+docker images
+docker image ls
+docker images --no-trunc
+docker run ubuntu:16.04
+docker container run hello-world
+docker container run -it --name python-container <a3> #IMAGE ID
+docker container ls -a 		# active status
+docker container ps -a		# Container IDs
+docker container start <container id/name>
+docker attach <uniq start container id/name>
+docker image history nginx	# expose
+
+
+# Docker container management
+docker container rm <container id/name>
+docker container ls -a
+docker images
+docker rmi <id>
+docker rmi -f docker/whalesay		# removes docker image forces
+docker rm `docker ps -a -q`		# removes all old ran images
+
+
+### Pushing docker images to DockerHub
+docker login		#username and password "Warning password"
+docker images
+docker tag <ImageID> username/repository:tag
+docker images
+docker push username/repository
+docker pull username/repository:tag
+
+
+### docker ports
+docker container inspect <containerid> | grep IPAdd
+docker inspect <container> | grep -i ipaddress
+docker run -d --name=WebServer1 -P nginx:latest 
+docker container ls
+curl -4 icanhazip.com		# shows external IP address
+docker container run -d -p 80:80 httpd
+elinks external ip
+docker ps 32770->/443 32771->80
+docker port WebServer1 $CONTAINERPORT
+docker run -d -p 8080:80 8443:443 --name=WebServer2 nginx:latest
+elinks localhost:8080
+
+
+### docker container volumes
+docker volume ls
+docker volume create devvolume
+docker volume inspect devvolume
+docker container run -d --name devcont --mount source=devvolume,target=/app nginx
+docker container run -d --name devcont2 -v devvolume:/app nginx
+sudo ls /var/lib/docker/volumes/devvolume/_data
+docker container exec -it devcont sh
+
+
 # Start docker daemon
 docker -d
 
@@ -15,49 +113,12 @@ docker inspect <container_name> (or <container_id>)
 # Source: https://github.com/jpetazzo/nsenter
 docker inspect --format {{.State.Pid}} <container_name_or_ID>
 
-# List the current mounted volumes for a container (and pretty print)
-# Source:
-# http://nathanleclaire.com/blog/2014/07/12/10-docker-tips-and-tricks-that-will-make-you-sing-a-whale-song-of-joy/
-docker inspect --format='{{json .Volumes}}' <container_id> | python -mjson.tool
-
-# list currently running containers
-docker ps
-
-# list all containers
-docker ps -a
-
-# list all images
-docker images
-
-
-# Attach to a running docker image
-docker attach <imagename> 		# ctrl+c will exit the container
-docker stop <imagename>
-
-docker restart <containerid/name>
-docker exec -it <container> /bin/bash
-exit
-
-docker rmi -f docker/whalesay		# removes docker image forces
-docker rm `docker ps -a -q`		# removes all old ran images
-
-# docker ports
-docker inspect <container> | grep -i ipaddress
-docker run -d --name=WebServer1 -P nginx:latest 
-docker ps 32770->/443 32771->80
-docker port WebServer1 $CONTAINERPORT
-docker run -d -p 8080:80 8443:443 --name=WebServer2 nginx:latest
-elinks localhost:8080
-
 # mount a directory
 docker run -d -p 8080:80 --name=WebServer3 -v /mnt/data nginx:latest
 docker run -d -p 8080:80 --name=WebServer4 -v /home/user/www:/usr/share/nginx/html nginx:latest
 
-# docker build
-# Create a Dockerfile
-docker build -t latest123/myapache .
 
-# Dockerfile
+#### Dockerfile
 FROM debian:stable
 MAINTAINER latest123 <latest123@linuxacademy.com>
 
@@ -68,4 +129,6 @@ EXPOSE 80
 EXPOSE 22
 
 CMD ["/usr/sbin/apache2ctl","-D","FOREGROUND"]
+#### Dockerfile
+
 ```

@@ -1,3 +1,5 @@
+```sh
+
 # To find files by case-insensitive extension (ex: .jpg, .JPG, .jpG):
 find . -iname "*.jpg"
 
@@ -75,3 +77,5 @@ find -type f -printf "%s %p\n" | sort -rn | head -n 5
 
 find /var/log -size +1G -type f -print0 | xargs -0 ls -Ssh | sort -z
 find  -type f -exec awk 'BEGIN{stringa=0;stringb=0}/stringa/{stringa++}/stringb/{stringb++}END{if(stringa>0 && stringb>0){print FILENAME}}' {} \;
+
+```
