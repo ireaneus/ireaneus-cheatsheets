@@ -23,7 +23,7 @@ docker pull ubuntu:16.04   # https://github.com/tianon/docker-brew-ubuntu-core/b
 
 #### Dockerfile
 FROM ubuntu:16.04
-LABEL maintainer="bwdave@protonmail.com"
+LABEL maintainer="username@example.com"
 RUN apt-get update
 RUN apt-get install -y python3
 #### Dockerfile

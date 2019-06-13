@@ -9,7 +9,7 @@ chmod +x my.sh
 # To include a bash script in another bash script
 # config.sh
 USERNAME=$USER
-EMAIL="dhaines@taos.com"
+EMAIL="username@example.com"
 
 # main.sh
 ## #!/bin/bash

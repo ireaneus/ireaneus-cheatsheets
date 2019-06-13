@@ -22,11 +22,11 @@ nc -zv -s source_IP target_IP Port
 
 
 # Example of nc server and client testing failed
-[ansible@usdah0003 ~]$ nc -v usdl553 3208
-nc: connect to usdl553 port 3208 (tcp) failed: Connection timed out
+[ansible@server1 ~]$ nc -v usserver2 3208
+nc: connect to usserver2 port 3208 (tcp) failed: Connection timed out
 
-[root@usdl553 ~]# tcpdump host usdah0003 and port 3208
-[root@usdl553 ~]# iptables -n -L | grep 3208
+[root@usserver1 ~]# tcpdump host usserver2 and port 3208
+[root@usserver1 ~]# iptables -n -L | grep 3208
 ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:3208
 
 

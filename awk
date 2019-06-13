@@ -81,7 +81,7 @@ grep -i break-in auth.log | awk {'print $12'}
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 
 # Display a block of text
-awk '/sudo/,/^$/' host_vars/uspl860
+awk '/sudo/,/^$/' host_vars/ussrv860
 
 # Remove duplicate entries in a file without sorting
 awk '!x[$0]++' file

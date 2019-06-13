@@ -39,7 +39,7 @@ curl --limit-rate 1000B -O http://path.to.the/file
 curl httpbin.org/ip
 
 # POST REQUEST - json
-curl -d '{"name":"Dave Haines","course":"LPIC102"}' httpbin.org/post
+curl -d '{"name":"First Lastname","course":"LPIC102"}' httpbin.org/post
 curl -H 'Content-Type: application/json' -d '{"name":"John Doe","course":"Linux"}' httpbin.org/post
 
 # POST REQUEST - URL

@@ -35,12 +35,11 @@ Command line instructions
 
 Git global setup
 
-git config --global user.name "David Haines"
-git config --global user.email "bwdave@protonmail.com"
+git config --global user.name "John Doe"
+git config --global user.email "johndoe@email.com"
 
 Create a new repository
 
-git clone git@gitlab.com:ireaneus/Projects.git
 cd Projects
 touch README.md
 git add README.md
@@ -51,7 +50,6 @@ Existing folder
 
 cd existing_folder
 git init
-git remote add origin git@gitlab.com:ireaneus/Projects.git
 git add .
 git commit -m "Initial commit"
 git push -u origin master
@@ -59,6 +57,5 @@ git push -u origin master
 Existing Git repository
 
 cd existing_repo
-git remote add origin git@gitlab.com:ireaneus/Projects.git
 git push -u origin --all
 git push -u origin --tags
