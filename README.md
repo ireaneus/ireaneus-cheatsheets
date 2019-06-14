@@ -16,6 +16,14 @@ docker run --rm -it -e "CHEAT_COLORSCHEME=light" ireaneus/cheatsheet  # docker c
 
 ```
 
+### Installing cheat locally
+```sh
+[user@server1]yum install python3 python3-pip
+
+[user@server1]pip install --user cheat
+
+```
+
 #### setting up .bashrc with exports
 
 ```sh
