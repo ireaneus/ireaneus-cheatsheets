@@ -1,3 +1,5 @@
+```bash
+
 # To set your identity:
 git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
@@ -149,3 +151,5 @@ git revert <commit SHA>
 # Pich a commit from a branch to current branch. This is different than merge as
 # this just applies a single commit from a branch to current branch
 git cherry-pick <commit SHA1>
+
+```
