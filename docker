@@ -1,4 +1,4 @@
-```docker
+```bash
 
 #### Docker Quick Start
 ### Installation methods
@@ -28,13 +28,13 @@ RUN apt-get update
 RUN apt-get install -y python3
 #### Dockerfile
 
-docker build .
+docker build -t <username>/<repository> .
 # intermediate container images per run statement
 
 
 ## Docker Lifecycle
 docker run 		# starts docker container runs it and stops it
-docker run -it		# interactive running
+docker run -it		# -i Keep STDIN open even if not attached; -t Allocate a pseudo-tty
 docker container start	# starts and runs a detached session
 docker restart <containerid/name>
 docker attach		# attaches to running docker
@@ -42,10 +42,14 @@ docker attach <imagename> 		# ctrl+c will exit the container
 docker stop <imagename>
 
 # docker commands
+# docker run 	# https://docs.docker.com/engine/reference/run/
 docker images
 docker image ls
 docker images --no-trunc
 docker run ubuntu:16.04
+docker run -d				# Detached mode
+docker run -d -rm			# the container is removed when exits
+docker run --name <uuid long> <uuid short> <Name>
 docker container run hello-world
 docker container run -it --name python-container <a3> #IMAGE ID
 docker container ls -a 		# active status
