@@ -1,10 +1,22 @@
 # CheatSheets
 
-## setting up .bashrc with exports
+### Dockerhub public repo
+```sh
 
-<h1>CheatSheets
+docker pull ireaneus/cheatsheet
 
-# setting up .bashrc with exports
+docker run --rm -it ireaneus/cheatsheet 
+docker run --rm -it -e "CHEAT_COLORSCHEME=light" ireaneus/cheatsheet  # docker colorscheme set to dark now.
+[Usage]:
+-s <keyword>
+-l # Lists all existing cheats
+-v # version
+-d # working directories
+<cheatsheet name> # ie. git, docker, bash, ssh
+
+```
+
+#### setting up .bashrc with exports
 
 ```sh
 
@@ -20,7 +32,7 @@ export CHEAT_COLORSCHEME='light' # must be 'light' (default) or 'dark'
 
 ```
 
-# Linux CommandLine Cheatsheets
+### Linux CommandLine Cheatsheets
 command line usage
 
 ```sh
@@ -39,8 +51,9 @@ cheat -v                # cheat version
 
 ```
 
-## Setting up Syntax highlighting
+### Setting up Syntax highlighting
  So far it has worked with
-  "```bash and ```" 
+ 
+  "```bash and ```" <br>
   "```sh and ```" in between command blocks<br>
   "```sql and ```" at the top of the page and bottom
