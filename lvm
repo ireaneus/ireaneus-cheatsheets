@@ -43,6 +43,10 @@ echo "- - -" > /sys/class/scsi_host/host0/scan		# added physical disk
 echo 1 > /sys/class/scsci_device/<device>/device/rescan	# added space to existing disk
 pvresize /dev/sdc
 
+# Resizing a thin provisioned disk do above steps and
+lvextend -L +100G /dev/mapper/VolumeName
+resize2fs or xfs_growfs
+
 # Extending a volume group
 17. create new primary partition in fdisk
 18. create a new physical volume - pvcreate /dev/sdb1 /dev/sdb2

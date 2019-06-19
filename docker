@@ -1,25 +1,135 @@
-```bash
+```sh
 
-#### Docker Quick Start
-### Installation methods
+#########  Installation methods  ############
 # https://get.docker.com/	# script to install
 # https://github.com/docker/docker-install
 
 ## Installation Centos
-sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo	# Community edition / Enterprise
-sudo yum install docker-ce
-sudo systemctl enable docker
-sudo systemctl start docker
+# uninstall previous version of Docker
+sudo yum remove -y docker \
+> docker-client \
+> docker-client-latest \
+> docker-common \
+> docker-latest \
+> docker-latest-logrotate \
+> docker-logrotate \
+> docker-engine
 
+# Add utilities for Docker
+sudo yum install -y yum-utils \
+> device-mapper-persistent-data \
+> lvm2
 
-## DockerHub public and private images
-# Running a docker
-sudo docker run hello-world
-sudo usermod -a -G docker cloud_user
+# Setup stable repo
+sudo yum-config-manager \
+> --add-repo \
+> https://download.docker.com/linux/centos/docker-ce.repo
 
-# building a new docker image
-docker pull ubuntu:16.04   # https://github.com/tianon/docker-brew-ubuntu-core/blob/010bf9649b1d10e2c34b159a9a9b338d0fdd4939/xenial/Dockerfile
+# Install Docker CE:
+sudo yum -y install docker-ce
+sudo systemctl start docker && sudo systemctl enable docker
+sudo usermod -aG docker cloud_user
+
+#########  Installation methods  ############
+
+#########  Docker Commands  ##########
+docker -h | more
+Usage:	docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/home/cloud_user/.docker")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/home/cloud_user/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/home/cloud_user/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/home/cloud_user/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  builder     Manage builds
+  config      Manage Docker configs
+  container   Manage containers
+  engine      Manage the docker engine
+  image       Manage images
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+# Example of using management commands
+docker image ls --help
+Usage:	docker image ls [OPTIONS] [REPOSITORY[:TAG]]
+
+List images
+
+Aliases:
+  ls, images, list
+
+Options:
+  -a, --all             Show all images (default hides intermediate images)
+      --digests         Show digests
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print images using a Go template
+      --no-trunc        Don't truncate output
+  -q, --quiet           Only show numeric IDs
+
+# docker image:
+
+build Build an image from a dockerfile
+history Show the history of an image
+import Import the contents from a tarball to create a filesystem image
+inspect Display detailed information on one or more images
+load Load an image from a tar file or STDIN
+ls List images
+prune Remove unused images
+pull Pull an image or a repository from a registry
+push Push an image or a repository to a registry
+rm Remove one or more images
+save Save one or more images to a tar file (streamed to STDOUT by default)
+tag Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+
+# docker container:
+
+attach Attach local standard input, output, and error streams to a running container
+commit Create a new image from a container's changes
+cp Copy files/folders between a container and the local filesystem
+create Create a new container
+diff Inspect changes to files or directories on a container's filesystem
+exec Run a command in a running container
+export Export a container's filesystem as a tar archive
+inspect Display detailed information on one or more containers
+kill Kill one or more running containers
+logs Fetch the logs of a container
+ls List containers
+pause Pause all processes within one or more containers
+port List port mappings or a specific mapping for the container
+prune Remove all stopped containers
+rename Rename a container
+restart Restart one or more containers
+rm Remove one or more containers
+run Run a command in a new container
+start Start one or more stopped containers
+stats Display a live stream of container(s) resource usage statistics
+stop Stop one or more running containers
+top Display the running processes of a container
+unpause Unpause all processes within one or more containers
+update Update configuration of one or more containers
+wait Block until one or more containers stop, then print their exit codes
+
+#########  Docker Commands  ##########
+
+#########  building a new docker image  #########
 
 #### Dockerfile
 FROM ubuntu:16.04
