@@ -18,6 +18,13 @@ ssh -p 2222 user@example.com
 # For more information to protect ssh server:
 # http://www.tecmint.com/5-best-practices-to-secure-and-protect-ssh-server/
 
+## To restrict ssh access to specific subnet
+# /etc/hosts.allow
+sshd : 192.168.0.0/24
+
+# /etc/hosts.deny
+sshd : ALL
+
 # To connect and forward the authentication agent
 ssh -A user@example.com
 
