@@ -222,4 +222,11 @@ journalctl -xe
 # clear semiphores
 ipcs -s | grep webops | awk ' { print $2 } ' | xargs ipcrm sem
 
+# add entries into sudoers.d files
+sudo visudo -f /etc/sudoers.d/web_admin
+Cmnd_Alias  WEB = /bin/systemctl restart httpd.service, /bin/systemctl reload httpd.service
+
+gfreeman ALL=WEB
+
+
 ```
