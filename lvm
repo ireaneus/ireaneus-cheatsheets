@@ -49,7 +49,7 @@ resize2fs or xfs_growfs /dev/VolumeName/LogicalName
 # create a new physical volume
 pvcreate /dev/sdb1 /dev/sdb2
 pvdisplay
-vgextend /dev/mapper/VolumeName /dev/sdb2 
+vgextend  myVOL /dev/sdb2 
 vgdisplay
 lvextend /dev/mapper/VolumeName/LogicalName /dev/sdb2
 lvdisplay

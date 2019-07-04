@@ -92,4 +92,10 @@ for i in `cat servers.txt`; do echo "### $i ###"; ssh -tq $i 'echo "Yay, I have 
 # To run several sshd daemons copy sshd to a sshd2 
 # Use different pam authentication file with the separate daemon
 
+# To ssh without password from one host to another
+ssh-keygen
+ssh-copy-id server2
+ssh server2
+
+
 ```
