@@ -29,8 +29,12 @@ systemctl list-dependencies foo.service
 # List currently loaded targets
 systemctl list-units --type=target
 
+# Check default target
+systemctl get-default
+
 # Change current target
 systemctl isolate foo.target
 
 # Change default target
 systemctl enable foo.target
+systemctl set-default graphical.target

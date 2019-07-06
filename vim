@@ -5,6 +5,7 @@
 :q!             quit without saving changes
 :w              write file
 :w {file}       write new file
+:w !sudo tee %	adds sudo to a read-only file for saving
 :x              write file and exit
 
 # Movement
