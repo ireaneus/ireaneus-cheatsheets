@@ -36,4 +36,6 @@ sed ':a;N;$!ba;s/\n//g'  file.txt
 # viewing the ntp.conf
 sed -i.$(date +%F) '/^#/d;/^$/d' /etc/ntp.conf	# -i in place edit creating a backup with date extension formatted  # Delete commented and blank lines
 
+-i[SUFFIX], --in-place[=SUFFIX]		# edit files in place (makes backup if SUFFIX supplied)
+
 ```

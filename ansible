@@ -1,4 +1,6 @@
-# Ansible install and configure
+```diff
+
+####  Ansible install and configure
 yum install python python-pip python-devel openssl git ansible
 adduser ansible
 passwd ansible
@@ -97,3 +99,5 @@ The term “Facts” is commonly used in Ansible environment. They are described
 You can see all the facts via:
 
 $ ansible all- m setup
+
+```

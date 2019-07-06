@@ -6,6 +6,7 @@ tar -cvf /path/to/foo.tar /path/to/foo/
 
 # To extract a .gz archive:
 tar -xzvf /path/to/foo.tgz
+zcat passwd.tar.gz
 
 # To create a .gz archive:
 tar -czvf /path/to/foo.tgz /path/to/foo/
@@ -15,6 +16,7 @@ tar -ztvf /path/to/foo.tgz
 
 # To extract a .bz2 archive:
 tar -xjvf /path/to/foo.tgz
+bzcat passwd.tar.bz2
 
 # To create a .bz2 archive:
 tar -cjvf /path/to/foo.tgz /path/to/foo/

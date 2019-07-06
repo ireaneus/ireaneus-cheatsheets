@@ -1,3 +1,5 @@
+```sh
+
 # Create a key
 
  gpg --gen-key
@@ -171,3 +173,6 @@
     gpg -K
 
   Should show sec# instead of just sec.
+
+
+````

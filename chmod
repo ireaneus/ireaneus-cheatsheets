@@ -19,6 +19,12 @@ chmod 755 myscript.sh
 # Set user/group/global to read/write (myscript.sh), octal notation
 chmod 666 myscript.sh
 
+# Set permissions on a directory
+chmod 755 /opt/myapp
+
+# Set permissions on a directory and files recursivley
+chmod 666 -R /opt/myapp/*
+
 # Roles
 u - user (owner of the file)
 g - group (members of file's group)

@@ -54,6 +54,8 @@ A B C D ..
 
 echo a{A{1,2},B{3,4}}b
 
+mkdir -p Projects/{docker,bash,ansible}
+
 # bash cursor movements
 ctrl-a	# Move to beginning of line
 ctrl-e	# Move to end of line
