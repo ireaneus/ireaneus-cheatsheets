@@ -7,6 +7,6 @@ COPY . /root/.cheat
 
 ENV CHEAT_COLORS=true
 
-ENV CHEAT_COLORSCHEME=dark
+ENV CHEAT_COLORSCHEME=light
 
 ENTRYPOINT ["cheat"]
