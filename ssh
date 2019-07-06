@@ -36,7 +36,8 @@ ssh -X user@example.com
 
 # Redirect traffic with a tunnel between local host (port 8080) and a remote
 # host (remote.example.com:5000) through a proxy (personal.server.com):
-ssh -f -L 8080:remote.example.com:5000 user@personal.server.com -N
+ssh -f -L 8080:remote.example.com:80 user@personal.server.com -N
+ssh -f cloud_user@remote.server -L 8080:remote.server:80 -N
 
 # To launch a specific x application over SSH:
 ssh -X -t user@example.com 'chromium-browser'
@@ -72,6 +73,18 @@ EOF_run_commands
 
 # To run a bash script on remote host
 cat remote-command.bash | ssh user@server1
+
+# on demand ssh socket
+systemctl status sshd.socket
+sudo at now + 3 minutes
+at> systemctl stop sshd.service
+at> systemctl start sshd.socket
+systemctl status sshd.socket
+systemctl enable sshd.socket
+systemctl disable sshd.service
+ldd /usr/sbin/sshd | grep libwrap
+sshd2 sshd : ALL	# /etc/hosts.allow
+ALL : ALL		# /etc/hosts.deny
 
 # To create a SOCKS proxy on localhost and port 9999
 ssh -D 9999 user@example.com

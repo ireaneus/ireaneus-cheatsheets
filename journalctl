@@ -30,3 +30,4 @@ journalctl --list-boots
 
 # Filter by specific User ID e.g., user id 1000 
 journalctl _UID=1000
+
