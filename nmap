@@ -69,7 +69,7 @@ nmap -T5 --min-parallelism=50 -n --script "ssl-heartbleed" -pT:443 127.0.0.1
 # Show all informations (debug mode)
 nmap -d ...
 
-
 # Testing connection to remote host
 nmap -v -p 8443-8447 remoteserver
+
 ```
