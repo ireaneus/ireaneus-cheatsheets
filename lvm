@@ -59,6 +59,12 @@ df -h; mount -a; df -h
 ####  Extending a volume group  ####
 
 
+
+####  Extending a Logical group  ####
+lvextend -L +200M /dev/VG/LV -r   # to resize
+xfs_growfs /mnt/lv
+
+
 ###  For xfs file system (RedHat 7.1 /home)
 yum install xfsprogs.x86_64
 mount -t xfs /dev/mapper/VolumeName-LogicalName /home

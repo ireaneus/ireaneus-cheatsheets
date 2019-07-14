@@ -107,4 +107,7 @@ $ export MYVAR="value-exported"
 $ ./echo.sh 
 value-exported
 
+### bash alias ###
+echo 'alias webstat="systemctl status httpd.service"' >> /home/user/.bashrc
+
 ```

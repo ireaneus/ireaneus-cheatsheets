@@ -1,4 +1,5 @@
 ```sh
+
 # To open a TCP connection to port 42 of host.example.com, using port 31337 as the source port, with a timeout of 5 seconds:
 nc -p 31337 -w 5 host.example.com 42
 
@@ -35,4 +36,6 @@ ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:3208
 
 [bwdave@server2]$ nc -v server1 80
 Hello
+
+
 ```
