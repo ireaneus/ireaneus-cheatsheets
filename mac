@@ -14,6 +14,7 @@ Command + Shift + G 	:finder window open a direct line to a specified folder
 Command + []		:move to previous and next folder
 Command + Shift + Control + 3	:fullscreen shot to clipboard, without Control = file on desktop
 Command + Shift + Control + 4 	:screenshot selection to clipboard, without Control = file on desktop
+Command + v 			:paste clipboard results
 Command + Delete		:move selected items to trash, add shift to empty trash
 
 
