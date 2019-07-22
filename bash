@@ -1,4 +1,7 @@
-```sh
+```bash
+
+### To list all bash commands
+Esc + y
 
 #!/usr/bin/env bash
 bash my.sh

@@ -30,4 +30,10 @@ Command + a		:select all, add option to deselect all
 
 Shift + Control + Power button 	:multiple monitors to sleep
 
+# To copy one folder to another
+ditto folder1 folder2 -v
+
+# To copy from a url
+curl -O https://url/file
+
 ```
