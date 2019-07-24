@@ -1,4 +1,5 @@
 ```sh
+
 # Search a file for a pattern
 grep pattern file
 
@@ -13,6 +14,9 @@ grep -f pattern_file file
 
 # Find lines NOT containing pattern
 grep -v pattern file
+
+# find words not patterns
+grep -w file	# not files
 
 # You can grep with regular expressions
 grep "^00" file  #Match lines starting with 00
@@ -43,7 +47,9 @@ fgrep hello$ file1		# literal line found hello$
 
 # grep to remove cmments and empty lines in config files
 grep -v '^#\|^$' /etc/some/conf/file
+grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf 
 
 # fgrep literal pattern
 fgrep hello$ file1		# literal line found hello$
+
 ```
