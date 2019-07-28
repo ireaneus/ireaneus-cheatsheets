@@ -91,4 +91,11 @@ netstat -ant | awk '{print $NF}' | grep -v '[a-z]' | sort | uniq -c
 
 # Showbiggest files/directories, biggest first with 'k,m,g' eyecandy
 du –max-depth=1 | sort -r -n | awk '{split("k m g",v); s=1; while($1>1024){$1/=1024; s++} print int($1)" "v[s]"\t"$2}'
+
+# from a list that is more than 50 characters long remove the characters
+dig -4 www.linuxacademy.com +trace | awk 'length($0)<50'
+
+
 ```
+
+
