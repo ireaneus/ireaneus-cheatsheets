@@ -208,6 +208,9 @@ docker images
 docker rmi <id>
 docker rmi -f docker/whalesay		# removes docker image forces
 docker rm `docker ps -a -q`		# removes all old ran images
+docker system purge			# remove images, containers, volumes and networks
+docker system purge -a			# remove all unused and stopped containers
+docker images purge			# 
 
 ####  Docker container management  ####
 
