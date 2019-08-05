@@ -113,4 +113,67 @@ value-exported
 ### bash alias ###
 echo 'alias webstat="systemctl status httpd.service"' >> /home/user/.bashrc
 
+###  Running a remote script in bash
+# remote_check.sh
+#!/bin/bash
+
+##
+# BASH script that checks the following:
+#	- Memory usage
+#	- CPU load
+#	- Number of TCP connections
+# 	- Kernel version
+##
+
+## 
+# Memory check
+##
+server_name=$(hostname)
+
+function memory_check() {
+	echo "#######"
+	echo "The current memory usage on ${server_name} is: "
+	echo ""
+	free -h
+	echo "#######"
+}
+
+function cpu_check() {
+	echo "#######"
+	echo "The current CPU load on ${server_name} is: "
+	echo ""
+	uptime
+	echo "#######"
+}
+
+function tcp_check() {
+	echo "#######"
+	echo "Total TCP connection on ${server_name}: "
+	echo ""
+	cat /proc/net/tcp | wc -l
+	echo "#######"
+}
+
+function kernel_check() {
+	echo "#######"
+	echo "The exact Kernel version on ${server_name} is: "
+	echo ""
+	uname -r
+	echo "#######"
+}
+
+function all_checks() {
+	memory_check
+	cpu_check
+	tcp_check
+	kernel_check
+}
+
+all_checks
+
+# remote_check.sh
+
+## Running remote_check.sh on remote servers
+for server in $(cat servers.txt) ; do ssh root@${server} 'bash -s' < ./remote_check.sh ; done
+
 ```
