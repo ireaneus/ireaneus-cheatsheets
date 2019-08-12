@@ -28,8 +28,8 @@ gk		move down one displayed line
 gj		move up one displayed line
 
 # Insertion
-#   To exit from insert mode use Esc or Ctrl-C
-#   Enter insertion mode and:
+###   To exit from insert mode use Esc or Ctrl-C
+###   Enter insertion mode and:
 
 a               append after the cursor
 A               append at the end of the line
@@ -57,6 +57,11 @@ v		visual copy
 Shift-v		visual copy of line
 Ctrl-v		visual block mode
 
+####  To add a character of a visual block
+Ctrl-v		# select block
+:'<,'>		# : sets up the addition
+:'<,'>s/^/#/	# adds # to beginning of line
+:'<,'>s/$/)/	# adds ) to end of line
 
 # Filters
 Ctrl-v		highlight block
@@ -72,7 +77,7 @@ Ctrl-v		highlight block
 
 
 # Preceding a motion or edition with a number repeats it 'n' times
-# Examples:
+## Examples:
 50k         moves 50 lines up
 2dw         deletes 2 words
 5yy         copies 5 lines
@@ -89,7 +94,7 @@ Ctrl-v		highlight block
 :! cat file1.txt	# will pop out of vim to run a command
 :!r blkid /dev/sdb	# read into a file the command
 
-###### Command mode features
+# Command mode features
 e file.txt        # opens file like bad
 vs                # visual split screen
 map ,t :!make<cr> # mapping
