@@ -1,3 +1,4 @@
+```sh
 # vim
 ### Very powerful editor for terminal sessions
 
@@ -123,4 +124,6 @@ q a		# starts and store recording in register
 <Esc> q		# be in command mode and hit q to stop recording
 @a		# run the macro on current line
 100@a		# will run the macro 100 times from current line
+```
+
 ```
