@@ -51,18 +51,19 @@ R               enter insert mode but replace instead of inserting chars
 
 ##### Editing
 ```
-u               undo
-.		redo
-yy              yank (copy) a line
-y{motion}       yank text that {motion} moves over
-p               paste after cursor
-P               paste before cursor
-<Del> or x      delete a character
-dd              delete a line
-d{motion}       delete text that {motion} moves over
-v		visual copy
-Shift-v		visual copy of line
-Ctrl-v		visual block mode
+u               # undo
+.		# redo
+yy              # yank (copy) a line
+y{motion}       # yank text that {motion} moves over
+yw		# yank (copy) word
+p               # paste after cursor
+P               # paste before cursor
+<Del> or x      # delete a character
+dd              # delete a line
+d{motion}       # delete text that {motion} moves over
+v		# visual copy
+Shift-v		# visual copy of line
+Ctrl-v		# visual block mode
 ```
 
 ######  To add a character of a visual block
