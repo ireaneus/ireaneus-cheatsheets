@@ -1,15 +1,16 @@
-```bash
+```sh
+# Bash 
 
 ### To list all bash commands
 Esc + y
 
+### Executing bash scripts
 #!/usr/bin/env bash
 bash my.sh
 chmod +x my.sh
 ./my.sh
 
-
-# To include a bash script in another bash script
+### To include a bash script in another bash script
 # config.sh
 USERNAME=$USER
 EMAIL="username@example.com"
@@ -22,15 +23,13 @@ source config.sh
 echo Welcome ${USERNAME}!
 echo Your email is ${EMAIL}.
 
-
-# To implement a for loop:
+### To implement a for loop:
 for file in [[ "ls -l * | wc -l" ]];
 do 
     echo $file found;
 done
 
-
-# To implement a case command:
+### To implement a case command:
 case "$1"
 in
     0) echo "zero found";;
@@ -39,13 +38,11 @@ in
     3*) echo "something beginning with 3 found";;
 esac
 
-
-
-# debugging:
+### debugging:
 set -x	# turn on debugging
 set +x	# turn off debugging
 
-# Environment echo commands
+### Environment echo commands
 echo $PATH $HOME $UID $(date) $USER
 
 # Brace Expansion
@@ -59,58 +56,57 @@ echo a{A{1,2},B{3,4}}b
 
 mkdir -p Projects/{docker,bash,ansible}
 
-# bash cursor movements
-ctrl-a	# Move to beginning of line
-ctrl-e	# Move to end of line
-ctrl-f 	# Move forward one character
-ctrl-b	# Move backward one character
-alt-f	# Move forward one word
-alt-b	# Move backward one word
-ctrl-l	# clear screen and move to top left
-ctrl-xx	# Move between the beginning of the 
-	# line, return to start of line and 
-	# change something then back again
+### bash cursor movements
 
-# bash command replacement
+| ctrl-a | Move to beginning of line |
+| ctrl-e | Move to end of line |
+| ctrl-f | Move forward one character |
+| ctrl-b | Move backward one character |
+| alt-f | Move forward one word |
+| alt-b | Move backward one word |
+| ctrl-l | clear screen and move to top left |
+| ctrl-xx | Move between the beginning of the |
+| | line, return to start of line and |
+| | change something then back again |
+
+### bash command replacement
 ls anaconda-ks.cfg
 vi !!:$
 
 cp anaconda-ks.cfg anaconda-ks.bak
 vi !^
-# vi anaconda-ks.cfg
+vi anaconda-ks.cfg
+!grep			# run the last grep command
 
-!grep	# run the last grep command
+### bash delete text
 
-	# change something then back 
+| ctrl-d | Delete character under the cursor |
+| alt-d | Delete all characters after the cursor |
+| ctrl-h | Delet the character before the cursor |
 
-# bash delete text
-ctrl-d	# Delete character under the cursor
-alt-d 	# Delete all characters after the cursor
-ctrl-h	# Delet the character before the cursor
+### Completion commands
 
-# Completion commands
-alt-? 	# Display list of possible combos
-alt-* 	# Insert all possible completions
+| alt-? | Display list of possible combos |
+| alt-* | Insert all possible completions |
 
-# Declare statements
-declare -i NEWVAR=123  # Integer only
+### Declare statements
+declare -i NEWVAR=123  			# Integer only
 declare -r NEWVAR="this is readonly"
 declare +i NEWVAR="string"
-declare -p NEWVAR 	# print
+declare -p NEWVAR 			# print
 
-# Export variables
+### Export variables
 $ MYVAR="value"
 $ echo ${MYVAR}
 value
 $ echo 'echo ${MYVAR}' > echo.sh
 $ chmod +x echo.sh
 $ ./echo.sh 
-
 $ export MYVAR="value-exported"
 $ ./echo.sh 
 value-exported
 
-### bash alias ###
+### bash alias
 echo 'alias webstat="systemctl status httpd.service"' >> /home/user/.bashrc
 
 ###  Running a remote script in bash
@@ -173,7 +169,6 @@ all_checks
 
 # remote_check.sh
 
-## Running remote_check.sh on remote servers
+### Running remote_check.sh on remote servers
 for server in $(cat servers.txt) ; do ssh root@${server} 'bash -s' < ./remote_check.sh ; done
-
 ```
