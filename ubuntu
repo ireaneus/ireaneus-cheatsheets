@@ -1,0 +1,11 @@
+```sh
+
+#### Ubuntu 18.4 bionic
+##### network setting is now 'netplan'
+vim /etc/netplan/01-config.yml
+
+       enp0s8:
+         dhcp4: no
+         addresses: [10.0.0.11/24]
+         gateway: []
+
