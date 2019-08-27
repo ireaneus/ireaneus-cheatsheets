@@ -195,7 +195,10 @@ mount -a
 mount -o remount,rw /opt	# if readonly mount exists
 
 #### Working with log files
-# insert information about logrotate here
+journalctl -xe			# systemd journalling search for errors
+tail -f /var/log/messages secure
+grep -Ei 'error|exception' /var/log/messages
+
 
 # truncate an active log file
 sudo truncate -s 0 ${LOGFILE}

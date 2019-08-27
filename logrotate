@@ -1,0 +1,12 @@
+```
+# Logrotate
+
+How to setup and manage Log Rotation using logrotate in Linux - [TecMint](https://www.tecmint.com/install-logrotate-to-manage-log-rotation-in-linux/)
+
+#### Install logrotate
+apt / yum install logrotate
+
+#### Config file locations
+/etc/logrotate.conf		# include /etc/logrotate.d
+/etc/logrotate.d/
+

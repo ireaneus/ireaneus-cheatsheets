@@ -1,0 +1,30 @@
+```
+# How to disable root access
+### Be sure to have an account with sudo access
+useradd -m -c "Admin User" admin
+passwd admin
+
+usermod -aG wheel admin		#Centos/RHEL
+usermod -aG sudo admin		# Debian/Ubuntu
+
+su - admin
+sudo vim /etc/passwd
+
+#### change root login 
+root:x:0:0:root:/root:/bin/bash
+root:x:0:0:root:/root:/sbin/nologin
+
+### change the /etc/nologin.txt, sudo ftp and email still works for root.
+
+### Disable root login via console (tty)
+sudo mv /etc/securetty /etc/securetty.orig
+sudo touch /etc/securetty
+sudo chmod 600 /etc/securetty
+
+### Disable SSH root Login.  ### This is a most common security method
+sudo vim /etc/ssh/sshd_config
+#PermitRootLogin no
+PermitRootLogin no
+
+sudo systemctl restart sshd
+sudo service sshd restart
