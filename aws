@@ -1,0 +1,58 @@
+
+##### [aws.amazon.com/blogs](https://aws.amazon.com/blogs/aws/new-aws-application-load-balancer/)
+####  Elastic Load Balancing
+
+A Layer 4 load balancer works at the network protocol level and does not look inside of the actual network packets, remaining unaware of the specifics of HTTP and HTTPS
+
+A Layer 7 load balancer is more sophisticated and more powerful. It inspects packets, has access to HTTP and HTTPS headers, and (armed with more information) can do a more intelligent job of spreading the load out to the target.
+
+####  Types of AWS load balancers
+- ELB 		# classic
+- ALB		# Application load balancing
+	- Content based routing	# define up to 10 URL-based rules to route requests to target groups
+	- Container based applications 	# It allows one instance to host several containers that listen on multiple ports behind the same target group and also performs fine-grained, port-level health checks
+
+- NLB		# Network Load Balancer - handles a much larger traffic volume than a standard ELB, and can distribute traffic across geographically distinct subnets within AWS
+
+####  Elastic Load Balancing
+
+
+####  Data Storage Types
+- instance store volume		# volume disappears when instance goes away
+- Elastic Block Storage (EBS)	# like physical NAS drive EBS tied to a single instance at a time
+- Elastic File System (EFS)	# like NFS, distributed
+
+- simple storage service(S3)	# NAS not tied to instance
+- Glacier			# Cold storage
+####  Data Storage Types
+
+
+####  Database Services
+- MySQL				# PostgresSQL, Oracle, MSSQL (depreciated)
+- RDS Aurora			# MySQL compatible - HA and perform scaling
+- DynamoDB			# NoSQL database
+####  Database Services
+
+####  Locations
+##### Regions
+US West1	# SFO California
+US West2	# PDX Oregon
+
+##### AZ availablility zones
+min of 3 AZs (Datacenters) per region
+us-west1-a,b,c
+
+
+#### Accounts
+- VPC Accounts		# each define one or more virtual private clouds (VPCs). Each VPC has its own private network and corresponding IP range, so a VPC account can support multiple independent network environments.
+
+- Classic		# each define a single private network and corresponding IP range
+
+##### Security
+- Security groups 	# A security group defines a set of rules that control access to each resource belonging to the group, creating a firewall around group members. An instance or other resource can belong to more than one security group—the access to that resource is set by the aggregate of the multiple security group rules.
+
+
+####  Monitoring
+- CloudWatch 		# monitors AWS resources and provides metrics about their use that includes costs. It can also control instance auto scaling
+- CloudTrail		# logs management API calls and console actions to provide a history of AWS resource management
+
