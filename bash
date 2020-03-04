@@ -1,4 +1,3 @@
-```sh
 # Bash 
 
 ### To list all bash commands
@@ -58,16 +57,16 @@ mkdir -p Projects/{docker,bash,ansible}
 
 ### bash cursor movements
 
-| ctrl-a | Move to beginning of line |
-| ctrl-e | Move to end of line |
-| ctrl-f | Move forward one character |
-| ctrl-b | Move backward one character |
-| alt-f | Move forward one word |
-| alt-b | Move backward one word |
-| ctrl-l | clear screen and move to top left |
+| ctrl-a  | Move to beginning of line |
+| ctrl-e  | Move to end of line |
+| ctrl-f  | Move forward one character |
+| ctrl-b  | Move backward one character |
+| alt-f   | Move forward one word |
+| alt-b   | Move backward one word |
+| ctrl-l  | clear screen and move to top left |
 | ctrl-xx | Move between the beginning of the |
-| | line, return to start of line and |
-| | change something then back again |
+|         | line, return to start of line and |
+|         | change something then back again |
 
 ### bash command replacement
 ls anaconda-ks.cfg
@@ -81,8 +80,17 @@ vi anaconda-ks.cfg
 ### bash delete text
 
 | ctrl-d | Delete character under the cursor |
-| alt-d | Delete all characters after the cursor |
-| ctrl-h | Delet the character before the cursor |
+| ctrl-w | Delete one word (backwards) |
+| ctrl-u | Delete everything from cursor to beginning |
+| ctrl-k | Delete everything from cursor to end
+| alt-d  | Delete all characters after the cursor |
+| ctrl-h | Delete the character before the cursor |
+| ctrl-y | Undo ctrl-w,ctrl-k,ctrl-u |
+
+### Copy and paste 
+
+| ctrl-shift-c | Copy text |
+| ctrl-shift-v | Paste text |
 
 ### Completion commands
 
@@ -171,4 +179,4 @@ all_checks
 
 ### Running remote_check.sh on remote servers
 for server in $(cat servers.txt) ; do ssh root@${server} 'bash -s' < ./remote_check.sh ; done
-```
+

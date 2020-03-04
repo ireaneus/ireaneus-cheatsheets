@@ -95,6 +95,18 @@ ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)"
 FROM information_schema.TABLES 
 GROUP BY table_schema;
 
+# How to optimize mysql query cache
+mysql -u root -p
+show variables like 'query_cache_%';
+>query_cache_limit value max size individual query results that can be cached
+# Edit /etc/mysql/my.cnf
+[mysqld]
+query_cache_type=1
+query_cache_size=12M
+query_cache_limit=256K
+#Restart mysql server
+#Recheck mysql query cache
+
 # What is a .frm file 
 FRM files are used to define the format of a table used with MySQL. MySQL is a cross-platform relational database. FRM files will have the same name as the table they reference, but with a .FRM extension. FRM files are created by MySQL when the table is created.
 ```

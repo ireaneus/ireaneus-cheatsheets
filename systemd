@@ -4,6 +4,9 @@ systemd-analyze
 # Display process startup time at service level
 systemd-analyze blame
 
+# Display the results in a chain of events style
+systemd-analyze critical-chain
+
 # List running units
 systemctl list-units
 

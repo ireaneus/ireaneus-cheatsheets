@@ -1,4 +1,15 @@
-```sh
+# watch
+-b --beep    	# beep if command has a non-zero exit
+-c --color	# Interpret ANSI color and style
+-d --differences # highlight changes between updates
+-e --errexit	# exit if command has a non-zero exit
+-g --chgexit	# exit when output from command changes
+-n --interval	# seconds to wait between updates
+-p --precise	# attempt to run command in precise intervals
+-t --no-title	# turn off header
+-x --exec	# pass command to exec instead of "sh -c"
+-h --help
+-v --version
 
 # basic watch command - displays the command in intervals of time
 watch ls -l
@@ -12,4 +23,5 @@ watch -d date				# Display differences highlighted
 watch -n 5 'lsof -u user | wc -l'
 Every 5.0s: lsof -u user | wc -l
 
-```
+# advanced option watch command
+watch 'sudo lsof -i -P -n | grep LISTEN'

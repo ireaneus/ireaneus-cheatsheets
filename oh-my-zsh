@@ -1,0 +1,41 @@
+# oh-my-zsh commands
+
+## take - creates a new directory and takes you to it
+## take my-project replaces mkdir my-project && cd my-project
+take my-project
+
+## zsh_stats - list to 20 command and how many times used
+zsh_stats
+     1	216  13.3663%    ll
+     2	177  10.953%     cd
+     3	89   5.50743%    vim
+     4	81   5.01238%    tl
+     5	81   5.01238%    git
+     6	78   4.82673%    sudo
+     7	64   3.9604%     cht.sh
+     8	57   3.52723%    task
+     9	57   3.52723%    cp
+    10	44   2.72277%    cheat
+    11	41   2.53713%    a
+    12	40   2.47525%    cat
+    13	35   2.16584%    gst
+    14	32   1.9802%     vprod
+    15	29   1.79455%    ch
+    16	23   1.42327%    .
+    17	22   1.36139%    gp
+    18	21   1.2995%     curl
+    19	20   1.23762%    rm
+    20	20   1.23762%    rdesktop
+
+## cd directories
+..    | 1 directory up
+...   | 2 directory up
+....  | 3 directory up
+..... | 4 directory up
+
+## rd - alias for rmdir
+## md - alias for mkdir -p
+## d - list the last used directories - cd -n n being the number of the directory
+## 'ls -' then tab will list all options and explaination
+##  'cap,rake,ssh, kill'
+
