@@ -1,5 +1,3 @@
-```sh
-
 # Search a file for a pattern
 grep pattern file
 
@@ -36,6 +34,10 @@ ps aux | grep -E --color 'bash|$'
 # search files for information from a file
 grep -f grepinput file1		# grepinput has hello
 
+# Add line context before or after pattern line
+grep -A4 "pattern" file1   # 4 lines after pattern
+grep -B4 "pattern" file1   # 4 lines before pattern
+
 # egrep for multiple words
 egrep -i 'hello.*world' file1	# looks for hello world
 egrep -i 'hello|world' file1 	# looks for hello or world in lines
@@ -51,5 +53,3 @@ grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf
 
 # fgrep literal pattern
 fgrep hello$ file1		# literal line found hello$
-
-```
