@@ -1,4 +1,5 @@
 ```sh
+
 # Splunk
 
 ## Intermediate Search
@@ -37,4 +38,5 @@ index=_* OR index=* soucetype=splunk_web_access | table _time protocol  # protoc
 index=_audit				# constraints
 action=search NOT
 action=edit_user OR action=edit_roles OR action=update
+
 ```
