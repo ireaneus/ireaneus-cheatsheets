@@ -1,0 +1,39 @@
+---
+tags: [ files, search, grep ]
+---
+
+# Basic search in current directory:
+rg <pattern>
+
+# Case-insensitive search:
+rg -i <pattern>
+
+# Search specific file type:
+rg <pattern> -t <type>
+
+# Search with file names only (no matching lines):
+rg -l <pattern>
+
+# Include line numbers in output:
+rg -n <pattern>
+
+# Search for whole words only:
+rg -w <pattern>
+
+# Search specific directory:
+rg <pattern> <path>
+
+# Show context (lines before and after):
+rg -C <lines> <pattern>
+
+# Search hidden files too:
+rg -uu <pattern>
+
+# Exclude gitignored files:
+rg --no-ignore <pattern>
+
+# Search with regex pattern:
+rg <regex-pattern>
+
+# Count matches:
+rg -c <pattern> 
