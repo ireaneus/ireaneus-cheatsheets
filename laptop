@@ -1,3 +1,7 @@
+---
+tags: [ build, laptop, linux ]
+---
+
 # Laptop build - Setup Linux environment
 - Kubuntu
 -- workspace setup 
@@ -5,4 +9,18 @@
 - Protonmail - ProtonPass
 - Terminal
 -- zsh oh-my-zsh - nerd font powerlevel10k
--- git - gh - cheat - rg
+-- git - gh - cheat - rg - htop - eza - glow - jq - ncdu - asciinema
+-- rsync - scp - fd-find - tree - watch
+- Alias - | more
+-- gh
+-- sudo apt install
+-- asciinema rec <local file.cast> asciinema play <local file.cast>
+-- fdfind
+-- Editing zsh alias
+-- batcat 
+-- column -s, -t < [file.csv]
+-- eza --long --tree --git --icon --level=3
+-- e eza -l
+-- glow  ## md reader
+-- eza   ## list directory
+-- rg    ## ripgrep used for finding words in docs 
