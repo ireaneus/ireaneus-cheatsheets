@@ -1,0 +1,20 @@
+---
+syntax: eza
+tag: files, directories
+---
+
+#List all including hidden
+
+eza --all
+
+#List tree structure
+
+eza --long --tree --level=3
+
+#List headers, icons, and Git statuses
+
+eza --long --header --icons --git
+
+#Help
+
+eza --help
