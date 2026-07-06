@@ -1,17 +1,57 @@
-# To connect to a running Asterisk session:
+# asterisk — PBX server CLI
+
+## Connect to a running Asterisk session
+
+```sh
 asterisk -rvvv
+```
 
-# To issue a command to Asterisk from the shell:
+## Issue a command from the shell
+
+```sh
 asterisk -rx "<command>"
+```
 
-# To originate an echo call from a SIP trunk on an Asterisk server, to a specified number:
+## Originate an echo call from a SIP trunk to a number
+
+```sh
 asterisk -rx "channel originate SIP/<trunk>/<number> application echo"
+```
 
-# To print out the details of SIP accounts:
+## Inspect SIP accounts
+
+```sh
+# Details of SIP accounts
 asterisk -rx "sip show peers"
 
-# To print out the passwords of SIP accounts:
+# Passwords of SIP accounts
 asterisk -rx "sip show users"
+```
 
-# To print out the current active channels:
+## Current active channels
+
+```sh
 asterisk -rx "core show channels"
+```
+
+## Real-world: health check from a monitoring script
+
+```sh
+if asterisk -rx "core show uptime" | grep -q "System uptime"; then
+    echo "asterisk OK"
+else
+    systemctl restart asterisk
+fi
+```
+
+## Real-world: reload dialplan after editing extensions.conf
+
+```sh
+asterisk -rx "dialplan reload"
+```
+
+| Flag  | What it does                       |
+| ----- | ---------------------------------- |
+| -r    | attach to running instance         |
+| -v    | add verbosity (stackable: -rvvv)   |
+| -x    | run one CLI command and exit       |

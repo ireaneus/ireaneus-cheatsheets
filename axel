@@ -1,7 +1,38 @@
-# Axel is a command-line based download accelerator for Linux. Axel makes it possible to download a file at much faster speed through single connection request for multiple copies of files in small chunks through multiple http and ftp connections.
+# axel — download accelerator
 
-axel http://mirror.cse.iitk.ac.in/archlinux/iso/2015.04.01/archlinux-2015.04.01-dual.iso
+Axel accelerates downloads by requesting a file in small chunks over multiple HTTP/FTP connections at once.
 
-# aria2 is a command-line based download utility that is lightweight and support multi-protocol (HTTP, HTTPS, FTP, BitTorrent and Metalink). It can use metalinks files to simultaneously download ISO files from more than one server. It can serve as a Bit torrent client as well
+## Basic accelerated download
 
-aria2c http://cdimage.debian.org/debian-cd/7.8.0/multi-arch/iso-cd/debian-7.8.0-amd64-i386-netinst.iso
+```sh
+axel https://download.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-DVD-x86_64-Current.iso
+```
+
+## Real-world: more connections, custom output name
+
+```sh
+axel -n 8 -o ~/Downloads/tumbleweed.iso \
+  https://download.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-DVD-x86_64-Current.iso
+```
+
+## aria2 — multi-protocol alternative
+
+aria2 is lightweight and supports HTTP(S), FTP, BitTorrent, and Metalink. It can pull one ISO from several mirrors simultaneously and works as a torrent client.
+
+```sh
+aria2c http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-netinst.iso
+```
+
+## Real-world: resume a huge interrupted download
+
+```sh
+# Both tools resume automatically if the partial file is present
+axel -n 4 https://mirror.example.org/big-media-file.mkv
+aria2c -c https://mirror.example.org/big-media-file.mkv
+```
+
+| Flag (axel) | What it does             |
+| ----------- | ------------------------ |
+| -n N        | number of connections    |
+| -o FILE     | output filename          |
+| -q          | quiet (for scripts)      |

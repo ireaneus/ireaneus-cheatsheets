@@ -1,18 +1,56 @@
-# Desc: Apparmor will protect the system by confining programs to a limited set of resources.
+# apparmor — confine programs to a limited set of resources
 
-# To activate a profile:
-sudo aa-enforce usr.bin.firefox
-# OR
-export _PROFILE_='usr.bin.firefox' sudo $(rm /etc/apparmor.d/disable/$_PROFILE_ ; cat /etc/apparmor.d/$_PROFILE_ | apparmor_parser -a )
+AppArmor protects the system by confining programs to a limited set of resources. Profiles live in `/etc/apparmor.d/`. It ships enabled on OpenSUSE Tumbleweed.
 
-# TO disable a profile:
-sudo aa-disable usr.bin.firefox
-# OR
-export _PROFILE_='usr.bin.firefox' sudo $(ln -s /etc/apparmor.d/$_PROFILE_ /etc/apparmor.d/disable/ && apparmor_parser -R /etc/apparmor.d/$_PROFILE_)
+## Check overall status and loaded profiles
 
-# To list profiles loaded:
+```sh
 sudo aa-status
-# OR
+# or
 sudo apparmor_status
+```
 
-# List of profiles aviables: /etc/apparmor.d/
+## Activate (enforce) a profile
+
+```sh
+sudo aa-enforce usr.bin.firefox
+```
+
+## Set a profile to complain mode (log violations, allow them)
+
+```sh
+sudo aa-complain usr.bin.firefox
+```
+
+## Disable a profile
+
+```sh
+sudo aa-disable usr.bin.firefox
+```
+
+## Real-world: Plex blocked by AppArmor on Tumbleweed
+
+```sh
+# See recent denials
+sudo journalctl -k | grep -i apparmor | tail -20
+
+# Loosen just the offending profile to complain mode while testing
+sudo aa-complain plexmediaserver
+
+# Re-enforce once the profile is fixed
+sudo aa-enforce plexmediaserver
+```
+
+## Real-world: reload a profile after editing
+
+```sh
+sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.smbd
+```
+
+| Tool             | Purpose                          |
+| ---------------- | -------------------------------- |
+| aa-status        | list profiles + modes            |
+| aa-enforce       | enforce a profile                |
+| aa-complain      | log-only mode                    |
+| aa-disable       | unload + disable a profile       |
+| apparmor_parser  | load/replace/remove profiles     |

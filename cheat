@@ -1,5 +1,49 @@
-# To get cheat working when getting docopt module errors
-# Instead of running the python setup.py installer run the following
-sudo pip install cheat
+# cheat — this very cheatsheet tool
 
-# This will upgrade the necessary docopt module and others
+Modern cheat is a single Go binary (github.com/cheat/cheat). The old Python version needed `sudo pip install cheat` to fix docopt module errors — that era is over.
+
+## View a sheet
+
+```sh
+cheat tar
+ch tar               # alias: clear + cheat | glow (pretty markdown)
+```
+
+## List and search
+
+```sh
+cheat -l             # list all sheets (alias: chl)
+cheat -s ssh         # search sheet contents (alias: cs)
+cheat -t ireaneus -l # list sheets with a tag
+```
+
+## Create or edit a sheet
+
+```sh
+cheat -e mycommand   # opens in $EDITOR (alias: ce)
+```
+
+## Real-world: this setup
+
+```sh
+# Config lives here; sheets come from the ireaneus-cheatsheets git repo
+cat ~/.config/cheat/conf.yml
+
+# Sheets are a git repo — commit and push edits like any other project
+cd ~/Public/ireaneus-cheatsheets && git add -A && git commit -m "update sheet" && git push
+```
+
+## Real-world: reinstall on a fresh box
+
+```sh
+curl -sSL -o /tmp/cheat.gz https://github.com/cheat/cheat/releases/latest/download/cheat-linux-amd64.gz
+gunzip -f /tmp/cheat.gz && chmod +x /tmp/cheat && sudo mv /tmp/cheat /usr/local/bin/cheat
+```
+
+| Flag | What it does            |
+| ---- | ----------------------- |
+| -l   | list sheets             |
+| -s   | search contents         |
+| -e   | edit/create sheet       |
+| -t   | filter by tag           |
+| -p   | filter by cheatpath     |

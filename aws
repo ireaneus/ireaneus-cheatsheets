@@ -1,58 +1,54 @@
+# aws — core AWS concepts
 
-##### [aws.amazon.com/blogs](https://aws.amazon.com/blogs/aws/new-aws-application-load-balancer/)
-####  Elastic Load Balancing
+## Elastic Load Balancing
 
-A Layer 4 load balancer works at the network protocol level and does not look inside of the actual network packets, remaining unaware of the specifics of HTTP and HTTPS
+A Layer 4 load balancer works at the network protocol level without looking inside packets, unaware of HTTP/HTTPS specifics. A Layer 7 load balancer inspects packets, sees HTTP/HTTPS headers, and can spread load more intelligently.
 
-A Layer 7 load balancer is more sophisticated and more powerful. It inspects packets, has access to HTTP and HTTPS headers, and (armed with more information) can do a more intelligent job of spreading the load out to the target.
+| Type | Layer | Notes                                                        |
+| ---- | ----- | ------------------------------------------------------------ |
+| ELB  | 4     | classic                                                      |
+| ALB  | 7     | content-based routing (up to 10 URL rules), container-aware port-level health checks |
+| NLB  | 4     | much larger traffic volume; spans geographically distinct subnets |
 
-####  Types of AWS load balancers
-- ELB 		# classic
-- ALB		# Application load balancing
-	- Content based routing	# define up to 10 URL-based rules to route requests to target groups
-	- Container based applications 	# It allows one instance to host several containers that listen on multiple ports behind the same target group and also performs fine-grained, port-level health checks
+## Data storage types
 
-- NLB		# Network Load Balancer - handles a much larger traffic volume than a standard ELB, and can distribute traffic across geographically distinct subnets within AWS
+| Service               | Behaves like                | Key trait                        |
+| --------------------- | --------------------------- | -------------------------------- |
+| Instance store volume | local disk                  | disappears with the instance     |
+| EBS                   | physical NAS drive          | tied to a single instance        |
+| EFS                   | NFS                         | distributed, multi-instance      |
+| S3                    | NAS, not tied to instances  | object storage                   |
+| Glacier               | cold storage                | slow retrieval, cheap            |
 
-####  Elastic Load Balancing
+## Database services
 
+| Service    | Notes                                        |
+| ---------- | -------------------------------------------- |
+| RDS        | MySQL, PostgreSQL, Oracle, MSSQL             |
+| RDS Aurora | MySQL compatible — HA and performance scaling |
+| DynamoDB   | NoSQL                                        |
 
-####  Data Storage Types
-- instance store volume		# volume disappears when instance goes away
-- Elastic Block Storage (EBS)	# like physical NAS drive EBS tied to a single instance at a time
-- Elastic File System (EFS)	# like NFS, distributed
+## Locations
 
-- simple storage service(S3)	# NAS not tied to instance
-- Glacier			# Cold storage
-####  Data Storage Types
+Regions (e.g. us-west-1 California, us-west-2 Oregon) contain a minimum of 3 availability zones (datacenters): `us-west-1a,b,c`.
 
+## Accounts and security
 
-####  Database Services
-- MySQL				# PostgresSQL, Oracle, MSSQL (depreciated)
-- RDS Aurora			# MySQL compatible - HA and perform scaling
-- DynamoDB			# NoSQL database
-####  Database Services
+VPC accounts define one or more virtual private clouds, each with its own private network and IP range. Security groups define rules controlling access to member resources — a firewall around the group; a resource in multiple groups gets the aggregate of the rules.
 
-####  Locations
-##### Regions
-US West1	# SFO California
-US West2	# PDX Oregon
+## Monitoring
 
-##### AZ availablility zones
-min of 3 AZs (Datacenters) per region
-us-west1-a,b,c
+| Service    | Purpose                                                     |
+| ---------- | ----------------------------------------------------------- |
+| CloudWatch | resource metrics, costs, drives auto scaling                |
+| CloudTrail | logs management API calls and console actions (audit trail) |
 
+## Real-world: check what a mystery EC2 bill is running
 
-#### Accounts
-- VPC Accounts		# each define one or more virtual private clouds (VPCs). Each VPC has its own private network and corresponding IP range, so a VPC account can support multiple independent network environments.
+```sh
+aws ec2 describe-instances \
+  --query 'Reservations[].Instances[].[InstanceId,InstanceType,State.Name]' \
+  --output table
+```
 
-- Classic		# each define a single private network and corresponding IP range
-
-##### Security
-- Security groups 	# A security group defines a set of rules that control access to each resource belonging to the group, creating a firewall around group members. An instance or other resource can belong to more than one security group—the access to that resource is set by the aggregate of the multiple security group rules.
-
-
-####  Monitoring
-- CloudWatch 		# monitors AWS resources and provides metrics about their use that includes costs. It can also control instance auto scaling
-- CloudTrail		# logs management API calls and console actions to provide a history of AWS resource management
-
+See the `awscli` sheet for command-line usage.

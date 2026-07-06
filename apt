@@ -1,23 +1,61 @@
-# To search a package:
+# apt — Debian/Ubuntu package manager
+
+## Search for a package
+
+```sh
 apt search package
+```
 
-# To show package informations:
+## Show package information
+
+```sh
 apt show package
+```
 
-# To fetch package list:
+## Fetch package list
+
+```sh
 apt update
+```
 
-# To download and install updates without installing new package:
+## Install updates
+
+```sh
+# Updates only, no new packages
 apt upgrade
 
-# To download and install the updates AND install new necessary packages:
+# Updates AND any newly required packages
 apt dist-upgrade
 
-# Full command:
+# Full refresh in one line
 apt update && apt dist-upgrade
+```
 
-# To install a new package(s):
-apt install package(s)
+## Install / remove packages
 
-# To uninstall package(s)
-apt remove package(s)
+```sh
+apt install package1 package2
+apt remove package
+apt autoremove          # drop orphaned dependencies
+```
+
+## Real-world: patch an Ubuntu container or VM from the homelab
+
+```sh
+ssh david@ubuntu-vm 'sudo apt update && sudo apt dist-upgrade -y && sudo apt autoremove -y'
+```
+
+## Real-world: which package provides a file?
+
+```sh
+apt-file search bin/htpasswd    # needs: apt install apt-file && apt-file update
+```
+
+Tumbleweed equivalent reminder: `apt update && apt dist-upgrade` ≈ `sudo zypper refresh && sudo zypper dist-upgrade`.
+
+| Command      | What it does                        |
+| ------------ | ----------------------------------- |
+| update       | refresh package index               |
+| upgrade      | install updates, never remove       |
+| dist-upgrade | updates + add/remove as needed      |
+| autoremove   | remove orphaned deps                |

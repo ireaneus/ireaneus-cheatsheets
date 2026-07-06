@@ -1,17 +1,59 @@
-# To schedule a one time task
+# at — schedule a one-time task
+
+## Basic usage
+
+```sh
 at {time}
+# then type commands, one per line, finish with Ctrl-d
 {command 0}
 {command 1}
-Ctrl-d
+# Ctrl-d
+```
 
-# {time} can be either
-now | midnight | noon | teatime (4pm)
+## Time formats
+
+```sh
+now | midnight | noon | teatime   # teatime = 4pm
 HH:MM
-now + N {minutes | hours | days | weeks}
+now + N minutes|hours|days|weeks
 MM/DD/YY
+```
 
-# To list pending jobs
+## List pending jobs
+
+```sh
 atq
+```
 
-# To remove a job (use id from atq)
+## Remove a job (use id from atq)
+
+```sh
 atrm {id}
+```
+
+## Real-world: one-shot reboot tonight after a kernel update
+
+```sh
+echo "systemctl reboot" | sudo at 02:30
+```
+
+## Real-world: start the coffee maker before an early morning
+
+```sh
+echo "python3 ~/scripts/coffee_on.py" | at 05:45
+```
+
+## Real-world: inspect what a queued job will run
+
+```sh
+at -c {id}
+```
+
+Note: the `atd` service must be running — `sudo systemctl enable --now atd`. For anything recurring, use a systemd timer or cron instead.
+
+| Command | What it does           |
+| ------- | ---------------------- |
+| at      | queue a one-time job   |
+| atq     | list queue             |
+| atrm    | remove job             |
+| at -c   | print job's script     |

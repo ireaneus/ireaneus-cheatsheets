@@ -1,14 +1,50 @@
-# Install a package
+# apk — Alpine Linux package manager
+
+## Install a package
+
+```sh
 apk add $package
+```
 
-# Remove a package
+## Remove a package
+
+```sh
 apk del $package
+```
 
-# Update repos
+## Update repos and upgrade all packages
+
+```sh
 apk update
-
-# Upgrade all packages
 apk upgrade
+```
 
-# Find a package
+## Find a package
+
+```sh
 apk search $package
+```
+
+## Real-world: slim Docker image on the homelab
+
+```dockerfile
+FROM alpine:latest
+# --no-cache updates the index and skips the local cache in one shot
+RUN apk add --no-cache python3 py3-pip curl
+```
+
+## Real-world: inspect an Alpine container
+
+```sh
+# What owns this file?
+apk info --who-owns /usr/bin/curl
+
+# List installed packages
+apk info
+```
+
+| Flag       | What it does                             |
+| ---------- | ---------------------------------------- |
+| --no-cache | update index + skip cache (Dockerfiles)  |
+| -v         | verbose output                           |
+| --simulate | show what would happen, change nothing   |

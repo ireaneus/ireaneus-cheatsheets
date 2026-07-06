@@ -1,15 +1,48 @@
-# To search for packages:
+# aptitude — full-screen APT front end
+
+## Search for packages
+
+```sh
 aptitude search "whatever"
+```
 
-# To display package records for the named package(s):
-aptitude show pkg(s)
+## Display package records
 
-# To install a package:
+```sh
+aptitude show pkg
+```
+
+## Install / remove a package
+
+```sh
 aptitude install package
-
-# To remove a package:
 aptitude remove package
+```
 
-# To remove unnecessary package:
+## Clean out obsolete downloaded packages
+
+```sh
 aptitude autoclean
+```
 
+## Real-world: interactive dependency untangling
+
+```sh
+# aptitude proposes resolutions when dependencies conflict —
+# handy when apt-get just gives up
+sudo aptitude install problematic-package
+```
+
+## Real-world: what's been held back?
+
+```sh
+aptitude search '~ahold'
+```
+
+| Command   | What it does                    |
+| --------- | ------------------------------- |
+| search    | find packages (supports ~terms) |
+| show      | package record                  |
+| install   | install w/ resolver             |
+| remove    | remove package                  |
+| autoclean | drop obsolete .deb cache        |

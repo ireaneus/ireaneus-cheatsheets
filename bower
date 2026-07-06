@@ -1,26 +1,47 @@
-# Install a package locally
+# bower — front-end package manager (legacy)
+
+Bower is deprecated — new projects should use npm/yarn. Kept for maintaining older front-end projects.
+
+## Install packages locally
+
+```sh
 bower install <package-name>
 
-# Install a package locally directly from github
+# Directly from github
 bower install <user>/<repo>
 
-# Install a specific package locally
+# Specific version
 bower install <package-name>#<version>
 
-# Install a package locally and save installed package into bower.json
+# Install and save to bower.json
 bower install <package-name> --save
+```
 
-# Retrieve info of a particular package
+## Inspect
+
+```sh
 bower info <package-name>
-
-# List local packages
 bower list
-
-# Search for a package by name
 bower search <package-name>
+```
 
-# Update a package to their newest version
+## Update / remove
+
+```sh
 bower update <package-name>
-
-# Remove a local package
 bower uninstall <package-name>
+```
+
+## Real-world: resurrect an old project on a fresh Tumbleweed box
+
+```sh
+sudo npm install -g bower
+cd ~/Public/old-webapp
+bower install          # reads bower.json, restores bower_components/
+```
+
+| Flag       | What it does                     |
+| ---------- | -------------------------------- |
+| --save     | record in bower.json deps        |
+| --save-dev | record in devDependencies        |
+| -F         | force latest on conflicts        |

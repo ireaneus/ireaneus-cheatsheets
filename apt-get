@@ -1,25 +1,61 @@
-# Desc: Allows to update the operating system
+# apt-get — classic APT front end (script-safe)
 
-# To fetch package list
+`apt-get` keeps stable output across versions, so prefer it over `apt` inside scripts.
+
+## Fetch package list
+
+```sh
 apt-get update
+```
 
-# To download and install updates without installing new package.
+## Install updates
+
+```sh
+# Updates only
 apt-get upgrade
 
-# To download and install the updates AND install new necessary packages
+# Updates AND install/remove packages as needed
 apt-get dist-upgrade
 
-# Full command:
+# Full command
 apt-get update && apt-get dist-upgrade
+```
 
-# To install a new package(s)
-apt-get install package(s)
+## Install a new package
 
-# Download a package without installing it. (The package will be downloaded in your current working dir)
+```sh
+apt-get install package
+```
+
+## Download a package without installing it
+
+```sh
+# The .deb lands in your current working dir
 apt-get download modsecurity-crs
+```
 
-# Change Cache dir and archive dir (where .deb are stored).
-apt-get -o Dir::Cache="/path/to/destination/dir/" -o Dir::Cache::archives="./" install ...
+## Change cache dir and archive dir (where .deb files are stored)
 
-# Show apt-get installed packages.
+```sh
+apt-get -o Dir::Cache="/path/to/destination/dir/" -o Dir::Cache::archives="./" install package
+```
+
+## Show apt-get installed packages
+
+```sh
 grep 'install ' /var/log/dpkg.log
+```
+
+## Real-world: unattended patching in a cron/systemd timer script
+
+```sh
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -qq && apt-get dist-upgrade -y -qq && apt-get autoremove -y -qq
+```
+
+| Flag | What it does                       |
+| ---- | ---------------------------------- |
+| -y   | assume yes                         |
+| -qq  | very quiet (script logs stay lean) |
+| -s   | simulate, change nothing           |
+| -f   | fix broken dependencies            |

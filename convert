@@ -1,19 +1,58 @@
-# To resize an image to a fixed width and proportional height:
+# convert — ImageMagick image conversion
+
+## Resize
+
+```sh
+# Fixed width, proportional height
 convert original-image.jpg -resize 100x converted-image.jpg
 
-# To resize an image to a fixed height and proportional width:
+# Fixed height, proportional width
 convert original-image.jpg -resize x100 converted-image.jpg
 
-# To resize an image to a fixed width and height:
+# Fit within 100x100 (keeps aspect ratio)
 convert original-image.jpg -resize 100x100 converted-image.jpg
+```
 
-# To resize an image and simultaneously change its file type:
+## Resize and change file type at once
+
+```sh
 convert original-image.jpg -resize 100x converted-image.png
+```
 
-# To resize all of the images within a directory:
-# To implement a for loop:
-for file in `ls original/image/path/`;
-    do new_path=${file%.*};
-    new_file=`basename $new_path`;
-    convert $file -resize 150 conerted/image/path/$new_file.png;
+## Batch: resize every image in a directory
+
+```sh
+for file in original/image/path/*; do
+    new_file=$(basename "${file%.*}")
+    convert "$file" -resize 150 converted/image/path/"$new_file".png
 done
+
+# Or in place with mogrify (careful — overwrites!)
+mogrify -resize 1920x *.jpg
+```
+
+## Real-world: thumbnails for the photo library
+
+```sh
+mkdir -p ~/Media/Photos/thumbs
+for f in ~/Media/Photos/Phone/*.jpg; do
+    convert "$f" -resize 400x -quality 85 ~/Media/Photos/thumbs/"$(basename "$f")"
+done
+```
+
+## Real-world: quality, rotation, format
+
+```sh
+convert scan.png -quality 80 scan.jpg          # compress
+convert photo.jpg -rotate 90 photo-rot.jpg     # rotate
+convert page1.png page2.png doc.pdf            # images -> PDF
+```
+
+Note: on newer ImageMagick 7 installs the command is `magick` (`magick convert ...` also works).
+
+| Flag      | What it does                |
+| --------- | --------------------------- |
+| -resize   | geometry WxH, W x, or xH    |
+| -quality  | JPEG/PNG quality (1-100)    |
+| -rotate   | degrees clockwise           |
+| -strip    | drop EXIF metadata          |

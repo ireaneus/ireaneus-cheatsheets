@@ -1,42 +1,73 @@
-# Add execute for all (myscript.sh)
+# chmod — change file permissions
+
+## Symbolic mode
+
+```sh
+# Add execute for all
 chmod a+x myscript.sh
 
-# Set user to read/write/execute, group/global to read only (myscript.sh), symbolic mode
-chmod u=rwx, go=r myscript.sh 
+# User read/write/execute, group/global read only
+chmod u=rwx,go=r myscript.sh
 
-# Remove write from user/group/global (myscript.sh), symbolic mode
+# Remove write from everyone
 chmod a-w myscript.sh
 
-# Remove read/write/execute from user/group/global (myscript.sh), symbolic mode
+# Strip all permissions
 chmod = myscript.sh
+```
 
-# Set user to read/write and group/global read (myscript.sh), octal notation
-chmod 644 myscript.sh
+## Octal notation
 
-# Set user to read/write/execute and group/global read/execute (myscript.sh), octal notation
-chmod 755 myscript.sh
+```sh
+chmod 644 notes.txt       # user rw, group/global r
+chmod 755 myscript.sh     # user rwx, group/global rx
+chmod 666 shared.txt      # everyone rw
+chmod 600 ~/.ssh/config   # user rw only
+```
 
-# Set user/group/global to read/write (myscript.sh), octal notation
-chmod 666 myscript.sh
+## Directories
 
-# Set permissions on a directory
+```sh
 chmod 755 /opt/myapp
 
-# Set permissions on a directory and files recursivley
-chmod 666 -R /opt/myapp/*
+# Recursive
+chmod -R 755 /opt/myapp
+```
 
-# Roles
-u - user (owner of the file)
-g - group (members of file's group)
-o - global (all users who are not owner and not part of group)
-a - all (all 3 roles above)
+## Real-world: fix a fresh SSH setup
 
-# Numeric representations
-7 - full (rwx)
-6 - read and write (rw-)
-5 - read and execute (r-x)
-4 - read only (r--)
-3 - write and execute (-wx)
-2 - write only (-w-)
-1 - execute only (--x)
-0 - none (---)
+```sh
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/id_ed25519 ~/.ssh/config
+chmod 644 ~/.ssh/id_ed25519.pub
+```
+
+## Real-world: make Plex media readable, scripts runnable
+
+```sh
+find ~/Media -type d -exec chmod 755 {} +
+find ~/Media -type f -exec chmod 644 {} +
+chmod +x ~/scripts/*.py
+```
+
+## Roles
+
+| Letter | Who                                         |
+| ------ | ------------------------------------------- |
+| u      | user (owner of the file)                    |
+| g      | group (members of file's group)             |
+| o      | global (everyone else)                      |
+| a      | all three roles above                       |
+
+## Numeric values
+
+| Value | Permissions              |
+| ----- | ------------------------ |
+| 7     | full (rwx)               |
+| 6     | read and write (rw-)     |
+| 5     | read and execute (r-x)   |
+| 4     | read only (r--)          |
+| 3     | write and execute (-wx)  |
+| 2     | write only (-w-)         |
+| 1     | execute only (--x)       |
+| 0     | none (---)               |

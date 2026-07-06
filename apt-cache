@@ -1,12 +1,45 @@
-# To search for apt packages:
+# apt-cache — query the APT package index
+
+## Search for packages
+
+```sh
 apt-cache search "whatever"
+```
 
-# To display package records for the named package(s):
-apt-cache show pkg(s)
+## Display package records
 
-# To display reverse dependencies of a package
+```sh
+apt-cache show pkg
+```
+
+## Reverse dependencies (what needs this package?)
+
+```sh
 apt-cache rdepends package_name
+```
 
-# To display package versions, reverse dependencies and forward dependencies 
-# of a package
+## Versions plus forward and reverse dependencies
+
+```sh
 apt-cache showpkg package_name
+```
+
+## Real-world: check what would break before removing a library
+
+```sh
+apt-cache rdepends --installed libssl3
+```
+
+## Real-world: compare candidate vs installed version
+
+```sh
+apt-cache policy nginx
+```
+
+| Command  | What it shows                       |
+| -------- | ----------------------------------- |
+| search   | name/description matches            |
+| show     | full package record                 |
+| policy   | installed vs candidate + origin     |
+| rdepends | reverse dependencies                |
+| depends  | forward dependencies                |

@@ -1,41 +1,61 @@
-# Change file owner
+# chown — change file ownership
+
+## Basics
+
+```sh
 chown user file
-
-# Change file owner and group
 chown user:group file
-
-# Change owner recursively
 chown -R user directory
+chown --reference=/path/to/ref_file file    # match another file's ownership
+```
 
-# Change ownership to match another file
-chown --reference=/path/to/ref_file file
+## Real-world: hand the media library to Plex
 
-# umask command controls the default permissions given to a file when it is created
-umask
-0022
+```sh
+sudo chown -R plex:plex /var/lib/plexmediaserver
+# Media stays owned by david; make it group-readable instead
+sudo chown -R david:users ~/Media
+```
 
-umask 0000	# resets umask settings
+## Real-world: reclaim files copied in as root
 
-mask	000 000 000 010	# umask 0002
-Result	--- rw- rw- r--	
+```sh
+sudo chown -R david:users ~/Public/joseph-journals
+```
 
-mask	000 000 010 010	# umask 0022
+## umask — default permissions for new files
 
-# setuid bit (octal 4000) 
-# When applied to an executable file, it sets the effective user ID 
-# from that of the real user (the user actually running the program) 
-# to that of the program’s owner
-# When an ordinary user runs a program that is setuid root, 
-# the program runs with the effective privileges of the superuser
-chmod u+s program
--rwsr-xr-x
+```sh
+umask          # show current (e.g. 0022)
+umask 0000     # reset umask
+```
 
-# the setgid bit (octal 2000)
-# This, like the setuid bit, changes the effective group ID from that of the real group ID of the user to that of the file owner. If the setgid bit is set on a directory, newly created files in the directory will be given the group ownership of the directory rather the group ownership of the file’s creator. This is useful in a shared directory when members of a common group need access to all the files in the directory, regardless of the file owner’s primary group.
-chmod g+s directory
-drwxrwsr-x
+| umask | New file result | New dir result |
+| ----- | --------------- | -------------- |
+| 0002  | rw-rw-r--       | rwxrwxr-x      |
+| 0022  | rw-r--r--       | rwxr-xr-x      |
+| 0077  | rw-------       | rwx------      |
 
-# the sticky bit (octal 1000)
-# On files, Linux ignores the sticky bit, but if applied to a directory, it prevents users from deleting or renaming files unless the user is either the owner of the directory, the owner of the file, or the superuser. This is often used to control access to a shared directory, such as /tmp.
-chmod +t directory
-drwxrwxrwt
+## Special permission bits (set with chmod)
+
+```sh
+# setuid (4000): executable runs with the owner's effective UID —
+# setuid root programs run with superuser privileges
+chmod u+s program        # -rwsr-xr-x
+
+# setgid (2000): on a directory, new files inherit the directory's
+# group instead of the creator's primary group — perfect for shared dirs
+chmod g+s directory      # drwxrwsr-x
+
+# sticky bit (1000): on a directory, only the file owner, dir owner,
+# or root can delete/rename files (classic /tmp behavior)
+chmod +t directory       # drwxrwxrwt
+```
+
+## Real-world: shared folder for a group
+
+```sh
+sudo groupadd media
+sudo chown david:media ~/Media/Videos
+sudo chmod 2775 ~/Media/Videos    # setgid keeps group ownership on new files
+```
