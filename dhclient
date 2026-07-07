@@ -1,10 +1,50 @@
-# To release the current IP address:
+# dhclient — real-world examples
+
+## Release the current IP address
+
+```sh
 sudo dhclient -r
+```
 
-# To obtain a new IP address:
+## Obtain a new IP address
+
+```sh
 sudo dhclient
+```
 
-# Running the above in sequence is a common way of refreshing an IP.
+Running release then obtain is the common way to refresh a lease.
 
-# To obtain a new IP address for a specific interface:
+## Target a specific interface
+
+```sh
 sudo dhclient eth0
+```
+
+## Verbose output when troubleshooting a lease
+
+```sh
+sudo dhclient -v eth0
+```
+
+## Homelab: bounce the lease after changing a static reservation on the router
+
+```sh
+sudo dhclient -r eth0 && sudo dhclient -v eth0
+ip addr show eth0   # confirm the new address
+```
+
+## Note for OpenSUSE Tumbleweed
+
+NetworkManager usually owns DHCP on desktop installs. Prefer:
+
+```sh
+nmcli device reapply eth0
+# or bounce the connection entirely
+nmcli connection down "Wired connection 1" && nmcli connection up "Wired connection 1"
+```
+
+| Flag | What it does              |
+| ---- | ------------------------- |
+| -r   | release current lease     |
+| -v   | verbose output            |
+| -x   | stop the running client   |

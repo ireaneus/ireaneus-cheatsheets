@@ -2,35 +2,72 @@
 syntax: bash
 tags: [ container, docker ]
 ---
-# To start all containers defined in the docker-compose.yml file:
+# docker-compose — real-world examples
+
+Modern Docker ships this as a plugin: `docker compose ...` (no hyphen)
+works the same way.
+
+## Start everything defined in docker-compose.yml
+
+```sh
 docker-compose up
 
-# To start all containers defined in a given compose file:
-docker-compose -f <path/to/compose_file.yml> up
-
-# To start all containers in the background:
+# in the background
 docker-compose up -d
 
-# To rebuild the images before starting all containers:
+# from a specific compose file
+docker-compose -f <path/to/compose_file.yml> up
+
+# rebuild images first
 docker-compose up --build
 
-# To start only specific containers:
+# only specific services
 docker-compose up <container_name_1> <container_name_2>
+```
 
-# To list all running containers:
+## Status and logs
+
+```sh
+# List running containers for this project
 docker-compose ps
 
-# To stop all running containers:
-docker-compose stop
-
-# To stop and remove all containers, networks, images, and volumes:
-docker-compose down --rmi all --volumes
-
-# To follow logs output from all containers:
+# Follow logs from everything
 docker-compose logs --follow
 
-# To follow logs output from a specific container:
+# Follow logs from one service
 docker-compose logs --follow <container_name>
+```
 
-# To display the environment variables used by a running container:
+## Stop and clean up
+
+```sh
+# Stop all running containers
+docker-compose stop
+
+# Stop and remove containers, networks, images, and volumes
+docker-compose down --rmi all --volumes
+```
+
+## Inspect a container's environment
+
+```sh
 docker-compose run <container_name> env
+```
+
+## Homelab: media stack on mediaserver
+
+```sh
+cd /srv/stacks/media
+docker-compose up -d               # plex, sonarr, radarr...
+docker-compose pull && docker-compose up -d   # update images in place
+docker-compose logs --follow plex  # watch Plex start up
+```
+
+| Command  | What it does                       |
+| -------- | ---------------------------------- |
+| up -d    | create + start in background       |
+| down     | stop + remove containers/networks  |
+| pull     | fetch newer images                 |
+| ps       | project container status           |
+| restart  | bounce services                    |
+| exec     | run a command in a running service |

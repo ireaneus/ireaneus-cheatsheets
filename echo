@@ -1,10 +1,50 @@
-# Echo commands with quotes
+# echo — real-world examples
+
+## Quoting: unquoted vs single vs double
+
+```sh
 greeting="hello world"
 
-#echo $greeting, blu \(planet\)!
+# Unquoted: variable expands, backslashes need escaping
+echo $greeting, blu \(planet\)!
+# hello world, blu (planet)!
 
-#echo '$greeting, blu \(planet\)!'
+# Single quotes: everything literal — no expansion
+echo '$greeting, blu \(planet\)!'
+# $greeting, blu \(planet\)!
 
-#echo "$greeting, blu \(planet\)!"
+# Double quotes: variable expands, most characters literal
+echo "$greeting, blu (planet)!"
+# hello world, blu (planet)!
+```
 
+## Escape sequences with -e
 
+```sh
+echo -e "line one\nline two\ttabbed"
+```
+
+## No trailing newline
+
+```sh
+echo -n "prompt> "
+```
+
+## Homelab: quick sanity checks
+
+```sh
+# Which shell and host am I on?
+echo "$USER@$HOSTNAME running $SHELL"
+
+# Append a line to a config without opening an editor
+echo 'alias ll="ls -la"' >> ~/.zshrc
+
+# Exit status of the last command
+systemctl is-active plexmediaserver; echo $?
+```
+
+| Flag | What it does                     |
+| ---- | -------------------------------- |
+| -n   | no trailing newline              |
+| -e   | interpret \n, \t, etc.           |
+| -E   | disable escapes (default)        |

@@ -1,17 +1,63 @@
-# Read from {/dev/urandom} 2*512 Bytes and put it into {/tmp/test.txt}
-# Note: At the first iteration, we read 512 Bytes.
-# Note: At the second iteration, we read 512 Bytes.
+# dd — real-world examples
+
+## Basic read/write with block size and count
+
+```sh
+# 512 blocks of 2 bytes each from /dev/urandom into a test file
 dd if=/dev/urandom of=/tmp/test.txt count=512 bs=2
+```
 
-# Watch the progress of 'dd'
-dd if=/dev/zero of=/dev/null bs=4KB &; export dd_pid=`pgrep '^dd'`; while [[ -d /proc/$dd_pid ]]; do kill -USR1 $dd_pid && sleep 1 && clear; done
+## Built-in progress (modern coreutils — use this first)
 
-# Watch the progress of 'dd' with `pv` and `dialog` (apt-get install pv dialog)
-(pv -n /dev/zero | dd of=/dev/null bs=128M conv=notrunc,noerror) 2>&1 | dialog --gauge "Running dd command (cloning), please wait..." 10 70 0
+```sh
+dd if=/dev/zero of=/dev/null bs=128M status=progress
+```
 
-# Watch the progress of 'dd' with `pv` and `zenity` (apt-get install pv zenity)
-(pv -n /dev/zero | dd of=/dev/null bs=128M conv=notrunc,noerror) 2>&1 | zenity --title 'Running dd command (cloning), please wait...' --progress
+## Homelab: write an OpenSUSE Tumbleweed ISO to a USB stick
 
-# DD with "graphical" return
+```sh
+# Double-check the device with lsblk first!
+lsblk
+sudo dd if=openSUSE-Tumbleweed-DVD-x86_64-Current.iso of=/dev/sdX bs=4M status=progress oflag=sync
+```
+
+## Homelab: image an SD card before reflashing
+
+```sh
+sudo dd if=/dev/mmcblk0 of=~/backups/sdcard-$(date +%Y%m%d).img bs=4M status=progress
+```
+
+## Watch progress of an already-running dd
+
+```sh
+# Send USR1 to make dd print stats
+export dd_pid=$(pgrep '^dd')
+while [[ -d /proc/$dd_pid ]]; do kill -USR1 $dd_pid && sleep 1 && clear; done
+```
+
+## Progress bars with pv
+
+```sh
+# dialog gauge (zypper in pv dialog)
+(pv -n /dev/zero | dd of=/dev/null bs=128M conv=notrunc,noerror) 2>&1 \
+  | dialog --gauge "Running dd command (cloning), please wait..." 10 70 0
+
+# zenity progress window (zypper in pv zenity)
+(pv -n /dev/zero | dd of=/dev/null bs=128M conv=notrunc,noerror) 2>&1 \
+  | zenity --title 'Running dd command (cloning), please wait...' --progress
+```
+
+## dcfldd — dd fork with progress output built in
+
+```sh
 dcfldd if=/dev/zero of=/dev/null bs=500K
+```
 
+| Option           | What it does                        |
+| ---------------- | ----------------------------------- |
+| if= / of=        | input / output file or device       |
+| bs=              | block size (4M is a good default)   |
+| count=           | copy only N blocks                  |
+| status=progress  | live transfer stats                 |
+| conv=noerror     | keep going past read errors         |
+| oflag=sync       | flush writes as you go              |

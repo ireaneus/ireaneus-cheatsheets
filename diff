@@ -1,23 +1,56 @@
-# To view the differences between two files:
+# diff — real-world examples
+
+## Differences between two files (unified format)
+
+```sh
 diff -u version1 version2
+```
 
-# To view the differences between two directories:
+## Differences between two directories, recursively
+
+```sh
 diff -ur folder1/ folder2/
+```
 
-# To ignore the white spaces:
-diff -ub version1 version2
+## Ignore whitespace / blank lines / case
 
-# To ignore the blank lines:
-diff -uB version1 version2
+```sh
+diff -ub version1 version2   # ignore whitespace changes
+diff -uB version1 version2   # ignore blank lines
+diff -ui version1 version2   # ignore case
+```
 
-# To ignore the differences between uppercase and lowercase:
-diff -ui version1 version2
+## Just tell me whether they differ
 
-# To report whether the files differ:
-diff -q version1 version2
+```sh
+diff -q version1 version2    # reports if different
+diff -s version1 version2    # reports if identical
+```
 
-# To report whether the files are identical:
-diff -s version1 version2
+## Diff the output of two commands (process substitution)
 
-# To diff the output of two commands or scripts:
+```sh
 diff <(command1) <(command2)
+```
+
+## Homelab: compare live config against the backup
+
+```sh
+diff -u /etc/nginx/nginx.conf ~/backups/etc/nginx/nginx.conf
+```
+
+## Homelab: what changed between two package snapshots
+
+```sh
+diff <(ssh david@homelab 'rpm -qa | sort') <(rpm -qa | sort)
+```
+
+| Flag | What it does                    |
+| ---- | ------------------------------- |
+| -u   | unified format (patch-friendly) |
+| -r   | recurse into directories        |
+| -q   | brief: only "files differ"      |
+| -s   | report identical files          |
+| -b   | ignore whitespace changes       |
+| -B   | ignore blank lines              |
+| -i   | ignore case                     |

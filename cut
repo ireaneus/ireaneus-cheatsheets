@@ -1,2 +1,43 @@
-# To cut out the third field of text or stdoutput that is delimited by a #:
-cut -d# -f3
+# cut — real-world examples
+
+## Extract the third #-delimited field from input
+
+```sh
+cut -d'#' -f3
+```
+
+## Usernames from /etc/passwd (first :-delimited field)
+
+```sh
+cut -d: -f1 /etc/passwd
+```
+
+## Multiple fields at once
+
+```sh
+# user and shell from passwd
+cut -d: -f1,7 /etc/passwd
+```
+
+## Fixed character ranges
+
+```sh
+# First 10 characters of every line
+cut -c1-10 server.log
+```
+
+## Homelab: pull IPs out of an ssh auth log
+
+```sh
+grep 'Failed password' /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn
+# or with cut when the column position is fixed:
+who | cut -d'(' -f2 | tr -d ')'
+```
+
+| Flag | What it does                       |
+| ---- | ---------------------------------- |
+| -d   | field delimiter (default TAB)      |
+| -f   | select fields                      |
+| -c   | select character positions         |
+| -b   | select byte positions              |
+| --complement | invert the selection        |

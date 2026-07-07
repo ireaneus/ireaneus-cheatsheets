@@ -1,2 +1,43 @@
-# To replace eight consecutive spaces with tabs in a file
+# expand — real-world examples
+
+## Convert leading spaces to tabs in a file
+
+```sh
+# unexpand: spaces -> tabs; -a converts all runs, not just leading
 unexpand -a myfile > mynewfile
+```
+
+## Convert tabs to spaces (the expand direction)
+
+```sh
+expand myfile > mynewfile
+
+# Use 2-space tab stops
+expand -t 2 myfile > mynewfile
+```
+
+## Only convert leading tabs, leave inline ones alone
+
+```sh
+expand -i myfile > mynewfile
+```
+
+## Homelab: normalize a Makefile-adjacent script that mixed tabs and spaces
+
+```sh
+expand -t 4 deploy.sh > deploy.fixed && mv deploy.fixed deploy.sh
+```
+
+## Homelab: fix YAML that fails to parse because of tabs
+
+```sh
+expand -t 2 docker-compose.yml > /tmp/fixed.yml && mv /tmp/fixed.yml docker-compose.yml
+```
+
+| Command / flag | What it does                    |
+| -------------- | ------------------------------- |
+| expand         | tabs → spaces                   |
+| unexpand       | spaces → tabs                   |
+| -t N           | tab stops every N columns       |
+| -a (unexpand)  | convert all whitespace runs     |
+| -i (expand)    | only leading tabs               |

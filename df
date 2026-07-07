@@ -1,11 +1,53 @@
-# Printout disk free space in a human readable format
+# df — real-world examples
+
+## Free space, human readable
+
+```sh
 df -h
+```
 
-# To see FS type
+## Show filesystem type too
+
+```sh
 df -Th
+```
 
-# Number of files search
-echo "Detailed Inode usage for: $(pwd)" ; for d in `find -maxdepth 1 -type d |cut -d\/ -f2 |grep -xv . |sort`; do c=$(find $d |wc -l) ; printf "$c\t\t- $d\n" ; done ; printf "Total: \t\t$(find $(pwd) | wc -l)\n"
+## Homelab: just the media server pool
 
+```sh
+df -h /srv/plex /home
+```
+
+## Homelab: check inode exhaustion (disk "full" but space free)
+
+```sh
+df -i
+```
+
+## Exclude pseudo-filesystems (tmpfs noise)
+
+```sh
+df -h -x tmpfs -x devtmpfs
+```
+
+## Count files per directory (find inode hogs)
+
+```sh
+echo "Detailed inode usage for: $(pwd)"
+for d in $(find -maxdepth 1 -type d | cut -d/ -f2 | grep -xv . | sort); do
+  c=$(find "$d" | wc -l)
+  printf "%s\t\t- %s\n" "$c" "$d"
+done
+printf "Total: \t\t%s\n" "$(find "$(pwd)" | wc -l)"
+
+# Quicker one-liners
 find . -printf "%h\n" | cut -d/ -f-2 | sort | uniq -c | sort -rn
 find / -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n
+```
+
+| Flag | What it does                     |
+| ---- | -------------------------------- |
+| -h   | human readable sizes             |
+| -T   | show filesystem type             |
+| -i   | inode usage instead of blocks    |
+| -x   | exclude a filesystem type        |

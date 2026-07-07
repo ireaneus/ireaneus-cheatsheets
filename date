@@ -1,5 +1,56 @@
-# Print date in format suitable for affixing to file names
-date +"%Y%m%d_%H%M%S"
+# date — real-world examples
 
-# Convert Unix timestamp to Date
+## Timestamp suitable for file names
+
+```sh
+date +"%Y%m%d_%H%M%S"
+# 20260707_063000
+```
+
+## Convert a Unix timestamp to a readable date
+
+```sh
 date -d @1440359821
+```
+
+## Current time as a Unix timestamp
+
+```sh
+date +%s
+```
+
+## Date arithmetic (GNU date)
+
+```sh
+date -d "yesterday"
+date -d "next friday"
+date -d "2 weeks ago" +%Y-%m-%d
+```
+
+## Homelab: timestamped backup archive
+
+```sh
+tar czf "cheatsheets-$(date +%Y%m%d).tar.gz" ~/Public/ireaneus-cheatsheets
+```
+
+## Homelab: how long since a service restarted
+
+```sh
+systemctl show plexmediaserver --property=ActiveEnterTimestamp
+```
+
+## UTC and ISO 8601
+
+```sh
+date -u                # current UTC time
+date -Iseconds         # 2026-07-07T06:30:00-05:00
+```
+
+| Format | Meaning              |
+| ------ | -------------------- |
+| %Y%m%d | 20260707             |
+| %H%M%S | 063000               |
+| %s     | Unix timestamp       |
+| %A     | weekday name         |
+| -d     | parse/shift a date   |
+| -u     | UTC                  |

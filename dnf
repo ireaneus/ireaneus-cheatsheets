@@ -1,16 +1,50 @@
-# To install the latest version of a package:
-dnf install <package name>
+# dnf — real-world examples
 
-# To search package details for the given string
+## Install the latest version of a package
+
+```sh
+dnf install <package_name>
+```
+
+## Search package details for a string
+
+```sh
 dnf search <string>
+```
 
-# To find which package provides a binary
-dnf provides <path to binary>
+## Find which package provides a binary
 
-# The following are available after installing "dnf-plugins-core"
+```sh
+dnf provides <path_to_binary>
+# e.g.
+dnf provides /usr/bin/htop
+```
 
-# Download a package
-dnf download <package name>
+## With dnf-plugins-core installed
 
-# install the build dependencies for a SRPM or from a .spec file
-dnf builddep <srpm/.spec file>
+```sh
+# Download an RPM without installing it
+dnf download <package_name>
+
+# Install build dependencies from an SRPM or .spec file
+dnf builddep <srpm_or_spec_file>
+```
+
+## Everyday maintenance
+
+```sh
+dnf check-update      # what has updates
+dnf upgrade           # apply them
+dnf remove <package>  # uninstall
+dnf history           # transaction log
+```
+
+## Rosetta: dnf → zypper (OpenSUSE Tumbleweed at home)
+
+| dnf                    | zypper                  |
+| ---------------------- | ----------------------- |
+| dnf install pkg        | zypper install pkg      |
+| dnf search str         | zypper search str       |
+| dnf upgrade            | zypper dup  (Tumbleweed)|
+| dnf remove pkg         | zypper remove pkg       |
+| dnf repolist           | zypper repos            |

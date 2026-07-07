@@ -1,72 +1,78 @@
-# Devops meaning
+# devops — concepts reference
 
-# Devops meaning: Devops is a cultural sensibility.
-# It's a unified metrics based approach to making software
-# efficiently and fearlessly using as much automation as possible.
+## What DevOps means
 
-# Sadly many companies don't have the will or discipline to foster a
-# true DevOps culture, so they come up with the term "DevOps Engineer"
-# to make it seem as if the DevOps sensibility has taken hold.*
+A cultural sensibility: a unified, metrics-based approach to making
+software efficiently and fearlessly, using as much automation as
+possible. Many companies lack the discipline for a true DevOps culture
+and use "DevOps Engineer" as a title for infrastructure engineers who
+know AWS or Google Cloud.
 
-# In reality they're just looking for infrastructure engineers who know
-# how to work AWS or Google Cloud*
+## API — Application Programming Interface
 
+A set of subroutines, communication protocols, and tools for building
+software. APIs can receive web-based requests and send responses.
 
-- APIs - Application Program Interface:
-#
-#    A set of subroutines and communication protocols and tools
-#    for building software.
-#    APIs can receive web based requestes and send responses.
-#
+## REST — REpresentational State Transfer
 
-# REST Definition
-- REpresentational State Transfer:
-#
-#      An architectural style that defines a set of constraints to be
-#      used for creating web services. Web services that conform to the
-#      REST architectural style provide interoperability between
-#      computer systems on the internet.
+An architectural style defining constraints for creating web services.
+RESTful services provide interoperability between systems on the
+internet.
 
-# CRUD - Create Read Update & Delete
+## CRUD and HTTP methods
 
-# HTTP Methods - POST=Create GET=Read PUT=Update DELETE=Delete
+| CRUD   | HTTP method |
+| ------ | ----------- |
+| Create | POST        |
+| Read   | GET         |
+| Update | PUT         |
+| Delete | DELETE      |
 
-# JSON - JavaScript Object Notation
+```sh
+# CRUD against a REST API from the shell
+curl -X POST -H 'Content-Type: application/json' -d '{"name":"homelab"}' http://mediaserver:8080/api/hosts
+curl http://mediaserver:8080/api/hosts
+curl -X PUT -d '{"name":"homelab2"}' http://mediaserver:8080/api/hosts/1
+curl -X DELETE http://mediaserver:8080/api/hosts/1
+```
 
-- Definition:
-#      An open-standard file format that uses human-readable text to
-#      transmit data objects consisting of attribute-value paires and
-#      array data
+## JSON — JavaScript Object Notation
 
-- API Token Definition:
+An open-standard file format using human-readable text to transmit
+data objects of attribute-value pairs and arrays.
 
-- Software Token:
-#      Authentication security device that may be used to authorize the
-#      use of computer services. An API token is a unique identifier of
-#      an application requesting access to your service.
+## API token
 
-- Agile project management:
-#      Is about working in smaller, multidisciplinary teams
-#      in order to achieve a company's objectives more quickly.
-#
-- Behavior-driven development(BDD):
-#      BDD focuses on obtaining a clear understanding of
-#      desired software behavior through discussion with
-#      stakeholders, through collaboration with developers,
-#      QA, and non-technical or business participants
-#
-- Burndown chart:
-#      Is simply a line chart representing remaining work
-#      overtime.
-#
-- Daily Standup/Scrum:
-#      whole-team meeting at same time, last 15 minutes or less.
-#      Every team member should provide: What did I do yesterday,
-#      What am I planning to do today, and what blocks do I have?
-#
-- Feature creep:
-#      When software becomes complicated and difficult to use
-#
-- Kanban:
-#      
+A software token: an authentication device authorizing use of computer
+services. An API token uniquely identifies an application requesting
+access to your service.
 
+## Agile project management
+
+Working in smaller, multidisciplinary teams to achieve objectives more
+quickly.
+
+## Behavior-driven development (BDD)
+
+Obtaining a clear understanding of desired software behavior through
+discussion with stakeholders and collaboration among developers, QA,
+and non-technical or business participants.
+
+## Burndown chart
+
+A line chart representing remaining work over time.
+
+## Daily standup / scrum
+
+Whole-team meeting at the same time, 15 minutes or less. Each member
+answers: what did I do yesterday, what will I do today, what blocks me?
+
+## Feature creep
+
+When software becomes complicated and difficult to use from
+accumulating features.
+
+## Kanban
+
+A visual workflow method: work items move across columns
+(e.g. To Do → Doing → Done) with limits on work in progress.

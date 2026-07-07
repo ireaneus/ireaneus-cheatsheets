@@ -1,29 +1,48 @@
-# INSTALL
-# ==============================================================================
-# Edit /etc/default/distcc and set theses vars
-# STARTDISTCC="true"
-# ALLOWEDNETS="127.0.0.1 192.168.1.0/24"# Your computer and local computers
-# #LISTENER="127.0.0.1"# Comment it
-# ZEROCONF="true"# Auto configuration
+# distcc — real-world examples
 
-# REMEMBER 1:
-# Start/Restart your distccd servers before using one of these commands.
-# service distccd start
+## Install and configure
 
-# REMEMBER 2:
-# Do not forget to install on each machine DISTCC.
-# No need to install libs ! Only main host need libs !
+```sh
+# Edit /etc/default/distcc and set:
+#   STARTDISTCC="true"
+#   ALLOWEDNETS="127.0.0.1 192.168.1.0/24"   # your machine + LAN
+#   #LISTENER="127.0.0.1"                    # comment out to listen on LAN
+#   ZEROCONF="true"                          # auto discovery
 
-# USAGE
-# ==============================================================================
+# Install distcc on EVERY machine in the pool.
+# Only the main host needs the libraries/headers.
 
-# Run make with 4 thread (a cross network) in auto configuration.
-# Note: for gcc, Replace CXX by CC and g++ by gcc
+# Start/restart the daemon on each server before compiling
+sudo systemctl restart distccd
+```
+
+## Compile with auto-discovered hosts (zeroconf)
+
+```sh
+# 4 parallel jobs across the network; for C use CC='distcc gcc'
 ZEROCONF='+zeroconf' make -j4 CXX='distcc g++'
+```
 
-# Run make with 4 thread (a cross network) in static configuration (2 ip)
-# Note: for gcc, Replace CXX by CC and g++ by gcc
+## Compile with a static host list
+
+```sh
 DISTCC_HOSTS='127.0.0.1 192.168.1.69' make -j4 CXX='distcc g++'
+```
 
-# Show hosts aviables
+## Show available hosts
+
+```sh
 ZEROCONF='+zeroconf' distcc --show-hosts
+```
+
+## Homelab: spread a kernel build across homelab and mediaserver
+
+```sh
+DISTCC_HOSTS='localhost homelab mediaserver' make -j8 CC='distcc gcc'
+```
+
+## Monitor jobs in real time
+
+```sh
+distccmon-text 1
+```

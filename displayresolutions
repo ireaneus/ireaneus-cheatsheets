@@ -1,3 +1,51 @@
-4:3 aspect ratio resolutions: 640×480, 800×600, 960×720, 1024×768, 1280×960, 1400×1050, 1440×1080 , 1600×1200, 1856×1392, 1920×1440, and 2048×1536.
-16:10 aspect ratio resolutions: - 1280×800, 1440×900, 1680×1050, 1920×1200 and 2560×1600.
-16:9 aspect ratio resolutions: 1024×576, 1152×648, 1280×720, 1366×768, 1600×900, 1920×1080, 2560×1440 and 3840×2160.
+# displayresolutions — common resolutions by aspect ratio
+
+## 4:3
+
+| Resolution | Name    |
+| ---------- | ------- |
+| 640×480    | VGA     |
+| 800×600    | SVGA    |
+| 1024×768   | XGA     |
+| 1280×960   |         |
+| 1400×1050  | SXGA+   |
+| 1600×1200  | UXGA    |
+| 2048×1536  | QXGA    |
+
+Also: 960×720, 1440×1080, 1856×1392, 1920×1440.
+
+## 16:10
+
+| Resolution | Name   |
+| ---------- | ------ |
+| 1280×800   | WXGA   |
+| 1440×900   | WXGA+  |
+| 1680×1050  | WSXGA+ |
+| 1920×1200  | WUXGA  |
+| 2560×1600  | WQXGA  |
+
+## 16:9
+
+| Resolution | Name        |
+| ---------- | ----------- |
+| 1280×720   | 720p / HD   |
+| 1366×768   | WXGA        |
+| 1600×900   | HD+         |
+| 1920×1080  | 1080p / FHD |
+| 2560×1440  | 1440p / QHD |
+| 3840×2160  | 4K / UHD    |
+
+Also: 1024×576, 1152×648.
+
+## Query and set resolution from the shell
+
+```sh
+# List connected outputs and available modes
+xrandr
+
+# Set the living-room TV output to 1080p for the Plex box
+xrandr --output HDMI-1 --mode 1920x1080
+
+# Current resolution only
+xrandr | grep '\*'
+```

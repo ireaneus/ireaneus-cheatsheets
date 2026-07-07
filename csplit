@@ -1,5 +1,40 @@
-# Split a file based on pattern
-csplit input.file '/PATTERN/'
+# csplit — real-world examples
 
-# Use prefix/suffix to improve resulting file names
+## Split a file at each line matching a pattern
+
+```sh
+csplit input.file '/PATTERN/'
+```
+
+## Control output file names with prefix and suffix
+
+```sh
+# prefix-0.extension, prefix-1.extension, ... for every match
 csplit -f 'prefix-' -b '%d.extension' input.file '/PATTERN/' '{*}'
+```
+
+## Homelab: split a combined SQL dump into one file per table
+
+```sh
+csplit -f table- -b '%02d.sql' full-dump.sql '/^-- Table structure/' '{*}'
+```
+
+## Homelab: break journalctl output at each boot marker
+
+```sh
+journalctl --no-pager | csplit -f boot- - '/-- Boot/' '{*}'
+```
+
+## Split a config file at every section header, no zero-length files
+
+```sh
+csplit -z httpd.conf '/^<VirtualHost/' '{*}'
+```
+
+| Flag | What it does                          |
+| ---- | ------------------------------------- |
+| -f   | output file prefix (default xx)       |
+| -b   | numeric suffix format (printf style)  |
+| -z   | suppress empty output files           |
+| -s   | quiet — don't print file sizes        |
+| {*}  | repeat the pattern as often as possible |
