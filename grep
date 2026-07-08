@@ -1,55 +1,113 @@
-# Search a file for a pattern
+# grep — real-world examples
+
+## Search a file for a pattern
+
+```sh
 grep pattern file
+```
 
-# Case insensitive search (with line numbers)
+## Case-insensitive search with line numbers
+
+```sh
 grep -in pattern file
+```
 
-# Recursively grep for string <pattern> in folder:
+## Recursive search through a folder
+
+```sh
 grep -R pattern folder
+```
 
-# Read search patterns from a file (one per line)
+## Read search patterns from a file (one per line)
+
+```sh
 grep -f pattern_file file
+```
 
-# Find lines NOT containing pattern
+## Invert: lines NOT containing the pattern
+
+```sh
 grep -v pattern file
+```
 
-# find words not patterns
-grep -w file	# not files
+## Whole-word match only
 
-# You can grep with regular expressions
-grep "^00" file  #Match lines starting with 00
-grep -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" file  #Find IP add
+```sh
+grep -w file somefile    # matches "file", not "files"
+```
 
-# Find all files which match {pattern} in {directory}
-# This will show: "file:line my research"
+## Regular expressions
+
+```sh
+grep "^00" file    # lines starting with 00
+grep -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" file    # find IP addresses
+```
+
+## Recursive whole-word search showing file:line
+
+```sh
 grep -rnw 'directory' -e "pattern"
+```
 
-# Exclude grep from your grepped output of ps.
-# Add [] to the first letter. Ex: sshd -> [s]shd
-ps aux | grep '[h]ttpd'
+## Exclude grep itself from ps output (bracket trick)
 
-# Colour in red {bash} and keep all other lines
+```sh
+ps aux | grep '[h]ttpd'    # [] on the first letter stops self-matching
+```
+
+## Highlight matches but keep all other lines
+
+```sh
 ps aux | grep -E --color 'bash|$'
+```
 
-# search files for information from a file
-grep -f grepinput file1		# grepinput has hello
+## Context lines around a match
 
-# Add line context before or after pattern line
-grep -A4 "pattern" file1   # 4 lines after pattern
-grep -B4 "pattern" file1   # 4 lines before pattern
+```sh
+grep -A4 "pattern" file1   # 4 lines after
+grep -B4 "pattern" file1   # 4 lines before
+```
 
-# egrep for multiple words
-egrep -i 'hello.*world' file1	# looks for hello world
-egrep -i 'hello|world' file1 	# looks for hello or world in lines
-egrep -iv 'hello|world' file1 	# lines that do not contain hello world
-egrep -r 'hello|world|friend' file*	# grep or statement 
+## Multiple patterns with extended regex (egrep = grep -E)
 
-# fgrep literal pattern
-fgrep hello$ file1		# literal line found hello$
+```sh
+grep -Ei 'hello.*world' file1        # hello followed by world
+grep -Ei 'hello|world' file1         # hello OR world
+grep -Eiv 'hello|world' file1        # lines with neither
+grep -Er 'hello|world|friend' file*  # OR across files
+```
 
-# grep to remove cmments and empty lines in config files
+## Literal match, regex disabled (fgrep = grep -F)
+
+```sh
+grep -F 'hello$' file1    # finds the literal string hello$
+```
+
+## Strip comments and blank lines from a config file
+
+```sh
 grep -v '^#\|^$' /etc/some/conf/file
-grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf 
+grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf
+```
 
-# fgrep literal pattern
-fgrep hello$ file1		# literal line found hello$
+## Homelab: hunt errors in logs and service output
+
+```sh
+grep -i error /var/log/messages | tail -20
+journalctl -u plexmediaserver --no-pager | grep -iE 'fail|error'
+grep -rn 'ExecStart' /etc/systemd/system/
+```
+
+| Flag | What it does |
+| --- | --- |
+| -i | ignore case |
+| -n | show line numbers |
+| -r / -R | recurse into directories |
+| -v | invert match |
+| -w | whole words only |
+| -E | extended regex (egrep) |
+| -F | literal strings (fgrep) |
+| -f FILE | patterns from a file |
+| -A/-B/-C N | context after / before / both |
+| -l | list matching filenames only |
+| -c | count matching lines |

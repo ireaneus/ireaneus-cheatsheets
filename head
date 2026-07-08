@@ -1,8 +1,51 @@
-# To show the first 10 lines of file
+# head — real-world examples
+
+## First 10 lines of a file (default)
+
+```sh
 head file
+```
 
-# To show the first N lines of file
+## First N lines
+
+```sh
 head -n N file
+```
 
-# To show the first N bytes of file
+## First N bytes
+
+```sh
 head -c N file
+```
+
+## Everything EXCEPT the last 5 lines (GNU head)
+
+```sh
+head -n -5 file
+```
+
+## Peek at several config files at once, with headers
+
+```sh
+head -n 5 /etc/zypp/repos.d/*.repo
+```
+
+## Top of a pipe: heaviest processes, biggest files
+
+```sh
+ps aux --sort=-%mem | head -6
+du -sh /srv/plex/* | sort -rh | head -10
+```
+
+## Generate a quick random token
+
+```sh
+head -c 16 /dev/urandom | xxd -p
+```
+
+| Flag | What it does |
+| --- | --- |
+| -n N | first N lines (-n -N: all but last N) |
+| -c N | first N bytes |
+| -q | never print filename headers |
+| -v | always print filename headers |

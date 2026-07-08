@@ -1,61 +1,78 @@
-# To setup a local git lab repository
+# git server setup — real-world examples
 
-# On the Git Server
+## Set up your own bare git server over SSH
+
+```sh
+# On the git server (Debian/Ubuntu: apt-get; OpenSUSE: sudo zypper install git-core)
 sudo apt-get install git-core
 sudo useradd git
-passwd git
+sudo passwd git
+```
 
-# On local system
+```sh
+# On the local system: create a key and install it on the server
 ssh-keygen -t rsa
-cat ~/.ssh/id_rsa.pub | ssh git@remote-server "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+cat ~/.ssh/id_rsa.pub | ssh git@remote-server "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+# (ssh-copy-id git@remote-server does the same in one step)
+```
 
-# Back on Git Server
-git@server:~ $ mkdir -p /home/swapnil/project-1.git
-cd /home/swapnil/project-1.git
+```sh
+# Back on the git server: create the bare repository
+mkdir -p /home/git/project-1.git
+cd /home/git/project-1.git
 git init --bare
-# Initialized empty Git repository in /home/git/git/ocadmin.git/
+# Initialized empty Git repository in /home/git/project-1.git/
+```
 
-# On local system
-mkdir -p /home/swapnil/git/project
-cd /home/swapnil/git/project
-git init 
-#Initialized empty Git repository in /home/swapnil/git/project
+```sh
+# On the local system: start a repo and point it at the server
+mkdir -p ~/git/project
+cd ~/git/project
+git init
 git add .
-
 git commit -m "message" -a
-[master (root-commit) 57331ee] message
- 2 files changed, 2 insertions(+)
- create mode 100644 GoT.txt
- create mode 100644 writing.txt
+git remote add origin git@remote-server:/home/git/project-1.git
+git push -u origin master
+```
 
+## Git global setup (once per machine)
 
-# New project
-Command line instructions
-
-
-Git global setup
-
+```sh
 git config --global user.name "John Doe"
 git config --global user.email "johndoe@email.com"
+```
 
-Create a new repository
+## Create a new repository
 
+```sh
 cd Projects
 touch README.md
 git add README.md
 git commit -m "add README"
 git push -u origin master
+```
 
-Existing folder
+## Push an existing folder
 
+```sh
 cd existing_folder
 git init
 git add .
 git commit -m "Initial commit"
 git push -u origin master
+```
 
-Existing Git repository
+## Push an existing git repository to a new remote
 
+```sh
 cd existing_repo
 git push -u origin --all
 git push -u origin --tags
+```
+
+## Homelab variant: bare repo on the homelab box, cloned anywhere
+
+```sh
+ssh david@homelab "git init --bare ~/repos/dotfiles.git"
+git clone david@homelab:repos/dotfiles.git
+```

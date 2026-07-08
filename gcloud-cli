@@ -1,28 +1,62 @@
-# Google Cloud SDK tools support two authorization methods:
-User account authorization
-  User account authorization is recommended if you are running a script or other automation on a single machine
+# gcloud — real-world examples
 
-Service account authorization
-  Service account authorization is recommended if you are deploying a script or other automation across machines in a production environment. It is also the recommended authorization method if you are running gcloud commands on a Google Compute Engine virtual machine instance where all users have access to root.
+Google Cloud SDK supports two authorization methods. User account auth is
+recommended for a script or automation on a single machine. Service account
+auth is recommended for automation deployed across machines in production,
+or on a Compute Engine VM where all users have root.
 
-  gcloud auth activate-service-account --key-file [KEY_FILE]
+## Authenticate with a service account key
 
-# GCLOUD CLI commands
-gcloud
-gsutil
+```sh
+gcloud auth activate-service-account --key-file [KEY_FILE]
+```
 
-# gcloud interactive - has auto prompting for flags, commands, and inline help
-# to exit the shell type exit or Ctrl + q
+## First-time setup and identity checks
+
+```sh
+gcloud init          # configure project, region, account
+gcloud auth list     # which accounts are active
+gcloud config list   # current project/region settings
+gcloud info          # SDK environment details
+```
+
+## Interactive shell with auto-prompting for flags and inline help
+
+```sh
 gcloud components list
 gcloud components install alpha
-gcloud alpha interactive
+gcloud alpha interactive     # exit with `exit` or Ctrl+q
+```
 
-# gcloud Compute commands
+## Compute: find an instance by name
+
+```sh
 gcloud compute instances list --filter=name:instance1
+```
 
-# Core gcloud commands
-gcloud init
-gcloud auth list
-gcloud config list
-gcloud info
+## Get help on any command
+
+```sh
 gcloud help compute instances create
+```
+
+## SSH into an instance from the homelab workstation
+
+```sh
+gcloud compute ssh david@instance1 --zone us-central1-a
+```
+
+## Copy a backup up to a bucket (gsutil ships with the SDK)
+
+```sh
+gsutil cp /srv/backups/homelab-$(date +%F).tar.gz gs://my-backup-bucket/
+gsutil ls -lh gs://my-backup-bucket/
+```
+
+| Command | What it does |
+| --- | --- |
+| gcloud init | initial setup wizard |
+| gcloud auth list | show credentialed accounts |
+| gcloud config list | show active configuration |
+| gcloud components list | show installed SDK components |
+| gsutil | Cloud Storage operations |

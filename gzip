@@ -1,17 +1,61 @@
-# To create a *.gz compressed file
+# gzip — real-world examples
+
+## Compress a file (replaces it with .gz)
+
+```sh
 gzip test.txt
+```
 
-# To create a *.gz compressed file to a specific location using -c option (standard out)
+## Compress to a specific location via stdout
+
+```sh
 gzip -c test.txt > test_custom.txt.gz
+```
 
-# To uncompress a *.gz file
-gzip -d test.txt.gz
+## Uncompress a .gz file
 
-# Display compression ratio of the compressed file using gzip -l
+```sh
+gzip -d test.txt.gz    # or: gunzip test.txt.gz
+```
+
+## Show compression ratios
+
+```sh
 gzip -l *.gz
+```
 
-# Recursively compress all the files under a specified directory
+## Recursively compress everything under a directory
+
+```sh
 gzip -r documents_directory
+```
 
-# To create a *.gz compressed file and keep the original
-gzip < test.txt > test.txt.gz
+## Compress but keep the original
+
+```sh
+gzip -k test.txt            # -k keeps the source file
+gzip < test.txt > test.txt.gz   # redirect trick, same effect
+```
+
+## Read a compressed log without extracting it
+
+```sh
+zcat /var/log/zypper.log-20260701.gz | less
+zgrep -i error /var/log/messages-*.gz
+```
+
+## Max compression for a backup shipped off the homelab
+
+```sh
+tar cf - /srv/plex/config | gzip -9 > plex-config-$(date +%F).tar.gz
+```
+
+| Flag | What it does |
+| --- | --- |
+| -d | decompress |
+| -c | write to stdout, keep original |
+| -k | keep original file |
+| -l | list compression stats |
+| -r | recurse directories |
+| -1 .. -9 | speed vs. compression (default -6) |
+| -v | verbose |

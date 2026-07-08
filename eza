@@ -3,18 +3,61 @@ syntax: eza
 tag: files, directories
 ---
 
-#List all including hidden
+# eza — real-world examples
 
+## List all files including hidden
+
+```sh
 eza --all
+```
 
-#List tree structure
+## Tree view, three levels deep
 
+```sh
 eza --long --tree --level=3
+```
 
-#List headers, icons, and Git statuses
+## Long listing with headers, icons, and git status
 
+```sh
 eza --long --header --icons --git
+```
 
-#Help
+## Newest files last — see what changed recently in a log dir
 
+```sh
+eza -l --sort=modified /var/log
+```
+
+## Directories only, e.g. survey the media library layout
+
+```sh
+eza -lD /srv/plex
+```
+
+## Human sizes plus group column, checking ownership on a share
+
+```sh
+eza -lag /home/david/Public
+```
+
+## Recurse into subdirectories without tree lines
+
+```sh
+eza -lR ~/scripts
+```
+
+| Flag | What it does |
+| --- | --- |
+| -l, --long | detailed listing |
+| -a, --all | include hidden files |
+| -T, --tree | tree view (with --level=N depth) |
+| -D, --only-dirs | list directories only |
+| -R, --recurse | recurse into directories |
+| --git | show git status per file |
+| --icons | file-type icons |
+| --sort=FIELD | name, size, modified, extension |
+
+```sh
 eza --help
+```

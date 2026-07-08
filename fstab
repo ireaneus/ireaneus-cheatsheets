@@ -1,10 +1,58 @@
-# View the /etc/mtab file for list of currently mounted fs
-# Add entries in /etc/fstab
-# To mount filesystems using the filesystem LABEL
-blkid		# to display existing UUID partition properties
-e2label /dev/sdc1 /data		# to set the LABEL to /data 
+# fstab — real-world examples
 
-cat /etc/mtab to view the mounted properties of the existing mounts
-vim /etc/fstab
-LABEL=/data /data	ext4	defaults	1 2
+## See what is currently mounted
 
+```sh
+cat /etc/mtab      # or: findmnt
+```
+
+## Mount by filesystem LABEL
+
+```sh
+sudo blkid                       # display existing UUID/LABEL partition properties
+sudo e2label /dev/sdc1 /data     # set the LABEL to /data
+sudo vim /etc/fstab
+```
+
+```text
+LABEL=/data  /data  ext4  defaults  1 2
+```
+
+## Mount by UUID (preferred — survives device renames)
+
+```sh
+sudo blkid /dev/sdd1             # copy the UUID
+```
+
+```text
+UUID=<uuid>  /srv/media  xfs  defaults  0 0
+```
+
+## Apply fstab changes without rebooting
+
+```sh
+sudo mount -a                    # mount everything listed in fstab
+sudo systemctl daemon-reload     # systemd generates mount units from fstab
+```
+
+## NFS share from the media server, don't hang boot if it's down
+
+```text
+mediaserver:/srv/media  /mnt/media  nfs  defaults,_netdev,nofail  0 0
+```
+
+## Test an entry before trusting it at boot
+
+```sh
+sudo umount /srv/media && sudo mount /srv/media   # remount just that entry
+findmnt --verify                                  # sanity-check fstab syntax
+```
+
+| Field | Meaning |
+| --- | --- |
+| 1 | device (UUID=, LABEL=, /dev/..., host:/path) |
+| 2 | mount point |
+| 3 | filesystem type (ext4, xfs, nfs, ...) |
+| 4 | options (defaults, noatime, nofail, _netdev) |
+| 5 | dump flag (0 = skip) |
+| 6 | fsck order (0 = skip, 1 = root, 2 = others) |

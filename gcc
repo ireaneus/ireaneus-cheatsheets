@@ -1,21 +1,68 @@
-# Compile a file
+# gcc — real-world examples
+
+## Compile a file (produces a.out)
+
+```sh
 gcc file.c
+```
 
-# Compile a file with a custom output
+## Compile with a custom output name
+
+```sh
 gcc -o file file.c
+```
 
-# Debug symbols
-gcc -g
+## Compile with debug symbols for gdb
 
-# Debug with all symbols.
-gcc -ggdb3
+```sh
+gcc -g -o app main.c
+gcc -ggdb3 -o app main.c    # richest gdb debug info
+```
 
-# Build for 64 bytes
-gcc -m64
+## Force a 64-bit build
 
-# Include the directory {/usr/include/myPersonnal/lib/} to the list of path for #include <....>
-# With this option, no warning / error will be reported for the files in {/usr/include/myPersonnal/lib/}
-gcc -isystem /usr/include/myPersonnal/lib/
+```sh
+gcc -m64 -o app main.c
+```
 
-# Build a GUI for windows (Mingw) (Will disable the term/console)
-gcc -mwindows
+## Add a system include path (headers there raise no warnings)
+
+```sh
+gcc -isystem /usr/include/myPersonnal/lib/ -o app main.c
+```
+
+## Windows GUI build under MinGW (no console window)
+
+```sh
+gcc -mwindows -o app.exe main.c
+```
+
+## The everyday homelab compile: warnings on, optimized
+
+```sh
+gcc -Wall -Wextra -O2 -o sensor-poll sensor-poll.c
+```
+
+## Link the math library
+
+```sh
+gcc -o calc calc.c -lm
+```
+
+## Compile to object files, then link (multi-file project)
+
+```sh
+gcc -c util.c && gcc -c main.c
+gcc -o app main.o util.o
+```
+
+| Flag | What it does |
+| --- | --- |
+| -o FILE | name the output |
+| -c | compile to .o, don't link |
+| -g / -ggdb3 | debug symbols |
+| -Wall -Wextra | enable most warnings |
+| -O2 | optimize |
+| -lNAME | link library libNAME |
+| -I DIR | add include search path |
+| -m64 | 64-bit target |

@@ -1,2 +1,38 @@
-# format the text file with a -s or the split switch
+# fmt — real-world examples
+
+## Split long lines only, leave short lines alone
+
+```sh
 fmt -s services
+```
+
+## Wrap a text file to 72 columns
+
+```sh
+fmt -w 72 notes.txt
+```
+
+## Reflow a README to 80 columns and save the result
+
+```sh
+fmt -w 80 README > README.new && mv README.new README
+```
+
+## Reflow pasted text from stdin
+
+```sh
+cat brain-dump.txt | fmt -w 66
+```
+
+## Uniform spacing — one space between words, two after sentences
+
+```sh
+fmt -u draft.txt
+```
+
+| Flag | What it does |
+| --- | --- |
+| -w N | wrap at N columns (default 75) |
+| -s | split long lines, don't join short ones |
+| -u | uniform spacing |
+| -p PREFIX | only reflow lines starting with PREFIX (e.g. `#` comments) |

@@ -1,42 +1,41 @@
-Google Site Reliability Engineer - Book
+# gsre — Google SRE book notes
 
-# SREs time allocation
+## SRE time allocation
 
-50% time spent on operations, getting service systems stable, operable
-design services to be automatic and self healing
+```text
+50% operations   — keep services stable and operable;
+                   design them to be automatic and self-healing
+50% development  — creative, autonomous engineering, informed by
+                   the wisdom gleaned from running the service
+```
 
-50% time spent in development
-engage in creative, autonomous engineering, while still retaining the 
-wisdom gleaned from the operations side of running a service
+In general, an SRE team is responsible for the availability, latency,
+performance, efficiency, change management, monitoring, emergency response,
+and capacity planning of their service(s).
 
-In general, an SRE team is responsible for the 
-availability, latency, performance, efficiency, change management, monitoring,
-emergency response, and capacity planning of their service(s).
+Google operates under a blame-free postmortem culture, with the goal of
+exposing faults and applying engineering to fix them, rather than avoiding
+or minimizing them.
 
-Google operates under a blamefree postmortem culture, 
-with the goal of exposing faults and applying engineering to
-fix these faults, rather than avoiding or minimizing them.
+## Monitoring
 
-
-# Monitoring
-
-Monitoring should never require a human to interpret 
-any part of the alerting domain. Instead, software
-should do the interpreting, and humans should be 
+Monitoring should never require a human to interpret any part of the
+alerting domain. Software should do the interpreting; humans should be
 notified only when they need to take action.
 
 There are three kinds of valid monitoring output:
 
-# Alerts
-Signify that a human needs to take action immediately in response to something
-that is either happening or about to happen, in order to improve the situation.
+| Output | Meaning |
+| --- | --- |
+| Alerts | a human must act immediately — something is happening or about to happen |
+| Tickets | a human must act, but not immediately; days of delay cause no damage |
+| Logging | recorded for diagnostics/forensics; nobody reads it unless prompted |
 
-# Tickets
-Signify that a human needs to take action, but not immediately. The system can‐
-not automatically handle the situation, but if a human takes action in a few days,
-no damage will result.
+## Homelab application
 
-#Logging
-No one needs to look at this information, but it is recorded for diagnostic or for‐
-ensic purposes. The expectation is that no one reads logs unless something else
-prompts them to do so.
+```sh
+# The same idea at home: let systemd/journald do the watching,
+# only alert when action is needed
+systemctl --failed                                  # "alerts"
+journalctl -p err -b --no-pager | tail -20          # "logging", read on demand
+```

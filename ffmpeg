@@ -1,12 +1,55 @@
-# Print file metadata etc.
-ffmpeg -i path/to/file.ext
+# ffmpeg — real-world examples
 
-# Convert all m4a files to mp3
+## Print file metadata (streams, codecs, duration)
+
+```sh
+ffmpeg -i path/to/file.mkv
+```
+
+## Convert all m4a files to mp3
+
+```sh
 for f in *.m4a; do ffmpeg -i "$f" -acodec libmp3lame -ab 320k "${f%.m4a}.mp3"; done
+```
 
-# Listen to 10 seconds of audio from a video file
-#
-# -ss : start time
-# -t  : seconds to cut
-# -autoexit : closes ffplay as soon as the audio finishes
+## Listen to 10 seconds of audio from a video file
+
+```sh
+# -ss = start time, -t = seconds to cut, -autoexit closes ffplay when done
 ffmpeg -ss 00:34:24.85 -t 10 -i path/to/file.mp4 -f mp3 pipe:play | ffplay -i pipe:play -autoexit
+```
+
+## Remux mkv to mp4 without re-encoding — fast, helps Plex direct play
+
+```sh
+ffmpeg -i movie.mkv -c copy movie.mp4
+```
+
+## Transcode to 720p H.264 to shrink a file for the media server
+
+```sh
+ffmpeg -i input.mkv -vf scale=-2:720 -c:v libx264 -crf 23 -c:a copy output.mkv
+```
+
+## Extract the audio track only
+
+```sh
+ffmpeg -i episode.mp4 -vn -acodec copy episode-audio.aac
+```
+
+## Grab a single frame as a poster/thumbnail
+
+```sh
+ffmpeg -ss 00:05:00 -i movie.mkv -frames:v 1 poster.jpg
+```
+
+| Flag | What it does |
+| --- | --- |
+| -i | input file |
+| -c copy | copy streams, no re-encode |
+| -c:v / -c:a | video / audio codec |
+| -ss | seek to start time |
+| -t | duration to process |
+| -vf | video filter (scale, crop, ...) |
+| -vn / -an | drop video / drop audio |
+| -crf | x264 quality: lower = better, 18-28 typical |
