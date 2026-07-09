@@ -1,5 +1,50 @@
-# To disable the terminal refresh when exiting
-less -X
+# less — real-world examples
 
-# To print out columns of text use the pr command
+## Don't clear the screen on exit
+
+```sh
+less -X file.log
+```
+
+## Columnize output before paging
+
+```sh
 dpkg -l | pr --columns 3 -l 60 | less -X
+```
+
+## Follow a file as it grows (like tail -f, but scrollable)
+
+```sh
+less +F /var/log/messages     # Ctrl+C to stop following, F to resume
+```
+
+## Homelab: page a huge Plex log on mediaserver with search
+
+```sh
+ssh david@mediaserver 'cat "/var/lib/plex/Plex Media Server/Logs/Plex Media Server.log"' | less -N
+# inside less: /error to search forward, n = next match, N = previous
+```
+
+## Homelab: keep color codes from zypper/rg output
+
+```sh
+rg --color=always -n 'ERROR' /var/log | less -R
+```
+
+## Jump around inside less
+
+```
+g   top of file          G   end of file
+/pattern  search fwd     ?pattern  search back
+&pattern  show only matching lines
+q   quit
+```
+
+| Flag | What it does                          |
+| ---- | ------------------------------------- |
+| -X   | no screen clear on exit               |
+| -R   | pass ANSI colors through              |
+| -N   | show line numbers                     |
+| -S   | chop long lines instead of wrapping   |
+| +F   | follow mode (tail -f style)           |
+| -i   | case-insensitive search               |

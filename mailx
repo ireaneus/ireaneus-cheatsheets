@@ -1,13 +1,59 @@
-# Mailx commands
-mailx -a ~/file1 user@domain.com		# -a attachment and a to: sender
-Subject: sending file1				# mailx prompts for a subject
-~c david_haines@domain.com bwdave@domain.com	# ~c is carboncopy ~b is blindcarboncopy
+# mailx — real-world examples
+
+## Send a file as an attachment, interactively
+
+```
+mailx -a ~/file1 user@domain.com
+Subject: sending file1                      # mailx prompts for a subject
+~c david_haines@domain.com bwdave@domain.com   # ~c = CC, ~b = BCC
 Hello,
 
-This is the body of the email 
+This is the body of the email
 
-Thank you 
-~<!cat ~/signature				# at this location will run the command that its stdout will append to the email
-EOT						# Ctrl+d to send
+Thank you
+~< !cat ~/signature       # run a command, append its stdout to the message
+EOT                        # Ctrl+D to send
+```
 
--r will send the mail from:
+## Set the From: address
+
+```sh
+mailx -r noreply@homelab.lan -s "report" user@domain.com < report.txt
+```
+
+## Non-interactive one-liner (great for scripts)
+
+```sh
+echo "backup completed $(date)" | mailx -s "backup OK" bwdave@protonmail.com
+```
+
+## Homelab: mail a log excerpt after a failed service
+
+```sh
+journalctl -u plexmediaserver -n 50 --no-pager | \
+  mailx -s "plex failed on mediaserver" bwdave@protonmail.com
+```
+
+## Homelab: install on Tumbleweed
+
+```sh
+sudo zypper install mailx
+```
+
+## Tilde escapes (while composing)
+
+| Escape   | What it does                            |
+| -------- | --------------------------------------- |
+| ~c addr  | add CC recipient                        |
+| ~b addr  | add BCC recipient                       |
+| ~s text  | set/replace the subject                 |
+| ~< !cmd  | append output of a shell command        |
+| ~v       | open the message in $EDITOR             |
+| ~q       | abort the message                       |
+
+| Flag | What it does        |
+| ---- | ------------------- |
+| -s   | subject             |
+| -a   | attach a file       |
+| -r   | From: address       |
+| -c   | CC list             |

@@ -1,33 +1,80 @@
-# Actively follow log (like tail -f)
+# journalctl — real-world examples
+
+## Actively follow the log (like tail -f)
+
+```sh
 journalctl -f
+```
 
-# Display all errors since last boot
+## Display all errors since last boot
+
+```sh
 journalctl -b -p err
+```
 
-# Filter by time period
-journalctl --since=2012-10-15 --until="2011-10-16 23:59:59"
+## Filter by time period
 
-# Show list of systemd units logged in journal
+```sh
+journalctl --since=2026-07-01 --until="2026-07-02 23:59:59"
+journalctl --since '10:00' --until '11:00'
+```
+
+## Show list of systemd units logged in the journal
+
+```sh
 journalctl -F _SYSTEMD_UNIT
+```
 
-# Filter by specific unit
-journalctl -u dbus
+## Filter by unit, executable, PID, command, or user
 
-# Filter by executable name
-journalctl /usr/bin/dbus-daemon
-
-# Filter by PID
-journalctl _PID=123
-
-# Filter by Command, e.g., sshd
-journalctl _COMM=sshd
-
-# Filter by Command and time period
+```sh
+journalctl -u dbus                 # by unit
+journalctl /usr/bin/dbus-daemon    # by executable path
+journalctl _PID=123                # by PID
+journalctl _COMM=sshd              # by command name
+journalctl _UID=1000               # by user ID
 journalctl _COMM=crond --since '10:00' --until '11:00'
+```
 
-# List all available boots 
+## List all available boots
+
+```sh
 journalctl --list-boots
+journalctl -b -1        # the previous boot
+```
 
-# Filter by specific User ID e.g., user id 1000 
-journalctl _UID=1000
+## Homelab: follow Plex logs on mediaserver
 
+```sh
+ssh david@mediaserver 'journalctl -u plexmediaserver -f'
+```
+
+## Homelab: why did homelab reboot last night?
+
+```sh
+journalctl -b -1 -p err --no-pager | tail -50
+```
+
+## Homelab: keep the journal from eating the disk
+
+```sh
+journalctl --disk-usage
+sudo journalctl --vacuum-size=500M    # trim archived logs to 500MB
+```
+
+## Homelab: kernel messages only (like dmesg with timestamps)
+
+```sh
+journalctl -k -b
+```
+
+| Flag          | What it does                        |
+| ------------- | ----------------------------------- |
+| -f            | follow new entries                  |
+| -u <unit>     | filter by systemd unit              |
+| -b            | current boot (-b -1 = previous)     |
+| -p err        | priority filter (err, warning, ...) |
+| -k            | kernel messages only                |
+| --since/--until | time window                       |
+| --no-pager    | plain output, no less               |
+| -r            | newest entries first                |

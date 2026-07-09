@@ -1,5 +1,55 @@
-# Convert a man page to pdf
-man -t bash | ps2pdf - bash.pdf
+# man — real-world examples
 
-# View the ascii chart
+## Convert a man page to PDF
+
+```sh
+man -t bash | ps2pdf - bash.pdf
+```
+
+## View the ASCII chart
+
+```sh
 man 7 ascii
+```
+
+## Search man pages by keyword
+
+```sh
+man -k partition        # same as apropos
+man -f printf           # same as whatis — one-line summary per section
+```
+
+## Read a page from a specific section
+
+```sh
+man 5 crontab     # file format, not the command
+man 1 crontab     # the command
+```
+
+## Homelab: read a man page from a package that isn't installed locally
+
+```sh
+ssh david@homelab man zypper | less
+```
+
+## Homelab: grep straight through a page without opening it
+
+```sh
+man systemd.timer | grep -A2 'OnCalendar'
+```
+
+## Homelab: page man in your preferred pager with color
+
+```sh
+MANPAGER="less -R" man rsync
+```
+
+| Flag / section | What it does                     |
+| -------------- | -------------------------------- |
+| -k <word>      | keyword search (apropos)         |
+| -f <cmd>       | one-line description (whatis)    |
+| -t             | typeset (PostScript) output      |
+| 1              | user commands                    |
+| 5              | file formats                     |
+| 7              | misc (ascii, signal, ...)        |
+| 8              | admin commands                   |

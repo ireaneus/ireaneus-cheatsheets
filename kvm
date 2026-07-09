@@ -1,15 +1,54 @@
-# Q:5 What are different hypervisors available in Linux ?
+# kvm — real-world examples
 
-Ans:  Xen & KVM are two hypervisor available in linux.
+## Verify Virtualization Technology (VT) is enabled in the BIOS
 
-# Q:6: What is the difference between Xen & KVM ?
+```sh
+grep -E 'svm|vmx' /proc/cpuinfo
+# vmx = Intel, svm = AMD — no output means VT is off or unsupported
+```
 
-Ans: For  Xen hypervisor  first we have to install Xen kernel and have to boot the machine with Xen kernel where as KVM is kernel based Virtualization , we don’t need any extra kernel for KVM. KVM is a module in Kernel. Xen hypervisor by default doesn’t support full virtualization whereas KVM supports Full virtualization.
+## Xen vs KVM (interview classic)
 
-# Q:9 How to verify Virtualization Technology (VT) is enabled in your server’s BIOS or not ?
+Xen and KVM are the two main Linux hypervisors. Xen requires booting a special
+Xen kernel; KVM is a kernel module, so no extra kernel is needed. KVM does full
+virtualization out of the box (with VT-x/AMD-V); classic Xen defaults to
+paravirtualization.
 
-Ans :  grep -E ‘svm|vmx’ /proc/cpuinfo
+## Homelab: install the KVM stack on Tumbleweed
 
-vmx is for Intel processors
-svm is for AMD processors
+```sh
+sudo zypper install -t pattern kvm_server kvm_tools
+sudo systemctl enable --now libvirtd
+sudo usermod -aG libvirt david    # manage VMs without sudo (re-login)
+```
 
+## Homelab: everyday VM management with virsh
+
+```sh
+virsh list --all              # all VMs, running or not
+virsh start tumbleweed-test
+virsh shutdown tumbleweed-test
+virsh console tumbleweed-test # serial console (exit: Ctrl+])
+```
+
+## Homelab: create a VM from an ISO with virt-install
+
+```sh
+virt-install --name tumbleweed-test --memory 4096 --vcpus 2 \
+  --disk size=40 --cdrom ~/isos/openSUSE-Tumbleweed-DVD-x86_64.iso \
+  --os-variant opensusetumbleweed
+```
+
+## Homelab: check KVM is actually loaded
+
+```sh
+lsmod | grep kvm       # expect kvm_intel or kvm_amd
+```
+
+| Command            | What it does                    |
+| ------------------ | ------------------------------- |
+| virsh list --all   | list all defined VMs            |
+| virsh start/shutdown <vm> | power control            |
+| virsh console <vm> | attach to serial console        |
+| virt-install       | create a new VM                 |
+| lsmod \| grep kvm  | confirm module loaded           |

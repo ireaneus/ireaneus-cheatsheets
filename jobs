@@ -1,16 +1,57 @@
-# background 
-bg %[n]
+# jobs — real-world examples
 
-# foreground
-fg %[n]
+## List jobs in the current shell
 
-# jobs
+```sh
 jobs
+jobs -l     # include PIDs
+```
 
-# Ctrl+Z will suspend job
-disown -h 	# disowns the background job
-bg 1		# sends the job to the background
-exit		# lets you exit without killing the background job
-# Ctrl+C will kill job
+## Send a job to the background / bring to foreground
 
-# Close terminal window will close all background jobs
+```sh
+bg %1       # resume job 1 in the background
+fg %1       # bring job 1 back to the foreground
+```
+
+## Suspend, background, and keep a job alive after exit
+
+```sh
+# Ctrl+Z suspends the foreground job
+disown -h %1   # job won't get SIGHUP when the shell exits
+bg %1          # resume it in the background
+exit           # leave the shell without killing the job
+# Ctrl+C kills the foreground job
+# Closing the terminal window kills non-disowned background jobs
+```
+
+## Homelab: kick off a long rsync to mediaserver, then background it
+
+```sh
+rsync -avP ~/Videos/ david@mediaserver:/srv/plex/movies/
+# Ctrl+Z, then:
+bg %1
+disown -h %1
+```
+
+## Homelab: start a command in the background from the start
+
+```sh
+nohup zypper dup --download-only > /tmp/dup.log 2>&1 &
+jobs -l
+```
+
+## Homelab: better tool for long-running remote work — tmux
+
+```sh
+tmux new -s longjob    # detach: Ctrl+b d, reattach: tmux attach -t longjob
+```
+
+| Command / key | What it does                                |
+| ------------- | ------------------------------------------- |
+| jobs -l       | list jobs with PIDs                         |
+| Ctrl+Z        | suspend foreground job                      |
+| bg %n         | resume job n in background                  |
+| fg %n         | bring job n to foreground                   |
+| disown -h %n  | protect job n from SIGHUP on shell exit     |
+| nohup cmd &   | start immune to hangups, output to nohup.out|

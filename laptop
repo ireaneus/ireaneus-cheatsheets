@@ -2,25 +2,66 @@
 tags: [ build, laptop, linux ]
 ---
 
-# Laptop build - Setup Linux environment
-- Kubuntu
--- workspace setup 
+# laptop — Linux environment build checklist
+
+## Base setup
+
+- Kubuntu, workspace setup
 - Brave browser
-- Protonmail - ProtonPass
-- Terminal
--- zsh oh-my-zsh - nerd font powerlevel10k
--- git - gh - cheat - rg - htop - eza - glow - jq - ncdu - asciinema
--- rsync - scp - fd-find - tree - watch
-- Alias - | more
--- gh
--- sudo apt install
--- asciinema rec <local file.cast> asciinema play <local file.cast>
--- fdfind
--- Editing zsh alias
--- batcat 
--- column -s, -t < [file.csv]
--- eza --long --tree --git --icon --level=3
--- e eza -l
--- glow  ## md reader
--- eza   ## list directory
--- rg    ## ripgrep used for finding words in docs 
+- Protonmail + ProtonPass
+
+## Terminal stack
+
+```sh
+# zsh + oh-my-zsh + nerd font + powerlevel10k
+sudo apt install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Core CLI tools
+sudo apt install git gh cheat ripgrep htop eza glow jq ncdu asciinema \
+  rsync fd-find tree watch bat
+```
+
+## Record and replay terminal sessions
+
+```sh
+asciinema rec session.cast
+asciinema play session.cast
+```
+
+## Handy invocations
+
+```sh
+fdfind pattern                          # fd is 'fdfind' on Ubuntu/Kubuntu
+batcat file.md                          # bat is 'batcat' on Ubuntu/Kubuntu
+column -s, -t < file.csv                # pretty-print a CSV
+eza --long --tree --git --icons --level=3
+glow README.md                          # markdown reader
+rg "search term" ~/notes                # ripgrep across docs
+```
+
+## Aliases (add to ~/.zshrc)
+
+```sh
+alias e='eza -l'
+alias more='less -X'
+# after editing:
+source ~/.zshrc
+```
+
+## Homelab note: Tumbleweed desktop equivalents
+
+```sh
+# Same stack on the OpenSUSE Tumbleweed box uses zypper,
+# and fd/bat keep their real names:
+sudo zypper install git gh ripgrep htop eza glow jq ncdu asciinema fd bat tree
+```
+
+| Tool | Purpose                    |
+| ---- | -------------------------- |
+| glow | markdown reader            |
+| eza  | modern ls                  |
+| rg   | ripgrep — search in files  |
+| fd   | friendlier find            |
+| bat  | cat with syntax highlight  |
+| ncdu | disk usage explorer        |

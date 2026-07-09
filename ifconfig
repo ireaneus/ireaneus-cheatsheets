@@ -1,14 +1,57 @@
-# Display network settings of the first ethernet adapter
+# ifconfig — real-world examples
+
+> Legacy tool — on OpenSUSE Tumbleweed prefer `ip` (see the `ip` sheet). Install via `sudo zypper install net-tools-deprecated` if missing.
+
+## Display settings for one interface
+
+```sh
 ifconfig wlan0
+```
 
-# Display all interfaces, even if down
+## Display all interfaces, even if down
+
+```sh
 ifconfig -a
+```
 
-# Take down / up the wireless adapter
-ifconfig wlan0 {up|down} 
+## Take the wireless adapter down or up
 
-# Set a static IP and netmask
+```sh
+ifconfig wlan0 down
+ifconfig wlan0 up
+```
+
+## Set a static IP and netmask
+
+```sh
 ifconfig eth0 192.168.1.100 netmask 255.255.255.0
+```
 
-# You may also need to add a gateway IP
+## Add a gateway to go with the static IP
+
+```sh
 route add -net 192.168.1.0 netmask 255.255.255.0 gw 192.168.1.1
+```
+
+## Homelab: sanity-check that the NIC on homelab got a DHCP lease
+
+```sh
+ssh david@homelab 'ifconfig eth0 | grep "inet "'
+```
+
+## Homelab: modern equivalents on Tumbleweed
+
+```sh
+ip addr show eth0        # replaces: ifconfig eth0
+ip link set eth0 up      # replaces: ifconfig eth0 up
+
+# NetworkManager view of the same interface:
+nmcli device show eth0
+```
+
+| Flag / arg     | What it does                        |
+| -------------- | ----------------------------------- |
+| -a             | show all interfaces, including down |
+| up / down      | enable / disable the interface      |
+| netmask <mask> | set the subnet mask                 |
+| mtu <n>        | set the MTU                         |

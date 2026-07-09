@@ -1,40 +1,81 @@
-# Show hit for rules with auto refresh
+# iptables — real-world examples
+
+## Watch rule hit counters with auto refresh
+
+```sh
 watch --interval 0 'iptables -nvL | grep -v "0     0"'
 
-# Show hit for rule with auto refresh and highlight any changes since the last refresh
+# Highlight changes since the last refresh
 watch -d -n 2 iptables -nvL
+```
 
-# Block the port 902 and we hide this port from nmap.
+## Block a port and hide it from nmap
+
+```sh
+# REJECT with icmp-port-unreachable makes the port look closed, not filtered
 iptables -A INPUT -i eth0 -p tcp --dport 902 -j REJECT --reject-with icmp-port-unreachable
 
-# Note, --reject-with accept:
-#	icmp-net-unreachable
-#	icmp-host-unreachable
-#	icmp-port-unreachable <- Hide a port to nmap
-#	icmp-proto-unreachable
-#	icmp-net-prohibited
-#	icmp-host-prohibited or
-#	icmp-admin-prohibited
-#	tcp-reset
+# --reject-with accepts:
+#   icmp-net-unreachable
+#   icmp-host-unreachable
+#   icmp-port-unreachable   <- hide a port from nmap
+#   icmp-proto-unreachable
+#   icmp-net-prohibited
+#   icmp-host-prohibited
+#   icmp-admin-prohibited
+#   tcp-reset
+```
 
-# Add a comment to a rule:
-iptables ... -m comment --comment "This rule is here for this reason"
+## Add a comment to a rule
 
+```sh
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT -m comment --comment "This rule is here for this reason"
+```
 
-# To remove or insert a rule:
-# 1) Show all rules
+## Remove or insert a rule by line number
+
+```sh
+# 1) Show rules with line numbers
 iptables -L INPUT --line-numbers
-# OR iptables -nL --line-numbers
+# or: iptables -nL --line-numbers
 
-# Chain INPUT (policy ACCEPT)
-#     num  target prot opt source destination
-#     1    ACCEPT     udp  --  anywhere  anywhere             udp dpt:domain
-#     2    ACCEPT     tcp  --  anywhere  anywhere             tcp dpt:domain
-#     3    ACCEPT     udp  --  anywhere  anywhere             udp dpt:bootps
-#     4    ACCEPT     tcp  --  anywhere  anywhere             tcp dpt:bootps
-
-# 2.a) REMOVE (-D) a rule. (here an INPUT rule)
+# 2a) DELETE rule 2 from INPUT
 iptables -D INPUT 2
 
-# 2.b) OR INSERT a rule.
-iptables -I INPUT {LINE_NUMBER} -i eth1 -p tcp --dport 21 -s 123.123.123.123 -j ACCEPT -m comment --comment "This rule is here for this reason"
+# 2b) or INSERT at a given position
+iptables -I INPUT 3 -i eth1 -p tcp --dport 21 -s 123.123.123.123 -j ACCEPT \
+  -m comment --comment "FTP from the office IP only"
+```
+
+## Homelab: allow Plex on mediaserver from the LAN only
+
+```sh
+iptables -A INPUT -p tcp --dport 32400 -s 192.168.1.0/24 -j ACCEPT \
+  -m comment --comment "Plex from LAN"
+iptables -A INPUT -p tcp --dport 32400 -j DROP
+```
+
+## Homelab: rate-limit new SSH connections on homelab
+
+```sh
+iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW \
+  -m limit --limit 4/min -j ACCEPT
+```
+
+## Homelab: Tumbleweed note — firewalld is the default frontend
+
+```sh
+# Tumbleweed ships firewalld; check before hand-editing iptables rules
+sudo systemctl status firewalld
+sudo firewall-cmd --list-all
+```
+
+| Flag | What it does                            |
+| ---- | --------------------------------------- |
+| -A   | append rule to a chain                  |
+| -I   | insert rule at a position               |
+| -D   | delete rule                             |
+| -L   | list rules                              |
+| -n   | numeric output (no DNS lookups)         |
+| -v   | verbose — show packet/byte counters     |
+| -j   | jump target (ACCEPT, DROP, REJECT, ...) |

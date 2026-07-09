@@ -1,8 +1,37 @@
-# To remove old kernels in /boot.  Recommend to leave 3 in.
-sudo uname -r
-sudo rpm -q kernel
-sudo yum remove kernel-old-version
+# kernel — real-world examples
 
+## What kernel am I running, and what's installed?
+
+```sh
+uname -r
+rpm -q kernel-default          # RPM systems (Tumbleweed: kernel-default)
+```
+
+## OpenSUSE Tumbleweed: kernels are managed automatically
+
+```sh
+# Tumbleweed keeps old kernels per /etc/zypp/zypp.conf:
+#   multiversion.kernels = latest,latest-1,running
+# Cleanup happens automatically via purge-kernels.service
+systemctl status purge-kernels.service
+
+# List installed kernels
+rpm -qa 'kernel-default*' | sort
+
+# Kernel updates arrive with the normal rolling upgrade
+sudo zypper dup
+```
+
+## RHEL/CentOS style: remove old kernels manually
+
+```sh
+rpm -q kernel
+sudo yum remove kernel-<old-version>    # recommend keeping 3 installed
+```
+
+## Debian/Ubuntu style: list and purge old kernels
+
+```sh
 dpkg --list | grep linux-image
 dpkg --list | grep linux-headers
 
@@ -10,6 +39,28 @@ sudo apt-get purge linux-image-3.19.0-{18,20,21}
 sudo apt-get purge linux-headers-3.19.0-{18,20,21}
 sudo update-grub2
 
-# How to upgrade kernel
+# Upgrade path
 apt-cache search linux-kernel
-apt-get install linux-image-flavor
+apt-get install linux-image-<flavor>
+```
+
+## Homelab: confirm the running kernel after a zypper dup + reboot
+
+```sh
+ssh david@homelab 'uname -r && rpm -qa kernel-default | sort'
+```
+
+## Homelab: boot an older kernel once if the new one misbehaves
+
+```sh
+# Hold Esc/F2 at boot for the GRUB menu -> "Advanced options" -> pick the older kernel
+# Then check what broke:
+journalctl -k -b -p err
+```
+
+| Command                     | What it does                       |
+| --------------------------- | ---------------------------------- |
+| uname -r                    | running kernel version             |
+| rpm -qa 'kernel-default*'   | installed kernels (SUSE)           |
+| zypper dup                  | rolling upgrade incl. kernel       |
+| journalctl -k -b            | kernel log for current boot        |

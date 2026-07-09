@@ -1,7 +1,59 @@
+# ldap — real-world examples
+
+## Install LDAP client stack (RHEL/CentOS lab example)
+
+```sh
 yum install nss-pam-ldapd pam_krb5 autofs nfs-utils openldap-clients
+```
 
-authconfig --enableldap --enableldapauth --enablemkhomedir --enableldaptls --ldaploadcacert=http://ldap.linuxacademy.com/pub/cert.pem --ldapserver=ldap.linuxacademy.com --ldapbasedn="dc=linuxacademy,dc=com" --update
+## Configure LDAP auth with authconfig (RHEL 6/7 era)
 
+```sh
+authconfig --enableldap --enableldapauth --enablemkhomedir --enableldaptls \
+  --ldaploadcacert=http://ldap.linuxacademy.com/pub/cert.pem \
+  --ldapserver=ldap.linuxacademy.com \
+  --ldapbasedn="dc=linuxacademy,dc=com" --update
+```
+
+## GUI version of the same
+
+```sh
 export XAUTHORITY=/home/cloud_user/.Xauthority
 yum install authconfig-gtk
 authconfig-gtk
+```
+
+## Query a directory with ldapsearch
+
+```sh
+# Anonymous search for a user entry
+ldapsearch -x -H ldap://ldap.example.com -b "dc=example,dc=com" "(uid=david)"
+
+# Authenticated search, prompt for password
+ldapsearch -x -H ldaps://ldap.example.com -D "cn=admin,dc=example,dc=com" -W \
+  -b "ou=people,dc=example,dc=com" "(objectClass=posixAccount)" uid
+```
+
+## Homelab: OpenSUSE Tumbleweed equivalents
+
+```sh
+sudo zypper install openldap2-client sssd
+# Modern setups use sssd rather than nss-pam-ldapd; config lives in
+# /etc/sssd/sssd.conf, then:
+sudo systemctl enable --now sssd
+```
+
+## Homelab: test that LDAP accounts resolve
+
+```sh
+getent passwd david        # should return the LDAP entry if NSS is wired up
+id david
+```
+
+| Tool / flag      | What it does                          |
+| ---------------- | ------------------------------------- |
+| ldapsearch -x    | simple (non-SASL) bind                |
+| -H <uri>         | server URI (ldap:// or ldaps://)      |
+| -b <basedn>      | search base                           |
+| -D <binddn> -W   | bind DN, prompt for password          |
+| getent passwd    | verify NSS integration                |

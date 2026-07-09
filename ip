@@ -1,36 +1,91 @@
-# Display all interfaces with addresses
+# ip — real-world examples
+
+## Display all interfaces with addresses
+
+```sh
 ip addr
+ip -br addr      # brief, one line per interface — great for a quick scan
+```
 
-# Display network IP address
+## Display this machine's IP address(es)
+
+```sh
 hostname -I
-hostname -i
+```
 
-# Take down / up the wireless adapter
-ip link set dev wlan0 {up|down}
+## Take the wireless adapter down or up
 
-# Set a static IP and netmask
-ip addr add 192.168.1.100/32 dev eth0
+```sh
+ip link set dev wlan0 down
+ip link set dev wlan0 up
+```
 
-# Remove a IP from an interface
-ip addr del 192.168.1.100/32 dev eth0
+## Set a static IP and netmask
 
-# Remove all IPs from an interface
+```sh
+ip addr add 192.168.1.100/24 dev eth0
+```
+
+## Remove an IP from an interface
+
+```sh
+ip addr del 192.168.1.100/24 dev eth0
+```
+
+## Remove all IPs from an interface
+
+```sh
 ip address flush dev eth0
+```
 
-# Display all routes
-ip route
+## Display routes
 
-# Display all routes for IPv6
-ip -6 route
+```sh
+ip route         # IPv4
+ip -6 route      # IPv6
+```
 
-# Add default route via gateway IP
+## Add a default route via gateway
+
+```sh
 ip route add default via 192.168.1.1
+```
 
-# Add route via interface
+## Add a route via an interface
+
+```sh
 ip route add 192.168.0.0/24 dev eth0
+```
 
-# Change your mac address 
+## Change your MAC address
+
+```sh
 ip link set dev eth0 address aa:bb:cc:dd:ee:ff
+```
 
-# View neighbors (using ARP and NDP) 
+## View neighbors (ARP / NDP)
+
+```sh
 ip neighbor show
+```
+
+## Homelab: which interface will traffic to mediaserver leave from?
+
+```sh
+ip route get 10.0.0.42
+```
+
+## Homelab: watch link state live while reseating a cable on homelab
+
+```sh
+ip monitor link
+```
+
+| Subcommand  | What it covers               |
+| ----------- | ---------------------------- |
+| ip addr     | IP addresses on interfaces   |
+| ip link     | interface state, MAC, MTU    |
+| ip route    | routing table                |
+| ip neighbor | ARP/NDP cache                |
+| ip -br ...  | brief tabular output         |
+| ip monitor  | live view of network events  |

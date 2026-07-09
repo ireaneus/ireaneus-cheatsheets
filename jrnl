@@ -1,25 +1,58 @@
-# Add entry to default jrnl (from your configured text editor)
+# jrnl — real-world examples
+
+## Add an entry via your configured editor
+
+```sh
 jrnl
+```
 
-# Add entry to default jrnl
+## Add an entry straight from the command line
+
+```sh
 jrnl Write entry here.
+jrnl today: Rebuilt the mediaserver RAID array. @homelab
+```
 
-# List of tags
-jrnl --tags
+## Tags
 
-# Entries per tag
-jrnl @tag
+```sh
+jrnl --tags       # list all tags
+jrnl @homelab     # entries with a tag
+```
 
-# Export jrnl as json
+## Export the journal
+
+```sh
 jrnl --export json
+jrnl --export markdown
+```
 
-# Entries in a timeframe
-jrnl -from 2009 -until may
+## Entries in a timeframe
 
-# Add Sublime text to .jrnl_config
+```sh
+jrnl -from 2025 -until may
+jrnl -from "last monday"
+```
 
-# Windows
-"editor": "F:\\Powerpack\\Sublime\\sublime_text.exe -w"
+## Configure the editor (~/.config/jrnl/jrnl.yaml, older: .jrnl_config)
 
+```yaml
 # Linux
-"editor": "/usr/bin/sublime -w"
+editor: "vim"
+# Windows example
+editor: "F:\\Powerpack\\Sublime\\sublime_text.exe -w"
+```
+
+## Homelab: quick log of maintenance work
+
+```sh
+jrnl Patched homelab with zypper dup, kernel 6.x, reboot clean. @homelab @maintenance
+```
+
+| Flag / arg    | What it does               |
+| ------------- | -------------------------- |
+| @tag          | tag an entry / filter by tag |
+| --tags        | list tags with counts      |
+| -from / -until| time range filter          |
+| --export FMT  | export (json, markdown, ...) |
+| -n <n>        | show last n entries        |

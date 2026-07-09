@@ -1,19 +1,60 @@
-## Reset root password in mariadb
+# mariadb — real-world examples
+
+## Reset the root password (skip-grant-tables method)
+
+```sh
 systemctl stop mariadb
-
 mysqld_safe --skip-grant-tables &
-
 mysql -u root
+```
 
-MariaDB[(none)]> use mysql;
+```sql
+USE mysql;
+UPDATE user SET password=PASSWORD("NewPassword") WHERE User='root';
+FLUSH PRIVILEGES;
+EXIT;
+```
 
-MariaDB[(none)]> update user set password=PASSWORD("NewPassword") where User='root';
-
-MariaDB[(none)]> flush privileges;
-
-MariaDB[(none)]> exit;
-
+```sh
 systemctl restart mariadb
-
 mysql -u root -p
+```
 
+## Homelab: install and start on Tumbleweed
+
+```sh
+sudo zypper install mariadb mariadb-client
+sudo systemctl enable --now mariadb
+sudo mysql_secure_installation
+```
+
+## Homelab: create a database and app user
+
+```sql
+CREATE DATABASE homelab_inventory;
+CREATE USER 'david'@'localhost' IDENTIFIED BY 'ChangeMe!';
+GRANT ALL PRIVILEGES ON homelab_inventory.* TO 'david'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+## Homelab: quick backup and restore
+
+```sh
+mysqldump -u root -p --all-databases > /srv/backups/mariadb-$(date +%F).sql
+mysql -u root -p homelab_inventory < /srv/backups/homelab_inventory.sql
+```
+
+## Homelab: check the server is healthy
+
+```sh
+systemctl status mariadb
+mysqladmin -u root -p status
+```
+
+| Command                   | What it does                    |
+| ------------------------- | ------------------------------- |
+| mysql -u root -p          | interactive client              |
+| mysqldump                 | logical backup                  |
+| mysqladmin status         | uptime, threads, queries        |
+| mysql_secure_installation | harden a fresh install          |
+| FLUSH PRIVILEGES          | reload grant tables             |

@@ -1,2 +1,41 @@
-# format C/C++ source according to the style of Kernighan and Ritchie (K&R), no tabs, 3 spaces per indent, wrap lines at 120 characters.
-indent -i3 -kr -nut -l120
+# indent — real-world examples
+
+## K&R style, no tabs, 3-space indents, wrap at 120 characters
+
+```sh
+indent -i3 -kr -nut -l120 main.c
+```
+
+## GNU style (the default)
+
+```sh
+indent -gnu main.c
+```
+
+## Linux kernel style (tabs, 8-wide)
+
+```sh
+indent -linux driver.c
+```
+
+## Homelab: reformat every C file in a project, keeping backups
+
+```sh
+# indent writes <file>~ backups automatically
+find ~/src/homelab-tools -name '*.c' -exec indent -kr -i4 -nut {} \;
+```
+
+## Homelab: install on Tumbleweed
+
+```sh
+sudo zypper install indent
+```
+
+| Flag   | What it does                        |
+| ------ | ----------------------------------- |
+| -kr    | Kernighan & Ritchie style           |
+| -gnu   | GNU coding style                    |
+| -linux | Linux kernel coding style           |
+| -i<n>  | indent size of n spaces             |
+| -nut   | no tabs — use spaces                |
+| -l<n>  | wrap lines longer than n characters |

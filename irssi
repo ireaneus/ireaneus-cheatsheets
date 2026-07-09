@@ -1,26 +1,78 @@
-# To connect to an IRC server
-/connect <server domain name>
+# irssi — real-world examples
 
-# To join a channel
-/join #<channel name>
+## Connect to an IRC server
 
-# To set a nickname
-/nick <my nickname>
+```
+/connect irc.libera.chat
+```
 
-# To send a private message to a user
-/msg <nickname>
+## Join a channel
 
-# To close the current channel window
+```
+/join #opensuse
+```
+
+## Set a nickname
+
+```
+/nick david
+```
+
+## Send a private message to a user
+
+```
+/msg <nickname> hello there
+```
+
+## Close the current channel window
+
+```
 /wc
+```
 
-# To switch between channel windows
-ALT+<number>, eg. ALT+1, ALT+2
+## Switch between channel windows
 
-# To list the nicknames within a channel
+```
+ALT+<number>   e.g. ALT+1, ALT+2
+```
+
+## List the nicknames within a channel
+
+```
 /names
+```
 
-# To change the topic
+## Change the topic
+
+```
 /topic <description>
+```
 
-# To quit irssi
+## Quit irssi
+
+```
 /exit
+```
+
+## Homelab: run irssi persistently in tmux on homelab
+
+```sh
+ssh david@homelab
+tmux new -s irc irssi     # detach with Ctrl+b d, resume with: tmux attach -t irc
+```
+
+## Homelab: install on Tumbleweed
+
+```sh
+sudo zypper install irssi
+```
+
+| Command  | What it does              |
+| -------- | ------------------------- |
+| /connect | connect to a server       |
+| /join    | join a channel            |
+| /nick    | set nickname              |
+| /msg     | private message           |
+| /names   | list users in channel     |
+| /wc      | close current window      |
+| /exit    | quit irssi                |

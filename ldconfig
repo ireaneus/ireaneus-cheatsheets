@@ -1,4 +1,42 @@
-# To reload /etc/ld.so.cache library cache file:
-ldconfig
+# ldconfig — real-world examples
 
-# Add man entries for this command here
+## Reload the shared library cache (/etc/ld.so.cache)
+
+```sh
+sudo ldconfig
+```
+
+## Print every library currently in the cache
+
+```sh
+ldconfig -p
+ldconfig -p | grep libssl     # is a specific lib registered, and where?
+```
+
+## Homelab: make a library in /usr/local/lib visible
+
+```sh
+# After installing something from source onto homelab:
+echo '/usr/local/lib' | sudo tee /etc/ld.so.conf.d/local.conf
+sudo ldconfig
+```
+
+## Homelab: debug "error while loading shared libraries"
+
+```sh
+ldd /usr/local/bin/mytool      # which libs does it want, which are missing?
+ldconfig -p | grep libfoo      # is the missing lib in the cache at all?
+```
+
+## Verbose run — show directories scanned and links made
+
+```sh
+sudo ldconfig -v | less
+```
+
+| Flag | What it does                              |
+| ---- | ----------------------------------------- |
+| (none) | rebuild /etc/ld.so.cache                |
+| -p   | print the current cache                   |
+| -v   | verbose — list dirs and libraries found   |
+| -n <dir> | process only the given directory      |

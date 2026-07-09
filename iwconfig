@@ -1,8 +1,46 @@
-# Display wireless settings of the first wireless adapter
+# iwconfig — real-world examples
+
+> Legacy wireless tool — modern replacement is `iw` (and `nmcli` for NetworkManager). On Tumbleweed: `sudo zypper install wireless-tools` for iwconfig, `iw` is usually already there.
+
+## Display wireless settings of an adapter
+
+```sh
 iwconfig wlan0
+```
 
-# Take down / up the wireless adapter
-iwconfig wlan0 txpower {on|auto|off}
+## Turn transmit power on / auto / off
 
-# Change the mode of the wireless adapter
-iwconfig wlan0 mode {managed|ad-hoc|monitor}
+```sh
+iwconfig wlan0 txpower on
+iwconfig wlan0 txpower auto
+iwconfig wlan0 txpower off
+```
+
+## Change the mode of the wireless adapter
+
+```sh
+# Must usually bring the interface down first
+iwconfig wlan0 mode managed
+iwconfig wlan0 mode ad-hoc
+iwconfig wlan0 mode monitor
+```
+
+## Homelab: check link quality on the laptop from across the room
+
+```sh
+watch -n1 'iwconfig wlan0 | grep -i quality'
+```
+
+## Homelab: modern equivalents with iw / nmcli
+
+```sh
+iw dev wlan0 info        # replaces: iwconfig wlan0
+iw dev wlan0 link        # signal, bitrate for the current AP
+nmcli device wifi list   # scan for networks via NetworkManager
+```
+
+| Mode    | What it does                              |
+| ------- | ----------------------------------------- |
+| managed | normal client of an access point          |
+| ad-hoc  | peer-to-peer, no AP                       |
+| monitor | passively capture all frames (sniffing)   |

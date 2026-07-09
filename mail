@@ -1,24 +1,60 @@
-# Command line email program
-# Install mail-utils
+# mail — real-world examples
+
+> Command-line email program — install `mailutils` (Debian) or `mailx` (Tumbleweed: `sudo zypper install mailx`).
+
+## Send a subject-only message
+
+```sh
 mail -s "Test Subject" user@domain.com < /dev/null
+```
 
-# Send an attachment through mail
+## Send an attachment
+
+```sh
 mail -a /home/user/Documents/file.1 -s "file sent" user@domain.com < /dev/null
+```
 
-# Send mail to multiple users 
+## Send to multiple recipients
+
+```sh
 mail -a /home/user/Documents/file.1 -s "file sent" user@domain.com,user2@domain.com < /dev/null
+```
 
+## Pipe a body in with escapes interpreted
 
-# send an email using echo -e to enable interpretation of backslash escapes
-Mail_TO="username@example.com distrolist@example.com"
+```sh
+MAIL_TO="username@example.com distrolist@example.com"
+echo -e "Hello, \n\nService httpd is down on $HOST" | \
+  mail -s "Webserver service down on $HOST" $MAIL_TO
+```
 
-echo -e "Hello, \n\nService httpd is down on $HOST" | mail -s "Webserver service down on $HOST" $Mail_TO
+## Write a message interactively
 
-
-# Writing an email 
+```
 mail user@domain.com
-Subject:
+Subject: <type subject>
 Body of message
 Body of message
-Ctrl+c
-Ctrl+d
+Ctrl+D    # send (Ctrl+C twice aborts)
+```
+
+## Homelab: alert yourself when a long job finishes on homelab
+
+```sh
+zypper dup -y && echo "dup finished OK on $(hostname)" | \
+  mail -s "homelab: zypper dup done" bwdave@protonmail.com
+```
+
+## Homelab: nightly disk report from mediaserver via cron
+
+```sh
+# /etc/cron.d/disk-report
+0 7 * * * david df -h /srv/plex | mail -s "mediaserver disk report" bwdave@protonmail.com
+```
+
+| Flag | What it does              |
+| ---- | ------------------------- |
+| -s   | subject                   |
+| -a   | attach a file             |
+| -c   | CC address                |
+| -b   | BCC address               |
