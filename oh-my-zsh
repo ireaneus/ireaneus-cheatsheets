@@ -1,41 +1,56 @@
-# oh-my-zsh commands
+# oh-my-zsh — real-world examples
 
-## take - creates a new directory and takes you to it
-## take my-project replaces mkdir my-project && cd my-project
+## Homelab: install zsh + oh-my-zsh on Tumbleweed
+
+```sh
+sudo zypper install zsh git curl
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+chsh -s "$(which zsh)"
+```
+
+## take — mkdir and cd in one step
+
+```sh
+# take my-project replaces mkdir my-project && cd my-project
 take my-project
+```
 
-## zsh_stats - list to 20 command and how many times used
+## zsh_stats — your top 20 commands by usage
+
+```sh
 zsh_stats
-     1	216  13.3663%    ll
-     2	177  10.953%     cd
-     3	89   5.50743%    vim
-     4	81   5.01238%    tl
-     5	81   5.01238%    git
-     6	78   4.82673%    sudo
-     7	64   3.9604%     cht.sh
-     8	57   3.52723%    task
-     9	57   3.52723%    cp
-    10	44   2.72277%    cheat
-    11	41   2.53713%    a
-    12	40   2.47525%    cat
-    13	35   2.16584%    gst
-    14	32   1.9802%     vprod
-    15	29   1.79455%    ch
-    16	23   1.42327%    .
-    17	22   1.36139%    gp
-    18	21   1.2995%     curl
-    19	20   1.23762%    rm
-    20	20   1.23762%    rdesktop
+#  1  216  13.4%  ll
+#  2  177  11.0%  cd
+#  3   89   5.5%  vim
+#  4   81   5.0%  git
+#  ...
+```
 
-## cd directories
-..    | 1 directory up
-...   | 2 directory up
-....  | 3 directory up
-..... | 4 directory up
+## cd shortcuts
 
-## rd - alias for rmdir
-## md - alias for mkdir -p
-## d - list the last used directories - cd -n n being the number of the directory
-## 'ls -' then tab will list all options and explaination
-##  'cap,rake,ssh, kill'
+| Alias | Effect           |
+| ----- | ---------------- |
+| ..    | 1 directory up   |
+| ...   | 2 directories up |
+| ....  | 3 directories up |
+| ..... | 4 directories up |
+| d     | list recently used directories; `cd -n` jumps to number n |
 
+## Other built-in aliases
+
+```sh
+rd    # rmdir
+md    # mkdir -p
+```
+
+Type `ls -` then hit Tab to list all options with explanations (works for cap, rake, ssh, kill, ...).
+
+## Enable plugins and update
+
+```sh
+# In ~/.zshrc
+plugins=(git sudo systemd)
+
+# Update oh-my-zsh itself
+omz update
+```

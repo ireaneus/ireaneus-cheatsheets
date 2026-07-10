@@ -1,23 +1,55 @@
-# To dump a database to a file (Note that your password will appear in your command history!):
+# mysqldump — real-world examples
+
+## Dump a database to a file
+
+```sh
+# Password on the command line appears in shell history — prefer the prompt
 mysqldump -uusername -ppassword the-database > db.sql
 
-# To dump a database to a file:
+# Prompt for the password instead
 mysqldump -uusername -p the-database > db.sql
+```
 
-# To dump a database to a .tgz file (Note that your password will appear in your command history!):
-mysqldump -uusername -ppassword the-database | gzip -9 > db.sql
+## Dump a database compressed
 
-# To dump a database to a .tgz file:
-mysqldump -uusername -p the-database | gzip -9 > db.sql
+```sh
+mysqldump -uusername -p the-database | gzip -9 > db.sql.gz
+```
 
-# To dump all databases to a file (Note that your password will appear in your command history!):
-mysqldump -uusername -ppassword --all-databases > all-databases.sql
+## Dump all databases
 
-# To dump all databases to a file:
+```sh
 mysqldump -uusername -p --all-databases > all-databases.sql
+```
 
-# To export the database structure only:
-mysqldump --no-data -uusername -p the-database > dump_file
+## Structure only / data only
 
-# To export the database data only:
-mysqldump --no-create-info -uusername -p the-database > dump_file
+```sh
+# Schema only, no rows
+mysqldump --no-data -uusername -p the-database > schema.sql
+
+# Rows only, no CREATE statements
+mysqldump --no-create-info -uusername -p the-database > data.sql
+```
+
+## Homelab: nightly dated backup of everything
+
+```sh
+mysqldump -u root -p --all-databases --single-transaction \
+  | gzip > /srv/backups/daily/mariadb-$(date +%F).sql.gz
+```
+
+## Homelab: dump one table, restore a database
+
+```sh
+mysqldump -u david -p homelab_inventory hosts > hosts.sql
+mysql -u david -p homelab_inventory < hosts.sql
+```
+
+| Flag                 | Meaning                                     |
+| -------------------- | ------------------------------------------- |
+| --all-databases      | dump every database                         |
+| --no-data            | schema only                                 |
+| --no-create-info     | data only                                   |
+| --single-transaction | consistent InnoDB dump without locking      |
+| --routines           | include stored procedures and functions     |

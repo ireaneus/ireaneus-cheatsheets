@@ -1,23 +1,54 @@
-# To view the php version:
-php -v
+# php — real-world examples
 
-# To view the installed php modules:
-php -m
+## Version and modules
 
-# To view phpinfo() information:
-php -i
+```sh
+php -v      # PHP version
+php -m      # installed modules
+php -i      # phpinfo() output
+```
 
-# To lint a php file:
+## Lint PHP files
+
+```sh
 php -l file.php
 
-# To lint all php files within the cwd:
+# Lint every php file under the cwd, 8 in parallel
 find . -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+```
 
-# To enter an interactive shell:
+## Interactive shell and one-liners
+
+```sh
 php -a
+php -r 'echo 2 + 2, PHP_EOL;'
+```
 
-# To locate the system's php.ini files:
+## Locate the php.ini in use
+
+```sh
 php -i | grep "php.ini"
+```
 
-# To start a local webserver for the cwd on port 3000 (requires php >= 5.4):
-php -S localhost:3000
+## Local development webserver (PHP >= 5.4)
+
+```sh
+php -S localhost:3000    # serves the cwd on port 3000
+```
+
+## Homelab: install the CLI on Tumbleweed
+
+```sh
+sudo zypper search php8      # see available php8-* packages
+sudo zypper install php8-cli
+```
+
+| Flag | Meaning                        |
+| ---- | ------------------------------ |
+| -v   | version                        |
+| -m   | modules                        |
+| -i   | phpinfo                        |
+| -l   | lint (syntax check)            |
+| -a   | interactive shell              |
+| -r   | run code from the command line |
+| -S   | built-in dev webserver         |

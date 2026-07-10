@@ -1,37 +1,67 @@
-### How to install Nagios 4.3.4 on RHEL, CentOS
-https://www.tecmint.com/install-nagios-in-linux/
+# nagios_inst — real-world examples
 
-# Install required dependencies
+Install Nagios Core 4.x on RHEL/CentOS.
+Reference: <https://www.tecmint.com/install-nagios-in-linux/>
+
+## Install required dependencies
+
+```sh
 yum install -y httpd httpd-tools php gcc glibc glibc-common gd gd-devel make net-snmp
+```
 
-# Create Nagios User and Group
+## Create the Nagios user and group
+
+```sh
 useradd nagios
 groupadd nagcmd
 
 usermod -G nagcmd nagios
 usermod -G nagcmd apache
+```
 
-# Download Nagios Core 4.3.4 and Nagios Plugin 2.2.1
+## Download Nagios Core and plugins
+
+```sh
 mkdir /root/nagios
 cd /root/nagios
-
 wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.3.4.tar.gz
+```
 
-# Install service check in Nagios
+## Custom plugin: check a service is running
+
+```sh
 #!/bin/bash
-# Nagios Plugin Bash Script - check_service.sh
-# This script checks if program is running
-# Check for missing parameters
-if [[ -z "$1" ]] then
+# Nagios plugin - check_service.sh
+# Checks whether a program is running
+SERVICE=$1
+
+if [[ -z "$1" ]]; then
     echo "Missing parameters! Syntax: ./check_service.sh service_name"
     exit 3
 fi
 
-if ps ax | grep -v grep | grep $1 > /dev/null
-  then
+if ps ax | grep -v grep | grep "$SERVICE" > /dev/null; then
     echo "OK, $SERVICE service is running"
     exit 0
-  else
-    echo "CRITICAL , $SERVICE service is not running"
+else
+    echo "CRITICAL, $SERVICE service is not running"
     exit 2
 fi
+```
+
+Nagios exit codes: `0` OK, `1` WARNING, `2` CRITICAL, `3` UNKNOWN.
+
+## Verify configuration before restarting
+
+```sh
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+```
+
+## Homelab note
+
+On OpenSUSE Tumbleweed, lighter-weight checks are often enough:
+
+```sh
+systemctl --failed                     # anything broken on homelab?
+ssh david@mediaserver systemctl --failed
+```

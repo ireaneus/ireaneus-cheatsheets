@@ -1,3 +1,31 @@
-# To show the file start at line number 5
-more +5 file
+# more — real-world examples
 
+## Show a file starting at line number 5
+
+```sh
+more +5 file
+```
+
+## Page through a file or command output
+
+```sh
+more /var/log/zypper.log
+grep -r "PermitRootLogin" /etc/ssh | more
+```
+
+## Friendlier prompts and squeezed blank lines
+
+```sh
+more -d file    # show "[Press space to continue, 'q' to quit.]"
+more -s file    # squeeze multiple blank lines into one
+```
+
+Keys while paging: `Space` next page, `Enter` next line, `q` quit, `/pattern` search.
+
+| Flag | Meaning                          |
+| ---- | -------------------------------- |
+| +N   | start at line N                  |
+| -d   | show helpful prompt              |
+| -s   | squeeze repeated blank lines     |
+
+Tip: `less` is generally preferred — it scrolls backwards too.

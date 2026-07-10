@@ -1,2 +1,39 @@
-# Convert bytes to Human readable format
+# numfmt — real-world examples
+
+## Convert bytes to human-readable format
+
+```sh
 numfmt --to=iec --suffix=B --padding=7 1048576
+#  1.0MB
+
+numfmt --to=iec 1048576      # 1.0M
+```
+
+## Convert human-readable back to bytes
+
+```sh
+numfmt --from=iec 1M         # 1048576
+numfmt --from=iec 4G         # 4294967296
+```
+
+## Homelab: human-readable directory sizes
+
+```sh
+du -sb /srv/plex/* | numfmt --to=iec
+ls -l | numfmt --field=5 --to=iec --invalid=ignore
+```
+
+## Thousands separators
+
+```sh
+numfmt --grouping 1234567    # 1,234,567 (locale dependent)
+```
+
+| Flag       | Meaning                                |
+| ---------- | -------------------------------------- |
+| --to=iec   | output as K/M/G (1024-based)           |
+| --from=iec | parse K/M/G input into bytes           |
+| --suffix   | append a suffix (e.g. B)               |
+| --padding  | pad output to a width                  |
+| --field    | which whitespace field to convert      |
+| --grouping | thousands separators per locale        |

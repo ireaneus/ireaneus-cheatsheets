@@ -1,11 +1,45 @@
-# Dump file in octal format
+# od — real-world examples
+
+## Dump a file in octal format
+
+```sh
 od /path/to/binaryfile
 od -o /path/to/binaryfile
 od -t o2 /path/to/binaryfile
+```
 
-# Dump file in hexadecimal format
+## Dump a file in hexadecimal format
+
+```sh
 od -x /path/to/binaryfile
 od -t x2 /path/to/binaryfile
+```
 
-# Dump file in hexadecimal format, with hexadecimal offsets and a space between each byte
+## Hexadecimal with hex offsets and one byte per column
+
+```sh
 od -A x -t x1 /path/to/binaryfile
+```
+
+## Homelab: check a file's magic bytes
+
+```sh
+# ELF binaries start with 7f 45 4c 46 ("ELF")
+od -A x -t x1z -N 8 /usr/bin/ls
+```
+
+## View characters and escape sequences
+
+```sh
+# See tabs, newlines, CRLF line endings in a config file
+od -c ~/.config/somefile | head
+```
+
+| Flag  | Meaning                                     |
+| ----- | ------------------------------------------- |
+| -t x1 | output type: hex, 1 byte per column         |
+| -A x  | show offsets in hex (o=octal, d=decimal)    |
+| -N    | dump only the first N bytes                 |
+| -j    | skip N bytes before dumping                 |
+| -c    | printable characters and backslash escapes  |
+| -z    | append printable-character column (with -t) |

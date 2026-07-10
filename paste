@@ -1,15 +1,44 @@
-# Concat columns from files
+# paste — real-world examples
+
+## Concatenate columns from files
+
+```sh
 paste file1 file2 ...
+```
 
-# List the files in the current directory in three columns:
+## List files in the current directory in three columns
+
+```sh
 ls | paste - - -
+```
 
-# Combine pairs of lines from a file into single lines:
+## Combine pairs of lines from a file into single lines
+
+```sh
 paste -s -d '\t\n' myfile
+```
 
-# Number the lines in a file, similar to nl(1):
+## Number the lines in a file, similar to nl(1)
+
+```sh
 sed = myfile | paste -s -d '\t\n' - -
+```
 
-# Create a colon-separated list of directories named bin,
-# suitable for use in the PATH environment variable:
+## Build a colon-separated PATH-style list
+
+```sh
 find / -name bin -type d | paste -s -d : -
+```
+
+## Homelab: join a hostname list and an IP list into a CSV
+
+```sh
+paste -d, hosts.txt ips.txt > inventory.csv
+# homelab,192.168.1.42
+# mediaserver,192.168.1.50
+```
+
+| Flag | Meaning                                        |
+| ---- | ---------------------------------------------- |
+| -d   | delimiter list (cycled through, default tab)   |
+| -s   | serial: one file at a time, lines joined       |

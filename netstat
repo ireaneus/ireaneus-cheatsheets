@@ -1,28 +1,50 @@
-# WARNING ! netstat is deprecated. Look below.
+# netstat — real-world examples
 
-# To view which users/processes are listening to which ports:
+> WARNING: netstat is deprecated — use `ss` and `ip` (see the table below).
+
+## Which users/processes are listening on which ports
+
+```sh
 sudo netstat -lnptu
+```
 
-# To view routing table (use -n flag to disable DNS lookups):
+## View the routing table (-n disables DNS lookups)
+
+```sh
 netstat -r
+```
 
-# Which process is listening to port <port>
+## Which process is listening on a given port
+
+```sh
 netstat -pln | grep <port> | awk '{print $NF}'
+# Example output: 1507/python
+```
 
-Example output: 1507/python
+## Fast display of IPv4 TCP listening programs
 
-# Fast display of ipv4 tcp listening programs
+```sh
 sudo netstat -vtlnp --listening -4
+```
 
-# WARNING ! netstat is deprecated.
-# Replace it by:
-ss
+## Modern replacements
 
-# For netstat-r
-ip route
+```sh
+sudo ss -tulpn          # instead of netstat -lnptu
+ip route                # instead of netstat -r
+ip -s link              # instead of netstat -i
+ip maddr                # instead of netstat -g
+```
 
-# For netstat -i
-ip -s link
+## Homelab: is Plex listening on mediaserver?
 
-# For netstat-g
-ip maddr
+```sh
+sudo ss -tulpn | grep 32400
+```
+
+| Deprecated        | Replacement |
+| ----------------- | ----------- |
+| netstat -lnptu    | ss -tulpn   |
+| netstat -r        | ip route    |
+| netstat -i        | ip -s link  |
+| netstat -g        | ip maddr    |

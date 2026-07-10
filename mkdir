@@ -1,9 +1,43 @@
-# Create a directory and all its parents
-mkdir -p foo/bar/baz
+# mkdir — real-world examples
 
-# Create foo/bar and foo/baz directories
+## Create a directory and all its parents
+
+```sh
+mkdir -p foo/bar/baz
+```
+
+## Create several directories with brace expansion
+
+```sh
+# Create foo/bar and foo/baz
 mkdir -p foo/{bar,baz}
 
-# Create the foo/bar, foo/baz, foo/baz/zip and foo/baz/zap directories
+# Create foo/bar, foo/baz, foo/baz/zip and foo/baz/zap
 mkdir -p foo/{bar,baz/{zip,zap}}
+```
 
+## Homelab: media library skeleton on mediaserver
+
+```sh
+mkdir -p /srv/plex/{movies,tv,music,photos}
+```
+
+## Homelab: dated backup tree, verbose
+
+```sh
+mkdir -pv /srv/backups/{daily,weekly,monthly}
+mkdir -p "/srv/backups/daily/$(date +%F)"
+```
+
+## Create with permissions in one step
+
+```sh
+# Private directory (mode applies to the final component)
+mkdir -m 700 ~/secrets
+```
+
+| Flag | Meaning                                    |
+| ---- | ------------------------------------------ |
+| -p   | make parents as needed; no error if exists |
+| -m   | set permission mode (like chmod)           |
+| -v   | print a message for each created directory |

@@ -1,24 +1,57 @@
-### https://www.tecmint.com/mysqladmin-commands-for-database-administration-in-linux/
+# mysqladmin — real-world examples
 
-# How to set MySQL root password
+Reference: <https://www.tecmint.com/mysqladmin-commands-for-database-administration-in-linux/>
+
+## Set / change the root password
+
+```sh
+# Set initial root password
 mysqladmin -u root password YOURNEWPASSWORD
 
-# How to change MySQL root password
+# Change an existing root password
 mysqladmin -u root -p123456 password 'xyz123'
+```
 
-# How to check MySQL server is running
+## Check the server is running
+
+```sh
 mysqladmin -u root -p ping
-Enter password:
-mysqld is alive
+# mysqld is alive
 
 mysqladmin -u root -p version
+```
 
-# How to find out current status of MySQL server
+## Current status and activity
+
+```sh
 mysqladmin -u root -p status
-Enter password:
-Uptime: 606704  Threads: 2  Questions: 36003  Slow queries: 0  Opens: 15  Flush tables: 1  Open tables: 8  Queries per second avg: 0.059m
+# Uptime: 606704  Threads: 2  Questions: 36003  Slow queries: 0 ...
 
 mysqladmin -u root -p extended-status
 mysqladmin -u root -p variables
 mysqladmin -u root -p processlist
+```
 
+## Homelab: create and drop databases
+
+```sh
+mysqladmin -u root -p create homelab_inventory
+mysqladmin -u root -p drop testdb
+```
+
+## Homelab: check the MariaDB instance on mediaserver
+
+```sh
+mysqladmin -h mediaserver -u david -p ping
+mysqladmin -h mediaserver -u david -p processlist
+```
+
+| Subcommand      | What it does                       |
+| --------------- | ---------------------------------- |
+| ping            | check server is alive              |
+| status          | uptime, threads, queries           |
+| extended-status | full status variables              |
+| variables       | server configuration variables     |
+| processlist     | active client connections          |
+| create / drop   | create or delete a database        |
+| flush-privileges| reload the grant tables            |

@@ -1,9 +1,52 @@
-# Concatenate all pdf files into one:
+# pdftk — real-world examples
+
+## Concatenate PDFs into one
+
+```sh
 pdftk *.pdf cat output all.pdf
-
-# Concatenate specific pdf files into one:
 pdftk 1.pdf 2.pdf 3.pdf cat output 123.pdf
+```
 
-# Concatenate pages 1 to 5 of first.pdf with page 3 of second.pdf
-pdftk A=fist.pdf B=second.pdf cat A1-5 B3 output new.pdf
+## Mix pages from multiple files
 
+```sh
+# Pages 1-5 of first.pdf followed by page 3 of second.pdf
+pdftk A=first.pdf B=second.pdf cat A1-5 B3 output new.pdf
+```
+
+## Extract a page range
+
+```sh
+pdftk manual.pdf cat 2-4 output excerpt.pdf
+```
+
+## Split a PDF into single pages
+
+```sh
+pdftk big.pdf burst output page_%02d.pdf
+```
+
+## Rotate pages
+
+```sh
+# Rotate all pages 90 degrees clockwise (east)
+pdftk in.pdf cat 1-endeast output rotated.pdf
+```
+
+## Remove a password (when you know it)
+
+```sh
+pdftk secured.pdf input_pw PROMPT output unsecured.pdf
+```
+
+## Homelab: merge scanned receipts into one file
+
+```sh
+pdftk ~/scans/receipt-*.pdf cat output ~/Documents/receipts-$(date +%Y-%m).pdf
+```
+
+| Operation | What it does                         |
+| --------- | ------------------------------------ |
+| cat       | concatenate/select/rotate pages      |
+| burst     | split into one file per page         |
+| input_pw  | supply password for encrypted input  |

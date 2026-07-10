@@ -1,20 +1,38 @@
-# To list VMs on current tenant:
-nova list
+# nova — real-world examples
 
-# To list VMs of all tenants (admin user only):
-nova list --all-tenants
+> The `nova` CLI is legacy OpenStack — the unified `openstack` client replaces it (see table).
 
-# To boot a VM on a specific host:
+## List VMs
+
+```sh
+nova list                    # current tenant
+nova list --all-tenants      # all tenants (admin only)
+```
+
+## Boot a VM on a specific host
+
+```sh
 nova boot --nic net-id=<net_id> \
           --image <image_id> \
           --flavor <flavor> \
           --availability-zone nova:<host_name> <vm_name>
+```
 
-# To stop a server
+## Stop and start a server
+
+```sh
 nova stop <server>
-
-# To start a server
 nova start <server>
+```
 
-# To attach a network interface to a specific VM:
+## Attach a network interface to a VM
+
+```sh
 nova interface-attach --net-id <net_id> <server>
+```
+
+| Legacy nova         | Unified client            |
+| ------------------- | ------------------------- |
+| nova list           | openstack server list     |
+| nova boot           | openstack server create   |
+| nova stop / start   | openstack server stop / start |

@@ -1,48 +1,61 @@
-# All the following command work as well with multiple package names
+# pacman — real-world examples
 
-# To search for a package
-pacman -Ss <package name>
+Arch Linux package manager (on the Tumbleweed homelab use `zypper` instead).
+All commands accept multiple package names.
 
-# To update the local package base and upgrade all out of date packages
-pacman -Suy
+## Search, install, remove
 
-# To install a package
-pacman -S <package name>
+```sh
+pacman -Ss <package name>    # search
+pacman -S <package name>     # install
+pacman -R <package name>     # uninstall
+pacman -Rcs <package name>   # uninstall + dependencies, removing new orphans
+```
 
-# To uninstall a package
-pacman -R <package name>
+## Update the system
 
-# To uninstall a package and his depedencies, removing all new orphans
-pacman -Rcs <package name>
+```sh
+pacman -Syu                  # refresh package database and upgrade everything
+```
 
-# To get informations about a package
-pacman -Si <package name>
+## Query packages
 
-# To install a package from builded package file (.tar.xz)
-pacman -U <file name/file url>
+```sh
+pacman -Si <package name>    # package information
+pacman -Qe                   # explicitly installed packages
+pacman -Qdt                  # orphans (installed as deps, no longer required)
 
-# To list the commands provided by an installed package
+# Commands provided by an installed package
 pacman -Ql <package name> | sed -n -e 's/.*\/bin\///p' | tail -n +2
+```
 
-# To list explicitly installed packages
-pacman -Qe
+## Install from a built package file
 
-# To list orphan packages (installed as dependencies and not required anymore)
-pacman -Qdt
+```sh
+pacman -U <file name/file url>
+```
 
+## Build and install from the AUR
 
-# You can't directly install packages from the Arch User Database (AUR) with pacman.
-# You need yaourt to perform that. But considering yaourt itself is in the AUR, here is how to build a package from its tarball.
-# Installing a package from AUR is a relatively simple process:
-# - Retrieve the archive corresponding to your package from AUR website
-# - Extract the archive (preferably in a folder for this purpose)
-# - Run makepkg in the extracted directory. (makepkg-s allows you to install any dependencies automatically from deposits.)
-# - Install the package created using pacman
-# Assuming $pkgname contains the package name.
+```sh
+# pacman can't install from the AUR directly. Modern helpers: yay, paru.
+# Manual build with makepkg (assuming $pkgname holds the package name):
 wget "https://aur.archlinux.org/packages/${pkgname::2}/$pkgname/$pkgname.tar.gz"
 tar zxvf "$pkgname.tar.gz"
 cd "$pkgname"
-# Build the package
-makepkg -s
-# Install
+makepkg -s                   # -s installs build dependencies automatically
 sudo pacman -U <package file (.pkg.tar.xz)>
+```
+
+| Flag | Meaning                                  |
+| ---- | ---------------------------------------- |
+| -S   | install from repos                       |
+| -Ss  | search repos                             |
+| -Syu | sync database + full upgrade             |
+| -R   | remove                                   |
+| -Rcs | remove with deps and orphans             |
+| -Si  | repo package info                        |
+| -Qe  | list explicitly installed                |
+| -Qdt | list orphans                             |
+| -Ql  | list files owned by installed package    |
+| -U   | install from local/remote package file   |

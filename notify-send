@@ -1,4 +1,29 @@
-# To send a desktop notification via dbus:
-notify-send -i 'icon-file/name' -a 'application_name' 'summary' 'body of message'
+# notify-send — real-world examples
 
-# The -i and -a flags can be omitted if unneeded.
+## Send a desktop notification via dbus
+
+```sh
+notify-send -i 'icon-file/name' -a 'application_name' 'summary' 'body of message'
+# The -i and -a flags can be omitted if unneeded
+```
+
+## Homelab: tell me when a long job finishes
+
+```sh
+sudo zypper dup ; notify-send 'zypper dup' 'Tumbleweed upgrade finished'
+rsync -a ~/Videos/ david@mediaserver:/srv/plex/movies/ && notify-send 'rsync' 'Media sync to mediaserver done'
+```
+
+## Urgency levels and timeout
+
+```sh
+notify-send -u critical 'RAID degraded' 'Check /dev/md0 on mediaserver'
+notify-send -u low -t 5000 'Backup' 'Nightly backup started'   # 5 seconds
+```
+
+| Flag | Meaning                                  |
+| ---- | ---------------------------------------- |
+| -u   | urgency: low, normal, critical           |
+| -t   | timeout in milliseconds                  |
+| -i   | icon name or file                        |
+| -a   | application name                         |

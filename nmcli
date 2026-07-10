@@ -1,21 +1,58 @@
+# nmcli — real-world examples
 
+## Show devices and connections
+
+```sh
 nmcli dev status
 nmcli con show
-nmcli connection show
-nmcli con show
-nmcli c s
+nmcli c s              # short form
+```
 
-nmcli con down Myoffice1 ; nmcli con up static1
-nmcli con show
+## Add a DHCP ethernet connection
+
+```sh
 nmcli con add type ethernet con-name Myhome1 ifname enp0s3
-nmcli con add type ethernet con-name static2 ifname enp0s3 ip4 192.168.1.50/24 gw4 192.168.1.1
-cat ifcfg-static2
-nmcli con mod static2 ipv4.dns “8.8.8.8 8.8.4.4”
+```
+
+## Add a static IP connection
+
+```sh
+nmcli con add type ethernet con-name static2 ifname enp0s3 \
+  ip4 192.168.1.50/24 gw4 192.168.1.1
+nmcli con mod static2 ipv4.dns "8.8.8.8 8.8.4.4"
+```
+
+## Switch between connections
+
+```sh
+nmcli con down Myoffice1 ; nmcli con up static1
 nmcli con down static1 ; nmcli con up static2
 nmcli con mod static2 connection.autoconnect no
+```
 
+## Change DNS on an existing connection
+
+```sh
 nmcli -f ipv4.dns con show "System eth0"
 sudo nmcli con mod "System eth0" ipv4.dns "10.0.0.2"
 sudo nmcli con up "System eth0"
-cat /etc/resolv.con
+cat /etc/resolv.conf
 host www.google.com
+```
+
+## Homelab: pin a static address on the Tumbleweed box
+
+```sh
+sudo nmcli con add type ethernet con-name homelab-static ifname eth0 \
+  ip4 192.168.1.42/24 gw4 192.168.1.1
+sudo nmcli con mod homelab-static ipv4.dns "192.168.1.1"
+sudo nmcli con up homelab-static
+```
+
+| Command            | What it does                       |
+| ------------------ | ---------------------------------- |
+| nmcli dev status   | list devices and their state       |
+| nmcli con show     | list connections                   |
+| nmcli con add      | create a connection                |
+| nmcli con mod      | change connection settings         |
+| nmcli con up/down  | activate / deactivate a connection |
