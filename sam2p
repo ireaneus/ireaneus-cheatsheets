@@ -1,2 +1,35 @@
-# Concatenate all pdf files into one:
+# sam2p — real-world examples
+
+`sam2p` converts raster images (and can concatenate) into PDF/PostScript and
+other formats, aiming for small, precise output.
+
+## Concatenate images/PDFs into one PDF
+
+```sh
 sam2p *.pdf out.pdf
+```
+
+## Convert a single raster image to PDF
+
+```sh
+# Wrap a scan into a PDF page
+sam2p receipt.png receipt.pdf
+
+sam2p photo.jpg photo.pdf
+```
+
+## Homelab examples
+
+```sh
+# Install on OpenSUSE Tumbleweed
+sudo zypper install sam2p
+
+# Batch-wrap a folder of scanned pages, one PDF each
+for f in ~/scans/*.png; do sam2p "$f" "${f%.png}.pdf"; done
+
+# Then merge them (sam2p, or pdfunite from poppler-tools)
+sam2p ~/scans/*.pdf ~/scans/combined.pdf
+```
+
+> Tip: for PDF-only merging, `pdfunite` (poppler-tools) or `pdftk` are often
+> simpler; reach for sam2p when you need tight control over image-to-PDF encoding.

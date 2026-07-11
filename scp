@@ -1,16 +1,48 @@
-# To copy a file from your local machine to a remote server:
+# scp — real-world examples
+
+## Local -> remote
+
+```sh
 scp foo.txt user@example.com:remote/dir
+```
 
-# To copy a file from a remote server to your local machine:
+## Remote -> local
+
+```sh
 scp user@example.com:remote/dir/foo.txt local/dir
+```
 
-# Switches that help with scp
--i scp.pem 	# ssh-key authentication
--r 		# recursive copy entire directories
--v		# verbose print debugging messages
--p		# preserves times and modes
--C		# compression on transport not end to end, will not save time compressing compressed files, ie pictures
--P 4000		# specifies port on remote server open to ssh
+## Common switches
 
-# example - copy files from server2 downloads, compress and all subdirectories, preserve times and mods, verbose
-[user@server1]$ scp -i server2.pem -P 3003 -Cvpr user2@server2:/home/user2/Downloads .
+| Flag | Meaning |
+|------|---------|
+| `-i key.pem` | Identity file (ssh-key auth) |
+| `-r` | Recursively copy directories |
+| `-v` | Verbose / debugging output |
+| `-p` | Preserve modification times and modes |
+| `-C` | Compress in transit (skip for already-compressed data like images/video) |
+| `-P 4000` | Remote SSH port (capital P — lowercase -p means preserve) |
+
+## Worked example
+
+```sh
+# Copy from server2's Downloads: recursive, compress, preserve times/modes, verbose,
+# using a key and a nonstandard port, into the current directory
+scp -i server2.pem -P 3003 -Cvpr user2@server2:/home/user2/Downloads .
+```
+
+## Homelab examples
+
+```sh
+# Push a config to homelab on its custom ssh port
+scp -P 2222 ~/configs/smb.conf david@homelab:/tmp/smb.conf
+
+# Pull a Plex log bundle off mediaserver
+scp -r david@mediaserver:'/var/lib/plexmediaserver/.../Logs' ~/plex-logs/
+
+# Copy a large ISO WITHOUT -C (already compressed; compression wastes CPU)
+scp ~/iso/openSUSE-Tumbleweed.iso david@homelab:/srv/iso/
+```
+
+> Note: on newer OpenSSH, `scp` uses the SFTP protocol under the hood, and many
+> guides now recommend `rsync` or `sftp` for large or repeated transfers.

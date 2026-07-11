@@ -1,14 +1,62 @@
-# To copy files from remote to local, maintaining file properties and sym-links (-a), zipping for faster transfer (-z), verbose (-v).  
-rsync -avz host:file1 :file1 /dest/
+# rsync — real-world examples
+
+## Basic remote copy
+
+```sh
+# Archive mode (-a: permissions, times, symlinks), compress in transit (-z), verbose (-v)
+rsync -avz host:file1 /dest/
 rsync -avz /source host:/dest
+```
 
-# Copy files using checksum (-c) rather than time to detect if the file has changed. (Useful for validating backups). 
+## Checksum comparison
+
+```sh
+# Compare by checksum (-c) instead of mtime+size — useful for validating backups
 rsync -avc /source/ /dest/
+```
 
-# Copy contents of /src/foo to destination:
+## Trailing-slash semantics (the classic gotcha)
 
-# This command will create /dest/foo if it does not already exist
+```sh
+# No trailing slash: copies the DIRECTORY -> creates /dest/foo
 rsync -auv /src/foo /dest
 
-# Explicitly copy /src/foo to /dest/foo
+# Trailing slash: copies the CONTENTS of foo -> into /dest/foo
 rsync -auv /src/foo/ /dest/foo
+```
+
+## Homelab examples
+
+```sh
+# Mirror the media library from homelab to mediaserver, show progress,
+# delete files at the destination that no longer exist at the source
+rsync -avz --delete --progress /srv/media/ david@mediaserver:/srv/media/
+
+# Dry run FIRST when using --delete
+rsync -avzn --delete /srv/media/ david@mediaserver:/srv/media/
+
+# Nightly home backup excluding caches
+rsync -av --exclude='.cache/' --exclude='*.tmp' /home/david/ /backup/david/
+
+# Over a nonstandard ssh port
+rsync -avz -e 'ssh -p 2222' ~/photos/ david@homelab:/srv/photos/
+
+# Resume big transfers (keeps partial files)
+rsync -avz --partial --progress mediaserver:/srv/media/movies/big.mkv ~/Downloads/
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-a` | Archive: recurse + preserve perms, times, links, owners |
+| `-v` | Verbose |
+| `-z` | Compress in transit |
+| `-c` | Compare by checksum |
+| `-u` | Skip files newer at destination |
+| `-n` | Dry run |
+| `--delete` | Remove dest files not present at source |
+| `--progress` | Per-file transfer progress |
+| `--partial` | Keep partial transfers for resume |
+| `--exclude=<pat>` | Skip matching files |
+| `-e '<cmd>'` | Remote shell command (custom ssh options) |

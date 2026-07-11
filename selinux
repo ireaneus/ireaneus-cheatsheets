@@ -1,8 +1,77 @@
-# Commands for SELINUX management
+# selinux — real-world examples
 
-# chcon - changes context for files and directories
-chcon -R -t usr_t directory1/	# recursively changes directory1 with type usr_t
+SELinux management commands. (Note: OpenSUSE Tumbleweed defaults to AppArmor;
+SELinux is standard on RHEL/Fedora. Equivalents noted at the bottom.)
 
-ls -alZ				# Z will list selinux context
+## View context
 
-# permissive and enforcing
+```sh
+# -Z shows the SELinux context (user:role:type:level)
+ls -alZ
+ps -eZ | grep httpd
+id -Z
+```
+
+## Change a file's context
+
+```sh
+# chcon changes context on files/directories (temporary — reset by relabel)
+chcon -R -t usr_t directory1/     # recursively set type usr_t
+
+# Persistent: define the rule, then apply it
+semanage fcontext -a -t httpd_sys_content_t "/srv/www(/.*)?"
+restorecon -Rv /srv/www           # relabel to match policy
+```
+
+## Modes: permissive vs enforcing
+
+```sh
+getenforce                # show current mode
+setenforce 0              # switch to Permissive (log, don't block)
+setenforce 1              # switch to Enforcing
+
+# Persist across reboots
+sudo vim /etc/selinux/config      # set SELINUX=enforcing|permissive|disabled
+```
+
+## Booleans and ports
+
+```sh
+# List booleans
+getsebool -a | grep httpd
+
+# Flip a boolean persistently (-P)
+setsebool -P httpd_can_network_connect on
+
+# Let a service listen on a nonstandard port
+semanage port -a -t http_port_t -p tcp 8080
+```
+
+## Troubleshooting denials
+
+```sh
+# Recent denials
+ausearch -m avc -ts recent
+
+# Human-readable explanations + suggested fixes
+sealert -a /var/log/audit/audit.log
+```
+
+## Homelab note (Tumbleweed uses AppArmor)
+
+```sh
+aa-status                          # AppArmor equivalent of getenforce/sestatus
+sudo aa-complain /usr/sbin/smbd    # like permissive for one profile
+sudo aa-enforce  /usr/sbin/smbd    # like enforcing for one profile
+```
+
+## Flag reference
+
+| Command | Meaning |
+|---------|---------|
+| `ls -Z`, `ps -Z` | Show SELinux context |
+| `chcon -t <type>` | Temporary context change |
+| `restorecon -R` | Reset context from policy |
+| `semanage fcontext` | Persistent context rule |
+| `getenforce` / `setenforce` | Show / set mode |
+| `getsebool` / `setsebool -P` | Read / set booleans |

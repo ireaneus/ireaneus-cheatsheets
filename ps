@@ -1,18 +1,70 @@
-# To list every process on the system:
+# ps — real-world examples
+
+## List every process on the system
+
+```sh
 ps aux
+```
 
-# To list a process tree
+## Show a process tree
+
+```sh
 ps axjf
+```
 
-# To list every process owned by foouser:
-ps -aufoouser
+## Processes for one user
 
-# To list every process with a user-defined format:
+```sh
+# Every process owned by david
+ps -u david u
+```
+
+## Custom output format
+
+```sh
+# Only the columns you care about
 ps -eo pid,user,command
 
-# Exclude grep from your grepped output of ps.
-# Add [] to the first letter. Ex: sshd -> [s]shd
-ps aux | grep '[h]ttpd'
+# Sort by memory, top offenders first
+ps -eo pid,user,%mem,%cpu,command --sort=-%mem | head -15
+```
 
-# List all processes that are waiting for i/o activity
-ps aux | grep D+
+## Exclude grep from grepped ps output
+
+```sh
+# Wrap the first letter in [] so grep doesn't match itself. Ex: sshd -> [s]shd
+ps aux | grep '[h]ttpd'
+```
+
+## Processes stuck waiting on I/O
+
+```sh
+# STAT "D" = uninterruptible sleep (usually disk/NFS)
+ps aux | awk '$8 ~ /^D/'
+```
+
+## Homelab quick checks
+
+```sh
+# Is Plex running on mediaserver, and how heavy is it?
+ps -C 'Plex Media Server' -o pid,%cpu,%mem,etime,command
+
+# All of david's ssh sessions into homelab
+ps -u david -o pid,tty,etime,command | grep '[s]sh'
+
+# Threads of a single process (e.g. troubleshoot a stuck service)
+ps -Lp $(pidof smbd) -o pid,tid,%cpu,stat,command | head
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `a` | Processes of all users (BSD style) |
+| `u` | User-oriented output |
+| `x` | Include processes without a tty |
+| `-e` | Every process (SysV style) |
+| `-o <cols>` | User-defined columns |
+| `--sort=-%mem` | Sort descending by column |
+| `-C <name>` | Select by command name |
+| `-p <pid>` | Select by PID |

@@ -1,10 +1,50 @@
-# Rundeck setup and configuration
-## Requires Java-1.7.0 or above
+# rundeck — real-world examples
 
-# Installation
+Rundeck is a job-scheduler / runbook-automation server. Requires Java 1.7+.
+
+## Installation (RPM-based)
+
+```sh
 rpm -Uvh http://repo.rundeck.org/latest.rpm
 yum install rundeck
 service rundeckd start
+```
 
-# Rundeck CLI
+## Installation notes for the homelab (Tumbleweed)
+
+```sh
+# No native zypper package; run the official container instead
+sudo zypper install docker
+sudo systemctl enable --now docker
+
+docker run -d --name rundeck \
+  -p 4440:4440 \
+  -e RUNDECK_GRAILS_URL=http://homelab:4440 \
+  rundeck/rundeck:5.0.0
+
+# Then browse to http://homelab:4440 (default login admin/admin — change it)
+```
+
+## Rundeck CLI (rd)
+
+```sh
+# Legacy dispatch command: run `id` on all nodes tagged www in project "anvils"
 dispatch -p anvils --follow -I tags=www -- id
+
+# Modern `rd` CLI equivalents:
+rd projects list
+rd jobs list -p anvils
+rd run -p anvils -j "backups/nightly-media"     # run a job by group/name
+rd adhoc -p anvils -f --filter 'tags: www' -- uptime
+```
+
+## Flag / arg reference (dispatch & rd)
+
+| Item | Meaning |
+|------|---------|
+| `-p <project>` | Target project |
+| `--follow` / `-f` | Stream output as it runs |
+| `-I tags=<t>` | Include nodes matching a tag |
+| `--filter '<q>'` | Node filter query (rd) |
+| `-- <cmd>` | Command to run on matched nodes |
+| `-j <group/name>` | Job identifier for `rd run` |

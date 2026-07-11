@@ -1,14 +1,68 @@
-# Puppet Commands Cheat Sheet
+# puppet — real-world examples
 
-# list puppet modules loaded
+## Modules
+
+```sh
+# List puppet modules loaded
 puppet module list
 
-# List puppet resources
+# Install a module from the Forge
+puppet module install puppetlabs-ntp
+```
+
+## Inspect resources
+
+```sh
+# Show current state of all services as Puppet sees them
 puppet resource service
 
-# list puppet describe objects include resources
-puppet describe -l
-puppet describe service | less
+# Show one resource (great for generating manifest snippets)
+puppet resource service sshd
+puppet resource user david
+```
 
+## Documentation
+
+```sh
+# List describable resource types
+puppet describe -l
+
+# Describe one type in detail
+puppet describe service | less
+```
+
+## Agent runs
+
+```sh
+# Re-enable a disabled agent
 puppet agent --enable
-puppet agent -t -v #Puppet Master 
+
+# One-off verbose test run against the Puppet master
+puppet agent -t -v
+
+# Dry run: show what WOULD change
+puppet agent -t --noop
+```
+
+## Homelab examples
+
+```sh
+# Apply a standalone manifest locally (no master needed)
+puppet apply ~/puppet/manifests/mediaserver.pp
+
+# Validate a manifest before committing
+puppet parser validate ~/puppet/manifests/homelab.pp
+
+# Ensure a package/service pair on Tumbleweed from the CLI
+puppet resource package chrony ensure=installed
+puppet resource service chronyd ensure=running enable=true
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-t` | Test mode: onetime, verbose, no-daemonize |
+| `-v` | Verbose |
+| `--noop` | Dry run, report changes only |
+| `--enable` / `--disable` | Allow / block agent runs |

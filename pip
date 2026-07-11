@@ -1,21 +1,67 @@
-# Search for packages
-pip search SomePackage
+# pip — real-world examples
 
-# Install some packages
+## Install packages
+
+```sh
 pip install SomePackage
 
-# Output and install packages in a requirement file
+# Install a specific version / version range
+pip install -I SomePackage1==1.1.0 'SomePackage2>=1.0.4'
+```
+
+## Requirements files
+
+```sh
+# Freeze current environment and reinstall elsewhere
 pip freeze > requirements.txt
 pip install -r requirements.txt
+```
 
-# Show details of a package
+## Inspect packages
+
+```sh
+# Show details of a package (version, location, dependencies)
 pip show SomePackage
 
 # List outdated packages
 pip list --outdated
+```
 
-# Upgrade all outdated packages, thanks to http://stackoverflow.com/a/3452888
+## Upgrade all outdated packages
+
+```sh
+# via http://stackoverflow.com/a/3452888
 pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+```
 
-# Install specific version of a package
-pip install -I SomePackage1==1.1.0 'SomePackage2>=1.0.4'
+## Search for packages
+
+```sh
+# NOTE: `pip search` was disabled on PyPI; browse https://pypi.org instead
+pip search SomePackage
+```
+
+## Homelab (OpenSUSE Tumbleweed) notes
+
+```sh
+# Tumbleweed marks system Python as externally managed — use a venv
+python3 -m venv ~/venvs/tools
+source ~/venvs/tools/bin/activate
+pip install ansible-lint
+
+# Per-user install without a venv
+pip install --user yt-dlp
+
+# Prefer zypper for system-wide Python packages
+sudo zypper install python3-requests
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-r <file>` | Install from requirements file |
+| `-U` | Upgrade to newest version |
+| `-I` | Ignore installed packages (force reinstall) |
+| `--user` | Install into user site-packages |
+| `-e <path>` | Editable install (develop mode) |

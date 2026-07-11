@@ -2,38 +2,87 @@
 tags: [ files, search, grep ]
 ---
 
-# Basic search in current directory:
+# ripgrep (rg) — real-world examples
+
+## Basic searches
+
+```sh
+# Search recursively in current directory
 rg <pattern>
 
-# Case-insensitive search:
+# Case-insensitive
 rg -i <pattern>
 
-# Search specific file type:
-rg <pattern> -t <type>
-
-# Search with file names only (no matching lines):
-rg -l <pattern>
-
-# Include line numbers in output:
-rg -n <pattern>
-
-# Search for whole words only:
+# Whole words only
 rg -w <pattern>
 
-# Search specific directory:
+# Specific directory
 rg <pattern> <path>
+```
 
-# Show context (lines before and after):
-rg -C <lines> <pattern>
+## Filter by file type
 
-# Search hidden files too:
+```sh
+# Only search one file type (rg --type-list shows all)
+rg <pattern> -t py
+
+# Glob filter
+rg <pattern> -g '*.conf'
+```
+
+## Output control
+
+```sh
+# File names only, no matching lines
+rg -l <pattern>
+
+# Line numbers (default when output is a terminal)
+rg -n <pattern>
+
+# Context lines before and after
+rg -C 3 <pattern>
+
+# Count matches per file
+rg -c <pattern>
+```
+
+## Ignore rules
+
+```sh
+# Search hidden files AND ignored files (-uu = --hidden --no-ignore)
 rg -uu <pattern>
 
-# Exclude gitignored files:
+# Don't respect .gitignore
 rg --no-ignore <pattern>
+```
 
-# Search with regex pattern:
-rg <regex-pattern>
+## Homelab examples
 
-# Count matches:
-rg -c <pattern> 
+```sh
+# Where did I set that port? Search all configs as root
+sudo rg -n 'ListenPort' /etc
+
+# Find every playbook that touches the mediaserver host
+rg -l 'mediaserver' ~/ansible
+
+# Plex errors in today's logs, with context
+rg -i -C 2 'error' "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs" 2>/dev/null | head -40
+
+# Which cheatsheets still lack code fences?
+rg --files-without-match '```' ~/Public/ireaneus-cheatsheets
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-i` | Case-insensitive |
+| `-w` | Whole word match |
+| `-l` | Filenames with matches only |
+| `-n` | Show line numbers |
+| `-c` | Count matches |
+| `-C <n>` | n lines of context |
+| `-t <type>` | Restrict to file type |
+| `-g <glob>` | Restrict by glob |
+| `-uu` | Include hidden + ignored files |
+| `--no-ignore` | Ignore .gitignore rules |

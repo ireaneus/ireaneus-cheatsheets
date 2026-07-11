@@ -1,30 +1,82 @@
-# psql is the PostgreSQL terminal interface. The following commands were tested on version 9.5.
-# Connection options:
-# -U username (if not specified current OS user is used).
-# -p port.
-# -h server hostname/address.
+# psql — real-world examples
 
-# Connect to a specific database:
+psql is the PostgreSQL terminal interface. Connection options: `-U` username
+(defaults to current OS user), `-p` port, `-h` server host, `-d` database.
+
+## Connect to a database
+
+```sh
 psql -U postgres -h serverAddress -d dbName
 
-# Get databases on a server:
+# List databases on a server
 psql -U postgres -h serverAddress --list
+```
 
-# Execute sql query and save output to file:
+## Run a query and save the output
+
+```sh
+# Save query result to a file
 psql -U postgres -d dbName -c 'select * from tableName;' -o fileName
 
-# Execute query and get tabular html output:
+# Tabular HTML output
 psql -U postgres -d dbName -H -c 'select * from tableName;'
 
-# Execute query and save resulting rows to csv file:
+# Rows only, comma-separated -> CSV file
 psql -U postgres -d dbName -t -A -P fieldsep=',' -c 'select * from tableName;' -o fileName.csv
+```
 
-# Read commands from file:
+## Run SQL from a file / restore
+
+```sh
+# Read commands from file
 psql -f fileName
 
-# Restore databases from file:
+# Restore a plain-format dump
 psql -f fileName.backup postgres
+```
 
-# run postgres sql command
+## Connection-string form
+
+```sh
 psql postgres://user:password@postgresdbIP:port/sample -c "SELECT count(id) FROM employees;"
+```
 
+## Homelab examples
+
+```sh
+# On the homelab box (OpenSUSE Tumbleweed)
+sudo zypper install postgresql postgresql-server
+sudo systemctl enable --now postgresql
+
+# Connect to the media metadata DB on mediaserver
+psql -h mediaserver -U david -d mediastats
+
+# Nightly CSV export for backups
+psql -h mediaserver -U david -d mediastats -t -A -P fieldsep=',' \
+  -c 'select * from watch_history;' -o ~/backups/watch_history.csv
+```
+
+## Handy meta-commands (inside psql)
+
+```sql
+\l          -- list databases
+\c dbname   -- connect to database
+\dt         -- list tables
+\d table    -- describe table
+\du         -- list roles
+\x          -- toggle expanded output
+\q          -- quit
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-c <sql>` | Run a single command and exit |
+| `-f <file>` | Run commands from file |
+| `-o <file>` | Send output to file |
+| `-t` | Tuples only (no headers/footers) |
+| `-A` | Unaligned output |
+| `-P fieldsep=,` | Set field separator |
+| `-H` | HTML table output |
+| `--list` | List databases |

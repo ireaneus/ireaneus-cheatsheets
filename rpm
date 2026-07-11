@@ -1,24 +1,41 @@
-# To install a package:
+# rpm — real-world examples
+
+## Install / remove packages
+
+```sh
+# Install with progress hashes
 rpm -ivh <rpm>
 
-# To remove a package:
+# Upgrade (installs if not present)
+rpm -Uvh <rpm>
+
+# Remove a package
 rpm -e <package>
+```
 
-# To find what package installs a file:
-rpm -qf </path/to/file>
+## Query packages and files
 
-# To find what files are installed by a package:
+```sh
+# What package owns this file?
+rpm -qf /path/to/file
+
+# What files does an installed package provide?
 rpm -ql <package>
+
+# What files are inside an .rpm file (not yet installed)?
 rpm -qpl <rpm>
 
-# To find what packages require a package or file:
+# What requires this package or file?
 rpm -q --whatrequires <package>
 rpm -q --whatrequires <file>
 
-# To list all installed packages:
+# List all installed packages
 rpm -qa
+```
 
-# verify rpm database
+## Verify / rebuild the rpm database
+
+```sh
 cd /var/lib/rpm/
 /usr/lib/rpm/rpmdb_verify Packages
 mv Packages Packages.bad
@@ -26,6 +43,44 @@ mv Packages Packages.bad
 /usr/lib/rpm/rpmdb_verify Packages
 rpm -qa > /dev/null
 rpm -vv --rebuilddb
+```
 
-# Edit /etc/yum.conf to remove the exclusion for httpd:
+## Yum interaction (RHEL/CentOS)
+
+```sh
+# Edit /etc/yum.conf to remove an exclusion (e.g. for httpd)
 vim /etc/yum.conf
+```
+
+## Homelab examples (OpenSUSE Tumbleweed)
+
+```sh
+# Verify a package's files haven't been tampered with
+rpm -V openssh
+
+# Which package owns zypper itself?
+rpm -qf $(which zypper)
+
+# 20 most recently installed packages (handy after a `zypper dup`)
+rpm -qa --last | head -20
+
+# Read a package's changelog
+rpm -q --changelog kernel-default | head -30
+
+# Prefer zypper for dependency-resolved installs on Tumbleweed:
+sudo zypper install <package>
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-i` / `-U` | Install / upgrade |
+| `-v` `-h` | Verbose + hash progress bar |
+| `-e` | Erase (remove) |
+| `-q` | Query mode |
+| `-a` | All installed packages |
+| `-f <file>` | Owner of file |
+| `-l` | List files |
+| `-p <rpm>` | Query an .rpm file instead of the DB |
+| `-V` | Verify files against the DB |

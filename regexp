@@ -1,62 +1,99 @@
-# Regular Expressions
-# In some ways, they resemble the shell’s wildcard method of matching file- and pathnames but on a much grander scale. Regular expressions are supported by many command-line tools and by most programming languages to facilitate the solution of text manipulation problems.
+# regexp — real-world examples
 
-# grep [options] regex [file...]
-# options
--i	# Ignore case. Do not distinguish between upper- and lowercase characters. --ignore-case.
--v	# Invert match. Normally, grep prints lines that contain a match. This option causes grep to print every line that does not contain a match. --invert-match.
--c 	# Print the number of matches (or non-matches if the -v option is also specified) instead of the lines themselves. --count.
--l	# Print the name of each file that contains a match instead of the lines themselves. --files-with-matches.
--L	# Like the -l option, but print only the names of files that do not contain matches. --files-without-match.
--n	# Prefix each matching line with the number of the line within the file. --line-number.
--h	# For multifile searches, suppress the output of filenames. --no-filename.
+Regular expressions resemble shell wildcards but on a much grander scale.
+Supported by grep, sed, awk, find, and most programming languages.
 
-# Metacharacters
+## grep options for regex work
+
+| Flag | Meaning |
+|------|---------|
+| `-i` | Ignore case (`--ignore-case`) |
+| `-v` | Invert match: print NON-matching lines (`--invert-match`) |
+| `-c` | Count matches instead of printing lines (`--count`) |
+| `-l` | Print names of files that contain a match (`--files-with-matches`) |
+| `-L` | Print names of files WITHOUT a match (`--files-without-match`) |
+| `-n` | Prefix matches with line number (`--line-number`) |
+| `-h` | Suppress filenames in multi-file output (`--no-filename`) |
+| `-E` | Extended regex (no backslash-escaping `{}` `()` `|`) |
+
+## Metacharacters
+
+```
 ^ $ . [ ] { } - ? * + ( ) | \
+```
 
-.	# grep -h '.zip' dirlist*.txt 	## Any character bunzip, bzip2
-^	# grep -h '^zip' dirlist*.txt	## Regular expression is at beginning of line.
-$	# grep -h 'zip$' dirlist*.txt	## Regular expression is at the end of the line.
-[]	# grep -h '[bg]zip' dirlist*.txt	## expression is an or statement 'b or g'
-[^]	# grep -h '[^bg]zip' dirlist*.txt 	## the remaining characters are taken to be a set of characters that must not be present at the given character position
-^[]	# grep -h '^[A-Z]' dirlist*.txt	## entries start with a capital letter
+## Anchors and character classes
 
-# Regular expression examples
+```sh
+grep -h '.zip' dirlist*.txt     # . = any one character: bunzip, bzip2 ...
+grep -h '^zip' dirlist*.txt     # match at beginning of line
+grep -h 'zip$' dirlist*.txt     # match at end of line
+grep -h '[bg]zip' dirlist*.txt  # set: 'b' or 'g' before zip
+grep -h '[^bg]zip' dirlist*.txt # negated set: any char EXCEPT b or g
+grep -h '^[A-Z]' dirlist*.txt   # lines starting with a capital letter
+```
+
+## Quantifiers
+
+```sh
+grep '^lin'          # beginning of line
+grep 'my$'           # end of line
+grep '^[%*]'         # begins with % or *
+grep '^[a-zA-Z]'     # starts with a letter
+grep '^[^a-zA-Z]'    # does not start with a letter
+grep '^.i'           # second letter is i
+grep '^%*'           # zero or more % at line start (matches everything)
+grep '^%\{1,4\}'     # begins with 1 to 4 %
+grep '^1\{1\}'       # begins with exactly one 1
+```
+
+## Validate structured data (phone numbers)
+
+```sh
+# Generate a noisy test file
 for i in {1..10}; do echo "(${RANDOM:0:3}) ${RANDOM:0:3}-${RANDOM:0:4}" >> phonelist.txt; done
+
+# Print the MALFORMED entries (-v inverts, -E extended regex)
 grep -Ev '^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' phonelist.txt
-(292) 108-518
-(129) 44-1379
+# (292) 108-518
+# (129) 44-1379
+```
 
-# Check if a directory (say /home/avi/Tecmint)exist or not? Printf if the said directory exist or not
-[ ! -d /home/avi/Tecmint ] && printf '\nno such /home/avi/Tecmint directory exist\n' || printf '\n/home/avi/Tecmint directory exist\n'
-	
-# Check and do if directory doesn't exist
-[ ! -d /home/avi/Tecmint ] && exit
+## Regex with find and locate
 
-# Brace Expansion
-echo Front-{A,B,C}-Back
-# Front-A-Back Front-B-Back Front-C-Back
-touch  file{1..5}
-# file1 file2 file3 file4 file5
-
-[ ! -d /home/avi/Tecmint ] && mkdir /home/avi/Tecmint
-
+```sh
+# Files with characters outside the portable set
 find . -regex '.*[^-_./0-9a-zA-Z].*'
+
+# locate with regex alternation
 locate --regex 'bin/(bz|gz|zip)'
+```
 
-# Using the ! as a logical not
-rm !(2.txt) 	# remove all files except 2.txt
-rm !(*.pdf)	# remove all files except pdf files
+## Shell tests, brace expansion, extglob (bonus)
 
-#  grep examples
-grep '^lin'     # beginning of line
-grep 'my$'      # end of line
-grep '^[%*]'    # begins with % or *
-grep '^[a-zA-Z]'        # starts with letter
-grep '^[^a-zA-Z]'       # don't start with a letter
-grep '^.i'              # second letter i 
-grep '^%*'              # all * whether or not % is in line
-grep '^%\{1,4\}'        # begins with and has 1 or up to 4 %
-grep '^1\{1\}'          # matches 1 begins with 1
+```sh
+# Directory-exists test
+[ ! -d /home/david/media ] && printf '\nno such directory\n' || printf '\ndirectory exists\n'
+[ ! -d /home/david/media ] && mkdir /home/david/media
 
-grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf    #-e expression -v not, removes lines with '#' and '$' endofline space
+# Brace expansion (not regex, but related shell matching)
+echo Front-{A,B,C}-Back     # Front-A-Back Front-B-Back Front-C-Back
+touch file{1..5}            # file1 ... file5
+
+# extglob negation (shopt -s extglob)
+rm !(2.txt)     # remove all files except 2.txt
+rm !(*.pdf)     # remove all files except pdfs
+```
+
+## Homelab examples
+
+```sh
+# Strip comments and blank lines from any config
+grep -v -e '^ *#' -e '^$' /etc/httpd/conf/httpd.conf
+
+# Failed ssh logins on homelab, count by IP
+journalctl -u sshd | grep -oE 'from [0-9.]+' | sort | uniq -c | sort -rn | head
+
+# Find media files with episode numbering S01E02 style on mediaserver
+ls /srv/media/tv | grep -E 'S[0-9]{2}E[0-9]{2}'
+```

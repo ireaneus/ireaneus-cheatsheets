@@ -1,11 +1,67 @@
-# Start a new named screen session:
+# screen — real-world examples
+
+GNU screen: keep terminal sessions alive across disconnects.
+
+## Start a named session
+
+```sh
 screen -S session_name
+```
 
-# Detach from the current session:
-Press Ctrl+A then press d
+## Detach / re-attach
 
-# Re-attach a detached session:
+```sh
+# Detach from the current session:  Ctrl-a then d
+
+# Re-attach a detached session
 screen -r session_name
 
-# List all screen sessions:
+# Force-detach elsewhere and attach here (after a dropped connection)
+screen -dr session_name
+```
+
+## List sessions
+
+```sh
 screen -ls
+```
+
+## Homelab examples
+
+```sh
+# Kick off a long zypper dup over ssh and survive a disconnect
+ssh david@homelab
+screen -S dup
+sudo zypper dup        # then Ctrl-a d to detach, log off safely
+# later:
+screen -r dup
+
+# Run a long media re-encode you can check on later
+screen -S encode
+handbrakecli -i in.mkv -o out.mp4 --preset "Fast 1080p30"
+
+# Reattach from anywhere; if it says "Attached", steal it:
+screen -dr encode
+```
+
+## Key bindings (prefix is Ctrl-a)
+
+| Keys | Action |
+|------|--------|
+| `Ctrl-a d` | Detach |
+| `Ctrl-a c` | New window |
+| `Ctrl-a n` / `Ctrl-a p` | Next / previous window |
+| `Ctrl-a "` | List windows to pick |
+| `Ctrl-a A` | Rename current window |
+| `Ctrl-a k` | Kill current window |
+| `Ctrl-a [` | Enter scrollback/copy mode |
+
+## CLI flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-S <name>` | Start named session |
+| `-r <name>` | Reattach |
+| `-d -r` | Detach elsewhere, then reattach |
+| `-ls` | List sessions |
+| `-x` | Attach to an already-attached session (multi-view) |

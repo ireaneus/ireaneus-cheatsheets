@@ -1,17 +1,66 @@
-# how to setup RedHat server with Subscription Manager
-# After system is installed, or before create a customer portal account at access.redhat.com
-# It will use a Username and Password with the account
+# redhat — real-world examples
 
-# Run the following from server
+Setting up a RHEL server with Subscription Manager. Create a customer portal
+account at access.redhat.com before or right after install; registration uses
+that username and password.
+
+## Register the system
+
+```sh
 subscription-manager register --username=user --password=password --auto-attach
+
+# Confirm subscription status
 subscription-manager status
+```
 
-# Other useful commands
+## Other useful commands
+
+```sh
+# Unregister this system
 subscription-manager unregister
-subscription-manager clean 
-subscription-manager repo --list --available --all
 
-# Check the customer portal and select subscriptions from the downloads list
-# Select evaluate - Red Hat Enterprise Linux 
+# Remove all local subscription data
+subscription-manager clean
 
+# List repos (note: the subcommand is `repos`)
+subscription-manager repos --list
 
+# Enable / disable a repo
+subscription-manager repos --enable=rhel-9-for-x86_64-baseos-rpms
+subscription-manager repos --disable=some-repo
+```
+
+## Evaluation subscriptions
+
+```sh
+# In the customer portal, pick "Evaluate - Red Hat Enterprise Linux"
+# from the downloads/subscriptions list, then attach:
+subscription-manager attach --auto
+```
+
+## Homelab notes
+
+```sh
+# Free RHEL for up to 16 systems: register for the Red Hat Developer
+# subscription with your portal account, then --auto-attach as above.
+
+# Check which release you're on
+cat /etc/redhat-release
+
+# Patch a registered box
+sudo dnf update -y && sudo systemctl reboot
+
+# Dave's daily drivers are OpenSUSE Tumbleweed; the rough equivalents:
+#   subscription-manager repos --list   ->  zypper repos
+#   dnf update                          ->  zypper dup
+```
+
+## Flag reference
+
+| Command | Meaning |
+|---------|---------|
+| `register --auto-attach` | Register and attach best-fit subscription |
+| `status` | Overall compliance status |
+| `unregister` | Release this system's registration |
+| `clean` | Wipe local subscription data |
+| `repos --list` | Show available/enabled repos |

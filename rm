@@ -1,8 +1,63 @@
-# Remove files and subdirs
+# rm — real-world examples
+
+## Remove a directory and everything under it
+
+```sh
 rm -rf path/to/the/target/
+```
 
-# Ignore non existent files
+## Ignore nonexistent files
+
+```sh
+# -f: no error if the file is already gone (good for scripts)
 rm -f path/to/the/target
+```
 
-# Remove a file with his inode
+## Remove a file by inode
+
+```sh
+# For files with unprintable/hostile names: find the inode, then delete it
+ls -li /tmp/
 find /tmp/ -inum 6666 -exec rm -i '{}' \;
+```
+
+## Safety habits
+
+```sh
+# Prompt before every removal
+rm -i important.conf
+
+# Prompt once when deleting many files (>3) or recursively
+rm -I *.log
+
+# Stop option parsing — deletes a file literally named "-rf"
+rm -- -rf
+
+# Dry-run first with ls: see exactly what the glob matches
+ls /srv/media/tmp/*.partial
+rm /srv/media/tmp/*.partial
+```
+
+## Homelab examples
+
+```sh
+# Clear old transcode temp files on mediaserver
+rm -rf /var/tmp/plex-transcode/*
+
+# Remove logs older than 30 days (find does the matching, safer than a glob)
+find /home/david/logs -name '*.log' -mtime +30 -exec rm {} \;
+
+# Empty a build directory but keep the directory itself
+rm -rf ~/builds/project/*
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-r` | Recursive (directories) |
+| `-f` | Force: no prompts, no error on missing files |
+| `-i` | Prompt before each removal |
+| `-I` | Prompt once for many/recursive removals |
+| `-v` | Print each file as it's removed |
+| `--` | End of options (protects odd filenames) |
