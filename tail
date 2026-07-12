@@ -1,14 +1,53 @@
-# To show the last 10 lines of file
-tail file
+# tail — real-world examples
 
-# To show the last N lines of file
-tail -n N file
+## Show the last 10 lines (default)
 
-# To show the last lines of file starting with the Nth
-tail -n +N file
+```sh
+tail access.log
+```
 
-# To show the last N bytes of file
-tail -c N file
+## Show the last N lines
 
-# To show the last 10 lines of file and to wait for file to grow
-tail -f file
+```sh
+tail -n 50 access.log
+```
+
+## Show everything from line N onward
+
+```sh
+tail -n +100 access.log
+```
+
+## Show the last N bytes
+
+```sh
+tail -c 512 access.log
+```
+
+## Follow a growing log in real time
+
+```sh
+tail -f /var/log/messages
+```
+
+## Follow, and survive log rotation
+
+```sh
+tail -F /srv/plex/logs/Plex\ Media\ Server.log
+```
+
+## Follow several files at once
+
+```sh
+tail -f /var/log/nginx/access.log /var/log/nginx/error.log
+```
+
+## Flag reference
+
+| Flag   | What it does                              |
+| ------ | ----------------------------------------- |
+| -n N   | last N lines                              |
+| -n +N  | start at line N                           |
+| -c N   | last N bytes                              |
+| -f     | follow the file as it grows               |
+| -F     | follow by name (handles rotation)         |

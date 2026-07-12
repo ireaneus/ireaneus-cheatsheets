@@ -1,5 +1,43 @@
-# To display public shares on the server:
-smbclient -L <hostname> -U%
+# smbclient — real-world examples
 
-# To connect to a share:
-smbclient //<hostname>/<share> -U<username>%<password>
+## List shares on a server (anonymous)
+
+```sh
+smbclient -L mediaserver -U%
+```
+
+## List shares as a named user
+
+```sh
+smbclient -L mediaserver -U david
+```
+
+## Connect to a share interactively
+
+```sh
+smbclient //mediaserver/media -U david
+```
+
+## Pull a file without an interactive session
+
+```sh
+smbclient //mediaserver/media -U david -c 'get movie.mkv'
+```
+
+## Mount-free recursive download of a folder
+
+```sh
+smbclient //homelab/backups -U david -c 'recurse ON; prompt OFF; mget *'
+```
+
+## Flag reference
+
+| Flag         | What it does                       |
+| ------------ | ---------------------------------- |
+| -L host      | list shares on host                |
+| -U user      | authenticate as user               |
+| -U%          | anonymous / no password            |
+| -c 'cmds'    | run commands non-interactively     |
+| -m SMB3      | force a protocol version           |
+
+> On Tumbleweed, install with `sudo zypper install samba-client`.

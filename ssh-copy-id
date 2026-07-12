@@ -1,8 +1,36 @@
-# To copy a key to a remote host:
-ssh-copy-id username@host
+# ssh-copy-id — real-world examples
 
-# To copy a key to a remote host on a non-standard port:
-ssh-copy-id username@host -p 2222
+## Copy your default public key to a host
 
-# To copy a key to a remote host on a non-standard port with non-standard ssh key:
-ssh-copy-id ~/.ssh/otherkey "username@host -p 2222"
+```sh
+ssh-copy-id david@homelab
+```
+
+## Copy to a host on a non-standard SSH port
+
+```sh
+ssh-copy-id -p 2222 david@mediaserver
+```
+
+## Copy a specific (non-default) key
+
+```sh
+ssh-copy-id -i ~/.ssh/id_ed25519.pub david@homelab
+```
+
+## Specific key and non-standard port together
+
+```sh
+ssh-copy-id -i ~/.ssh/id_ed25519.pub -p 2222 david@mediaserver
+```
+
+## Flag reference
+
+| Flag       | What it does                          |
+| ---------- | ------------------------------------- |
+| -i file    | public key to install                 |
+| -p port    | connect on a non-standard SSH port    |
+| -f         | force copy even if key seems present  |
+
+> After copying, confirm with `ssh david@homelab` — it should not prompt for a
+> password. On Tumbleweed `ssh-copy-id` ships with `openssh-clients`.

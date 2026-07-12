@@ -1,40 +1,61 @@
-# List all loaded/active units
-systemctl list-units
+# systemctl — real-world examples
 
-# Check the status of a service
-systemctl status foo.service
+## Check a service's status
 
-# Start a service
-systemctl start foo.service
+```sh
+systemctl status sshd.service
+```
 
-# Restart a service
-systemctl restart foo.service
+## Start, stop, restart a service
 
-# Stop a service
-systemctl stop foo.service
+```sh
+sudo systemctl start plexmediaserver.service
+sudo systemctl stop plexmediaserver.service
+sudo systemctl restart plexmediaserver.service
+```
 
-# Reload a service's configuration
-systemctl reload foo.service
+## Reload config without a full restart
 
-# Enable a service to startup on boot
-systemctl enable foo.service
+```sh
+sudo systemctl reload nginx.service
+```
 
-# Disable a service to startup on boot
-systemctl disable foo.service
+## Enable or disable a service at boot
 
-# List the dependencies of a service
-# when no service name is specified, lists the dependencies of default.target
-systemctl list-dependencies foo.service 
+```sh
+sudo systemctl enable plexmediaserver.service
+sudo systemctl disable plexmediaserver.service
+```
 
-# List currently loaded targets
-systemctl list-units --type=target
+## Enable and start in one step
 
-# Check default target
+```sh
+sudo systemctl enable --now pcscd.service
+```
+
+## List units and inspect dependencies
+
+```sh
+systemctl list-units --type=service
+systemctl list-dependencies plexmediaserver.service
+```
+
+## Work with targets (runlevels)
+
+```sh
 systemctl get-default
+sudo systemctl set-default multi-user.target   # boot to console
+sudo systemctl isolate graphical.target        # switch now
+```
 
-# Change current target
-systemctl isolate foo.target
+## Command reference
 
-# Change default target
-systemctl enable foo.target
-systemctl set-default graphical.target
+| Command             | What it does                          |
+| ------------------- | ------------------------------------- |
+| status              | show state and recent logs            |
+| start / stop        | control the unit now                  |
+| restart / reload    | restart, or reload config in place    |
+| enable / disable    | control start-at-boot                 |
+| --now               | also start/stop immediately           |
+| list-dependencies   | show what a unit pulls in             |
+| get-default         | show the default boot target          |

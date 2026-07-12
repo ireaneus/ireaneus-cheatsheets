@@ -1,8 +1,40 @@
-# To split a large text file into smaller files of 1000 lines each:
-split file.txt -l 1000
+# split — real-world examples
 
-# To split a large binary file into smaller files of 10M each:
-split file.txt -b 10M
+## Split a text file into chunks of 1000 lines
 
-# To consolidate split files into a single file:
-cat x* > file.txt
+```sh
+split -l 1000 access.log
+```
+
+## Split a large binary into 10 MB pieces
+
+```sh
+split -b 10M bigfile.iso
+```
+
+## Use a custom prefix and numeric suffixes
+
+```sh
+split -b 100M -d backup.tar.gz backup.part.
+```
+
+## Reassemble the pieces
+
+```sh
+cat backup.part.* > backup.tar.gz
+```
+
+## Split a DB dump so it fits on FAT-formatted media
+
+```sh
+split -b 4000M -d homelab-db.sql.gz homelab-db.sql.gz.
+```
+
+## Flag reference
+
+| Flag   | What it does                          |
+| ------ | ------------------------------------- |
+| -l N   | N lines per output file               |
+| -b SIZE| SIZE bytes per file (K, M, G suffixes)|
+| -d     | numeric suffixes instead of aa, ab…   |
+| -a N   | suffix length                         |

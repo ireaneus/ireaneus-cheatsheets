@@ -1,8 +1,41 @@
-# To tee stdout to a file:
-ls | tee outfile.txt
+# tee — real-world examples
 
-# To tee stdout and append to a file:
-ls | tee -a outfile.txt
+## Write stdout to a file and the screen at once
 
-# To copy a single file to multiple files:
-cat host1 | tee host2 host3
+```sh
+ls | tee listing.txt
+```
+
+## Append instead of overwrite
+
+```sh
+echo "run at $(date)" | tee -a run.log
+```
+
+## Fan a stream out to several files
+
+```sh
+cat template.conf | tee host1.conf host2.conf host3.conf
+```
+
+## Write a root-owned file from a non-root pipe
+
+```sh
+echo "net.ipv4.ip_forward=1" | sudo tee /etc/sysctl.d/99-forward.conf
+```
+
+## Watch a long job and keep a log
+
+```sh
+zypper dup 2>&1 | tee upgrade.log
+```
+
+## Flag reference
+
+| Flag | What it does                          |
+| ---- | ------------------------------------- |
+| -a   | append to files instead of truncating |
+| -i   | ignore interrupt signals              |
+
+> `sudo tee` is the standard trick for redirecting into a root-owned file, since
+> the `>` redirect is handled by your non-root shell before sudo runs.

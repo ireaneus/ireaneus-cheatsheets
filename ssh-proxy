@@ -1,2 +1,38 @@
-ssh -D 8080 -f -C -N username@example.com
-google-chrome --proxy-server="socks://localhost:8080" &
+# ssh-proxy — SOCKS proxy over SSH
+
+## Start a background SOCKS5 proxy through a jump host
+
+```sh
+ssh -D 8080 -f -C -N david@jumphost
+```
+
+## Point a browser at the proxy
+
+```sh
+google-chrome --proxy-server="socks5://localhost:8080" &
+```
+
+## Reach an internal homelab service through the tunnel
+
+```sh
+# Proxy is up on :8080 — route curl through it
+curl --socks5-hostname localhost:8080 http://homelab-internal:8123
+```
+
+## Tear the tunnel down
+
+```sh
+pkill -f "ssh -D 8080"
+```
+
+## Flag reference
+
+| Flag | What it does                          |
+| ---- | ------------------------------------- |
+| -D   | dynamic (SOCKS) port forward          |
+| -f   | drop to background before command run |
+| -C   | compress the traffic                  |
+| -N   | do not run a remote command           |
+
+> Use `socks5://` (proxy-side DNS) rather than `socks4` so lookups happen on the
+> remote end and don't leak, and stay reachable inside the remote network.

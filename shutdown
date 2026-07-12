@@ -1,6 +1,45 @@
-# shutdown options
-shutdown -r now "Going down now"
+# shutdown — real-world examples
 
-shutdown -r +1 "Going down now"
+## Reboot immediately with a wall message
 
-shutdown -P now
+```sh
+sudo shutdown -r now "Rebooting mediaserver for kernel update"
+```
+
+## Reboot in one minute (gives users time to save)
+
+```sh
+sudo shutdown -r +1 "Going down in 1 minute"
+```
+
+## Power off now
+
+```sh
+sudo shutdown -P now
+```
+
+## Schedule a power-off for a specific time
+
+```sh
+sudo shutdown -P 23:30 "Nightly power-down"
+```
+
+## Cancel a pending shutdown
+
+```sh
+sudo shutdown -c
+```
+
+## Flag reference
+
+| Flag  | What it does                       |
+| ----- | ---------------------------------- |
+| -r    | reboot                             |
+| -P    | power off                          |
+| -H    | halt                               |
+| -c    | cancel a scheduled shutdown        |
+| now   | act immediately                    |
+| +N    | act in N minutes                   |
+
+> On systemd (Tumbleweed), `shutdown` is provided by systemd and
+> `systemctl reboot` / `systemctl poweroff` do the same job.

@@ -1,5 +1,38 @@
-# To retrieve all of the variables under system for host zeus
-snmpwalk -Os -c public -v 1 zeus system
+# snmpwalk — real-world examples
 
-# To retrieve the scalar values, but omit the sysORTable for host zeus
-snmpwalk -Os -c public -v 1 -CE sysORTable zeus system
+## Walk the system subtree (SNMP v1)
+
+```sh
+snmpwalk -Os -c public -v 1 switch01 system
+```
+
+## Walk the system subtree but skip the sysORTable
+
+```sh
+snmpwalk -Os -c public -v 1 -CE sysORTable switch01 system
+```
+
+## Poll interface counters on a homelab switch
+
+```sh
+snmpwalk -Os -c public -v 2c switch01 ifTable
+```
+
+## Use SNMPv3 with authentication and privacy
+
+```sh
+snmpwalk -v 3 -l authPriv -u david -a SHA -A "authpass" \
+  -x AES -X "privpass" switch01 system
+```
+
+## Flag reference
+
+| Flag        | What it does                                 |
+| ----------- | -------------------------------------------- |
+| -v 1/2c/3   | SNMP protocol version                        |
+| -c string   | community string (v1/v2c)                    |
+| -Os         | print OIDs in short form                     |
+| -CE oid     | end the walk before this OID                 |
+| -l authPriv | v3 security level                            |
+
+> On Tumbleweed the tools come from `sudo zypper install net-snmp`.

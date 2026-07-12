@@ -1,2 +1,38 @@
-# To view which users/processes are listening to which ports:
+# sockstat — real-world examples
+
+`sockstat` is native to BSD. On openSUSE Tumbleweed, use `ss` (from iproute2)
+for the same job.
+
+## List listening sockets (BSD)
+
+```sh
 sudo sockstat -l
+```
+
+## Linux equivalent — listening TCP/UDP sockets with process names
+
+```sh
+sudo ss -tulpn
+```
+
+## See who is listening on a specific port
+
+```sh
+sudo ss -tulpn 'sport = :32400'
+```
+
+## Show all established connections
+
+```sh
+sudo ss -tanp state established
+```
+
+## ss flag reference
+
+| Flag | What it does                     |
+| ---- | -------------------------------- |
+| -t   | TCP sockets                      |
+| -u   | UDP sockets                      |
+| -l   | listening sockets only           |
+| -p   | show owning process              |
+| -n   | numeric ports (no name lookup)   |

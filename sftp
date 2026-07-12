@@ -1,12 +1,45 @@
-# To connect using sftp, be in the local directory where the file is
-sftp -oPort=60022 user@sftpserver.com
+# sftp — real-world examples
 
-# sftp commands
-pwd	# remote pwd
-lpwd	# local pwd
-ls	# remote ls
-lls	# local ls
-get	# remote filename to local pwd
-put	# local filename to remote location
-lcd	# local cd
-cd	# remote cd
+## Connect to a server on a non-standard port
+
+```sh
+# Be in the local directory where you want files to land first
+sftp -oPort=60022 david@fileserver
+```
+
+## Connect to the homelab NAS with a specific key
+
+```sh
+sftp -i ~/.ssh/id_ed25519 david@mediaserver
+```
+
+## Pull a backup down from the homelab
+
+```sh
+sftp david@homelab
+sftp> cd /srv/backups
+sftp> lcd ~/restore
+sftp> get site-backup-12.tar.gz
+```
+
+## Push a config up to a remote host
+
+```sh
+sftp> lcd ~/configs
+sftp> cd /etc/nginx
+sftp> put mediaserver.conf
+```
+
+## Common interactive commands
+
+| Command | What it does              |
+| ------- | ------------------------- |
+| pwd     | remote working directory  |
+| lpwd    | local working directory   |
+| ls      | list remote directory     |
+| lls     | list local directory      |
+| cd      | change remote directory   |
+| lcd     | change local directory    |
+| get     | download remote → local   |
+| put     | upload local → remote     |
+| get -r  | recursive download        |

@@ -1,25 +1,50 @@
-### For reading smart card devices in Linux
-install libusb-1.0-0-dev pcsc-lite pcscd pcsc-tools
+# smartcard — reading smart card devices on Linux
 
-## tools installed for smart card readers
+## Install the reader stack (openSUSE Tumbleweed)
+
+```sh
+sudo zypper install pcsc-lite pcsc-tools opensc pcsc-ccid
+```
+
+## Enable and start the PC/SC daemon
+
+```sh
+sudo systemctl enable --now pcscd.service
+```
+
+## Scan for a reader and watch card insert/remove events
+
+```sh
+# Live monitor — insert or remove the card to see status change
+pcsc_scan
+```
+
+## Inspect the reader and the inserted card
+
+```sh
+# List readers and card details
+opensc-tool -l -n
+
+# Browse the card's filesystem interactively
 opensc-explorer
-opensc-tool
-pscsc_scan
+```
 
-# use opensc-explorer to see the smartcard
-# use opensc-tool -l -n to see the details of the card reader and inserted card
-# use pcsc_scan to view the reader and if the pcscd crashed or not, insert or
-# remove the card to view the status of the daemon.
+## Load the PKCS#11 module in Firefox
 
-# add the smartcard reader module as a Certificate reader
+```
+Settings → Privacy & Security → Certificates → Security Devices…
+Load → Name: OpenSC PKCS#11
+Module path: /usr/lib64/opensc-pkcs11.so
+```
 
-#### Firefox
-Preferences -> Privacy & Security -> Certificates
-Security Devices...
-Select Load -> Name: New PKCS#11 Module
-Module Path=/usr/lib/x86_64-linux-gnu/opensc-pkcs11.so
-### Loads Device Manager Rocketek RT-SCR1 00 00
-Status Logged in
-Description 
+## Tool reference
 
+| Tool             | Purpose                                  |
+| ---------------- | ---------------------------------------- |
+| pcsc_scan        | live reader/card status monitor          |
+| opensc-tool -l   | list connected readers                   |
+| opensc-explorer  | browse the card's on-disk structure      |
+| opensc-pkcs11.so | PKCS#11 module for browsers/apps          |
 
+> On Tumbleweed the PKCS#11 module lives under `/usr/lib64/`, not the
+> Debian-style `/usr/lib/x86_64-linux-gnu/` path.

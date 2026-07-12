@@ -1,11 +1,48 @@
-# To redirect stderr to stdout:
+# stdout — redirection examples
+
+## Redirect stderr to stdout
+
+```sh
 some-command 2>&1
+```
 
-# To redirect both stdout and stderr to same place
-cp -v * &> log.txt
+## Send both stdout and stderr to the same file
 
-# To redirect to nowhere
-cp -v * &> /dev/null
+```sh
+cp -v * &> copy.log
+```
 
-# To redirect stderr to a file
+## Discard all output
+
+```sh
+noisy-command &> /dev/null
+```
+
+## Send only stderr to a file
+
+```sh
 some-command 2> errors.txt
+```
+
+## Append instead of overwrite
+
+```sh
+some-command >> run.log 2>&1
+```
+
+## Log everything and still watch it live
+
+```sh
+long-job 2>&1 | tee job.log
+```
+
+## Reference
+
+| Syntax      | Meaning                              |
+| ----------- | ------------------------------------ |
+| `>`         | redirect stdout (overwrite)          |
+| `>>`        | redirect stdout (append)             |
+| `2>`        | redirect stderr                      |
+| `2>&1`      | send stderr wherever stdout goes     |
+| `&>`        | send both stdout and stderr          |
+| `/dev/null` | the bit bucket — discard output      |
