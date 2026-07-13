@@ -1,20 +1,64 @@
-# To download a video in 720p MP4:
-youtube-dl -f 22 example.com/watch?v=id
+# youtube-dl — real-world examples
 
-# To download a video in 720p MP4 or WebM or FLV:
-youtube-dl -f 22/45/120
+Note: youtube-dl development has largely stalled — `yt-dlp` is the active
+fork and accepts the same options shown here (on Tumbleweed:
+`sudo zypper in yt-dlp`).
 
-# To list all available formats of a video:
+## Formats
+
+```sh
+# List all available formats for a video
 youtube-dl -F example.com/watch?v=id
 
-# To download a video to /$uploader/$date/$title.$ext:
+# Download format 22 (720p MP4)
+youtube-dl -f 22 example.com/watch?v=id
+
+# Try formats in preference order: 22, then 45, then 120
+youtube-dl -f 22/45/120 example.com/watch?v=id
+
+# yt-dlp-era approach: best video+audio up to 1080p
+yt-dlp -f 'bestvideo[height<=1080]+bestaudio/best' URL
+```
+
+## Output templates
+
+```sh
+# Save as /$uploader/$date/$title.$ext
 youtube-dl -o '%(uploader)s/%(date)s/%(title)s.%(ext)s' example.com/watch?v=id
+```
 
-# To download a video playlist starting from a certain video:
-youtube-dl --playlist-start 5 example.com/watch?v=id&list=listid
+## Playlists and simulation
 
-# To simulate a download with youtube-dl:
+```sh
+# Download a playlist starting from video 5 (quote the & !)
+youtube-dl --playlist-start 5 'example.com/watch?v=id&list=listid'
+
+# Simulate — print what would happen without downloading
 youtube-dl -s example.com/watch?v=id
+```
 
-# For all video formats see
-# http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
+## Homelab uses
+
+```sh
+# Archive a channel into the Plex library on mediaserver, skipping repeats
+yt-dlp --download-archive /srv/media/yt/archive.txt \
+  -o '/srv/media/yt/%(uploader)s/%(title)s.%(ext)s' <channel-url>
+
+# Audio only, as mp3, for the car
+yt-dlp -x --audio-format mp3 URL
+
+# Grab subtitles too, embedded for Plex
+yt-dlp --write-auto-subs --embed-subs URL
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-F` | list formats |
+| `-f FMT` | pick format (`/` = fallback order) |
+| `-o TMPL` | output filename template |
+| `-s` | simulate only |
+| `--playlist-start N` | start playlist at item N |
+| `-x` | extract audio |
+| `--download-archive F` | record/skip already-downloaded IDs |

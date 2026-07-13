@@ -1,20 +1,24 @@
+# uname — real-world examples
+
+## Print system information
+
+```sh
 # Print all system information
 uname -a
-# Linux system-hostname 3.2.0-4-amd64 #1 SMP Debian 3.2.32-1 x86_64 GNU/Linux
+# Linux homelab 6.9.7-1-default #1 SMP PREEMPT_DYNAMIC openSUSE Tumbleweed x86_64 GNU/Linux
 
 # Print the hostname
 uname -n
-# system-hostname
+# homelab
 
 # Print the kernel release
 uname -r
-# 3.2.0-4-amd64
+# 6.9.7-1-default
 
 # Print the kernel version, with more specific information
 uname -v
-# #1 SMP Debian 3.2.32-1
 
-# Print the hardware instruction set
+# Print the hardware architecture
 uname -m
 # x86_64
 
@@ -25,3 +29,34 @@ uname -s
 # Print the operating system
 uname -o
 # GNU/Linux
+```
+
+## Homelab uses
+
+```sh
+# Did the last zypper dup install a new kernel? Compare running vs installed
+uname -r
+rpm -q --last kernel-default | head -1
+
+# Check the architecture before grabbing a binary release
+uname -m    # x86_64 -> download the amd64 build
+
+# Quick kernel survey across the lab
+for h in homelab mediaserver; do echo -n "$h: "; ssh david@$h uname -r; done
+
+# Use the kernel release in a script path
+ls /lib/modules/$(uname -r)/
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-a` | all information |
+| `-s` | kernel name |
+| `-n` | network hostname |
+| `-r` | kernel release |
+| `-v` | kernel version (build info) |
+| `-m` | machine hardware architecture |
+| `-p` | processor type |
+| `-o` | operating system |

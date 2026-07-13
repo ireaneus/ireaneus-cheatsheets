@@ -1,21 +1,69 @@
-# Halt zone
-zoneadm -z <zone_name> halt
+# zoneadm — real-world examples
 
-# Delete Zone 
-zoneadm -z <zone_name> halt
-zoneadm -z <zone_name> uninstall
+Administer Solaris/illumos zones (OS-level virtualization — the Solaris
+cousin of containers). Pairs with `zonecfg`, which defines the zone.
 
-# Verify Zone
+## List and inspect
+
+```sh
+# List all zones with state, path, and brand
+zoneadm list -cv
+
+# Running zones only
+zoneadm list -v
+```
+
+## Zone lifecycle
+
+```sh
+# Verify a zone's configuration before installing
 zoneadm -z <zone_name> verify
 
-# Installing Zone 
+# Install a zone
 zoneadm -z <zone_name> install
 
-# Boot Zone
+# Boot a zone
 zoneadm -z <zone_name> boot
 
-# Reboot Zone
+# Reboot a zone
 zoneadm -z <zone_name> reboot
 
-# List Zones
-zoneadm list -cv
+# Halt a zone (hard stop)
+zoneadm -z <zone_name> halt
+
+# Graceful shutdown from the global zone
+zoneadm -z <zone_name> shutdown
+```
+
+## Delete a zone
+
+```sh
+# Halt, uninstall, then remove the configuration
+zoneadm -z <zone_name> halt
+zoneadm -z <zone_name> uninstall
+zonecfg -z <zone_name> delete
+```
+
+## Typical workflow
+
+```sh
+# Define with zonecfg, then verify/install/boot with zoneadm
+zonecfg -z webzone create
+zoneadm -z webzone verify
+zoneadm -z webzone install
+zoneadm -z webzone boot
+
+# Log in to the new zone's console (exit with ~.)
+zlogin -C webzone
+```
+
+## Subcommand reference
+
+| Subcommand | Purpose |
+|------------|---------|
+| `list -cv` | all configured zones, verbose |
+| `verify` | sanity-check config |
+| `install` / `uninstall` | lay down / remove zone files |
+| `boot` / `reboot` / `halt` | power control |
+| `shutdown` | graceful stop |
+| `attach` / `detach` | move zones between hosts |

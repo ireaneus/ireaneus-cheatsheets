@@ -1,18 +1,59 @@
-# show all lines without duplication
-# `sort -u` and `uniq` is the same effect.
+# uniq — real-world examples
+
+`uniq` only collapses *adjacent* duplicates, so input almost always gets
+sorted first. `sort -u` and `sort | uniq` have the same effect.
+
+## Basic deduplication
+
+```sh
+# Show all lines without duplication
 sort file | uniq
 
-# show not duplicated lines
+# Show only lines that appear exactly once
 sort file | uniq -u
 
-# show duplicated lines only
+# Show only lines that appear more than once
 sort file | uniq -d
+```
 
-# count all lines
+## Counting
+
+```sh
+# Count occurrences of every line
 sort file | uniq -c
 
-# count not duplicated lines
+# Count only non-duplicated lines
 sort file | uniq -uc
 
-# count only duplicated lines
+# Count only duplicated lines
 sort file | uniq -dc
+```
+
+## Homelab uses
+
+```sh
+# Top IPs hammering sshd on homelab (from journald)
+journalctl -u sshd --since today | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' \
+  | sort | uniq -c | sort -rn | head
+
+# Which shells are actually in use on this box?
+cut -d: -f7 /etc/passwd | sort | uniq -c
+
+# Find duplicate movie filenames across two media folders
+ls /srv/media/movies /srv/media/movies-backup | sort | uniq -d
+
+# Case-insensitive duplicate check on a wordlist
+sort -f words.txt | uniq -di
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-c` | prefix lines with occurrence count |
+| `-d` | print only duplicated lines (once each) |
+| `-u` | print only unique (non-repeated) lines |
+| `-i` | ignore case when comparing |
+| `-f N` | skip the first N fields when comparing |
+| `-s N` | skip the first N characters when comparing |
+| `-w N` | compare at most N characters |

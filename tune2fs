@@ -1,3 +1,62 @@
-# Used to add or delete a journal from a file system
-## research and add man page entries for this command
-tune2fs
+# tune2fs — real-world examples
+
+Tune parameters on ext2/ext3/ext4 filesystems. Most operations need root
+and are safest on unmounted filesystems.
+
+## Inspect a filesystem
+
+```sh
+# List all tunable parameters (UUID, label, mount count, features...)
+sudo tune2fs -l /dev/sda2
+
+# Homelab: check when the media drive was last fsck'd
+sudo tune2fs -l /dev/sdb1 | grep -i 'last checked'
+```
+
+## Add or remove a journal
+
+```sh
+# Add a journal (upgrades ext2 -> ext3 behavior)
+sudo tune2fs -j /dev/sdb1
+
+# Remove the journal (filesystem must be unmounted)
+sudo tune2fs -O ^has_journal /dev/sdb1
+```
+
+## Labels and UUIDs
+
+```sh
+# Set a label — handy for /etc/fstab entries like LABEL=media
+sudo tune2fs -L media /dev/sdb1
+
+# Assign a new random UUID (e.g. after cloning a disk with dd)
+sudo tune2fs -U random /dev/sdb1
+```
+
+## Reserved blocks and check intervals
+
+```sh
+# Drop reserved space from 5% to 1% on a big data-only drive
+# (frees ~40 GB on a 1 TB Plex media disk; keep 5% on the root fs)
+sudo tune2fs -m 1 /dev/sdb1
+
+# Force fsck every 30 mounts or every 3 months, whichever comes first
+sudo tune2fs -c 30 -i 3m /dev/sda2
+
+# Disable mount-count and time-based checks entirely
+sudo tune2fs -c 0 -i 0 /dev/sdb1
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-l` | list filesystem parameters |
+| `-j` | add an ext3 journal |
+| `-O [^]feature` | set/clear a feature (`^` clears, e.g. `^has_journal`) |
+| `-L LABEL` | set volume label |
+| `-U UUID` | set UUID (`random`, `time`, or explicit) |
+| `-m PCT` | percentage of blocks reserved for root |
+| `-c N` | max mount count between checks (0 = disable) |
+| `-i INTERVAL` | max time between checks (e.g. `10d`, `3m`) |
+| `-e BEHAVIOR` | on-error behavior: `continue`, `remount-ro`, `panic` |

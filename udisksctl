@@ -1,11 +1,71 @@
-# Get info about block device
-udisksctl info -b <block_device>
+# udisksctl — real-world examples
 
-# Mounting device 
-udisksctl mount --block-device <block_device>
+Userspace disk management via udisks2 — mount removable drives without
+sudo or fstab entries. On Tumbleweed it ships with the `udisks2` package.
 
-# Unmounting device 
-udisksctl unmount --block-device <block_device>
+## Inspect devices
 
-# Get help 
-udisksctl help 
+```sh
+# Get info about a block device
+udisksctl info -b /dev/sdb1
+
+# Overview of all drives and partitions
+udisksctl status
+
+# Monitor events live (plug in a USB stick and watch)
+udisksctl monitor
+```
+
+## Mount and unmount
+
+```sh
+# Mount a device — no sudo needed; lands under /run/media/david/<label>
+udisksctl mount --block-device /dev/sdb1
+
+# Unmount it
+udisksctl unmount --block-device /dev/sdb1
+
+# Power off a USB drive safely before unplugging
+udisksctl unmount -b /dev/sdb1
+udisksctl power-off -b /dev/sdb
+```
+
+## Loop devices and images
+
+```sh
+# Mount an ISO without sudo (e.g. checking an openSUSE install image)
+udisksctl loop-setup -f openSUSE-Tumbleweed-DVD-x86_64.iso
+udisksctl mount -b /dev/loop0
+
+# Tear it down
+udisksctl unmount -b /dev/loop0
+udisksctl loop-delete -b /dev/loop0
+```
+
+## Encrypted volumes
+
+```sh
+# Unlock a LUKS partition (prompts for passphrase), then mount the mapper device
+udisksctl unlock -b /dev/sdc1
+udisksctl mount -b /dev/dm-0
+
+udisksctl lock -b /dev/sdc1
+```
+
+## Get help
+
+```sh
+udisksctl help
+```
+
+## Subcommand reference
+
+| Subcommand | Purpose |
+|------------|---------|
+| `status` | list drives |
+| `info -b DEV` | detailed info on a device |
+| `mount / unmount -b DEV` | mount/unmount without sudo |
+| `loop-setup -f FILE` | attach an image as a loop device |
+| `unlock / lock -b DEV` | LUKS open/close |
+| `power-off -b DEV` | safely power down a drive |
+| `monitor` | watch udisks events live |

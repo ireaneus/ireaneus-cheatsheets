@@ -1,26 +1,92 @@
-# Update every <interval> samples:
+# top — real-world examples
+
+## Basic usage (Linux / procps-ng)
+
+```sh
+# Start top with default view
+top
+
+# Update every 5 seconds instead of the default 3
+top -d 5
+
+# Run 3 iterations then exit (good for logging)
+top -n 3
+
+# Batch mode — plain text output, pipe-friendly
+top -b -n 1 > /tmp/top-snapshot.txt
+```
+
+## Filter what you see
+
+```sh
+# Show only david's processes on the homelab box
+top -u david
+
+# Watch specific PIDs (e.g. Plex Media Server)
+top -p $(pgrep -d, -f 'Plex Media Server')
+
+# Sort by memory instead of CPU (interactive: press Shift+M)
+top -o %MEM
+```
+
+## Homelab monitoring
+
+```sh
+# Snapshot the top CPU consumers on mediaserver over ssh
+ssh david@mediaserver 'top -b -n 1 | head -22'
+
+# Log a snapshot every minute for an hour (troubleshooting a runaway process)
+for i in $(seq 60); do top -b -n 1 | head -20 >> /tmp/top.log; sleep 60; done
+```
+
+## Useful interactive keys
+
+```text
+h        help
+M        sort by memory
+P        sort by CPU (default)
+1        show each CPU core separately
+k        kill a process (prompts for PID)
+u        filter by user
+c        toggle full command line
+W        save current config (writes toprc)
+q        quit
+```
+
+## macOS / BSD variant flags (original examples)
+
+```sh
+# Update framework stats every <interval> samples
 top -i <interval>
 
-# Set the delay between updates to <delay> seconds:
+# Set the delay between updates to <delay> seconds
 top -s <delay>
 
-# Set event counting to accumulative mode:
+# Event counting: accumulative / delta / absolute mode
 top -a
-
-# Set event counting to delta mode:
 top -d
-
-# Set event counting to absolute mode:
 top -e
 
-# Do not calculate statistics on shared libraries, also known as frameworks:
+# Skip (-F) or calculate (-f, default) shared library statistics
 top -F
-
-# Calculate statistics on shared libraries, also known as frameworks (default):
 top -f
 
-# Print command line usage information and exit:
-top -h
-
-# Order the display by sorting on <key> in descending order
+# Order the display by <key> in descending order
 top -o <key>
+
+# Print usage and exit
+top -h
+```
+
+## Flag reference (Linux procps-ng)
+
+| Flag | Meaning |
+|------|---------|
+| `-b` | batch mode (non-interactive, for scripts/logs) |
+| `-n N` | exit after N iterations |
+| `-d SEC` | delay between updates |
+| `-u USER` | show only USER's processes |
+| `-p PID` | monitor specific PID(s) |
+| `-o FIELD` | sort by field (e.g. %MEM, %CPU) |
+| `-H` | show individual threads |
+| `-c` | show full command line |

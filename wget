@@ -1,35 +1,84 @@
-# To download a single file
+# wget — real-world examples
+
+## Single downloads
+
+```sh
+# Download a single file
 wget http://path.to.the/file
 
-# To download a file and change its name
+# Download and rename
 wget http://path.to.the/file -O newname
 
-# To download a file into a directory
+# Download into a directory
 wget -P path/to/directory http://path.to.the/file
 
-# To continue an aborted downloaded
-wget -c http://path.to.the/file
+# Continue an aborted download (huge ISOs, flaky wifi)
+wget -c https://download.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-DVD-x86_64-Current.iso
+```
 
-# To download multiples files with multiple URLs
+## Multiple downloads
+
+```sh
+# Multiple URLs at once
 wget URL1 URL2
 
-# To parse a file that contains a list of URLs to fetch each one
+# Fetch every URL listed in a file
 wget -i url_list.txt
 
-# To mirror a whole page locally
-wget -pk http://path.to.the/page.html
-
-# To mirror a whole site locally
-wget -mk http://site.tl/
-
-# To download files according to a pattern
+# Download files matching a numeric pattern
 wget http://www.myserver.com/files-{1..15}.tar.bz2
 
-# To download all the files in a directory with a specific extension if directory indexing is enabled
-wget -r -l1 -A.extension http://myserver.com/directory
+# Recursive, one level deep, only a given extension (needs directory indexing)
+wget -r -l1 -A.pdf http://myserver.com/directory
+```
 
-# Allows you to download just the headers of responses (-S --spider) and display them on Stdout (-O -).
+## Mirroring
+
+```sh
+# Mirror one page locally with everything needed to view it
+wget -pk http://path.to.the/page.html
+
+# Mirror a whole site locally
+wget -mk http://site.tl/
+```
+
+## Inspection and identity
+
+```sh
+# Fetch only the response headers, print to stdout
 wget -S --spider -O - http://google.com
 
-# Change the User-Agent to 'User-Agent: toto'
+# Change the User-Agent
 wget -U 'toto' http://google.com
+```
+
+## Homelab uses
+
+```sh
+# Quietly pull a nightly config backup to homelab (cron/systemd-timer friendly)
+wget -q -O /srv/backups/router-$(date +%F).cfg http://192.168.1.1/backup.cfg
+
+# Check whether Plex on mediaserver is answering, headers only
+wget -S --spider http://mediaserver:32400/web/ 2>&1 | head -15
+
+# Rate-limit a big grab so it doesn't choke movie night
+wget --limit-rate=2m -c https://example.com/big-dataset.tar.gz
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-O FILE` | save as FILE (`-O -` = stdout) |
+| `-P DIR` | save into DIR |
+| `-c` | continue partial download |
+| `-i FILE` | read URLs from FILE |
+| `-q` | quiet |
+| `-r -l N` | recursive, N levels deep |
+| `-A EXT` | accept only matching files |
+| `-m` | mirror (recursive + timestamps) |
+| `-p` | fetch page requisites (css, images) |
+| `-k` | convert links for local viewing |
+| `-S --spider` | headers only, download nothing |
+| `-U AGENT` | set User-Agent |
+| `--limit-rate=2m` | throttle bandwidth |

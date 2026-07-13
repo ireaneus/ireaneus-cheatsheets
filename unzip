@@ -1,8 +1,61 @@
-# Extract archive
+# unzip — real-world examples
+
+## Basics
+
+```sh
+# Extract an archive into the current directory
 unzip archive.zip
 
-# Test integrity of archive
+# Test integrity of an archive quietly
 unzip -tq archive.zip
 
-# List files and directories in a file
+# List files and directories inside without extracting
 unzip -l archive.zip
+```
+
+## Control where and what
+
+```sh
+# Extract into a specific directory
+unzip archive.zip -d /srv/media/incoming/
+
+# Extract a single file from the archive
+unzip archive.zip path/inside/archive.conf
+
+# Extract only PDFs, skipping everything else
+unzip archive.zip '*.pdf'
+
+# Overwrite existing files without prompting (-o), or never overwrite (-n)
+unzip -o archive.zip
+unzip -n archive.zip
+```
+
+## Homelab uses
+
+```sh
+# Peek inside a downloaded plugin bundle before trusting it
+unzip -l ~/Downloads/grafana-plugin.zip
+
+# Extract a subtitle pack straight into the movie folder on mediaserver
+unzip -o subs.zip -d "/srv/media/movies/The Movie (2024)/"
+
+# Unzip quietly in a script (no per-file chatter)
+unzip -q backup-configs.zip -d /tmp/restore/
+
+# Read a text file from an archive without extracting (-p pipes to stdout)
+unzip -p archive.zip README.txt | less
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-l` | list contents |
+| `-t` | test integrity |
+| `-q` | quiet mode |
+| `-d DIR` | extract into DIR |
+| `-o` | overwrite without asking |
+| `-n` | never overwrite existing files |
+| `-p` | extract to stdout (pipe) |
+| `-j` | junk paths — flatten directory structure |
+| `-P PASS` | password (insecure — visible in process list) |

@@ -1,12 +1,58 @@
-# find all file name ending with .pdf and remove them
-find -name *.pdf | xargs rm -rf
+# xargs — real-world examples
 
-# if file name contains spaces you should use this instead
-find -name *.pdf | xargs -I{} rm -rf '{}'
+Build and run commands from stdin — the glue between `find`/`grep` and
+whatever needs to run on the results.
 
-# Will show every .pdf like:
-#	&toto.pdf=
-#	&titi.pdf=
-# -n1 => One file by one file. ( -n2 => 2 files by 2 files )
+## Basics
 
-find -name *.pdf | xargs -I{} -n1 echo '&{}='
+```sh
+# Find all .pdf files and remove them
+find . -name '*.pdf' | xargs rm -f
+
+# If filenames contain spaces, substitute with -I{} instead
+find . -name '*.pdf' | xargs -I{} rm -f '{}'
+
+# Safest with GNU find: null-delimited, handles any filename
+find . -name '*.pdf' -print0 | xargs -0 rm -f
+```
+
+## Placement and batching
+
+```sh
+# -I{} places each item exactly where you want it
+find . -name '*.pdf' | xargs -I{} -n1 echo '&{}='
+
+# -n1 = one item per command invocation (-n2 = two at a time, etc.)
+echo a b c d | xargs -n2 echo pair:
+```
+
+## Homelab uses
+
+```sh
+# Grep every cheatsheet for 'zypper' with filenames, safely
+find ~/Public/ireaneus-cheatsheets -type f -print0 | xargs -0 grep -l zypper
+
+# Restart several services in one line
+echo plexmediaserver sshd | xargs -n1 sudo systemctl restart
+
+# Parallel: checksum media files 4 at a time (-P = parallel jobs)
+find /srv/media -name '*.mkv' -print0 | xargs -0 -P4 -n1 md5sum >> /tmp/media.md5
+
+# Prompt before each deletion
+find /tmp -name '*.old' | xargs -p rm
+
+# Do nothing gracefully when input is empty (GNU)
+grep -l 'TODO' *.md | xargs -r wc -l
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-I{}` | replace `{}` with each input item |
+| `-n N` | at most N arguments per command |
+| `-0` | null-delimited input (pair with `find -print0`) |
+| `-P N` | run up to N commands in parallel |
+| `-p` | prompt before each command |
+| `-r` | don't run at all if input is empty (GNU) |
+| `-t` | echo each command before running it |

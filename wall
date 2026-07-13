@@ -1,5 +1,43 @@
-# Wall is a terminal messenger
+# wall — real-world examples
+
+Broadcast a message to every logged-in terminal. Handy warning shot
+before reboots on a shared box.
+
+## Basics
+
+```sh
+# Pipe a message to everyone
 echo "Good Morning Dave" | wall
-wall message file
-wall -n 	# no banner
-wall something
+
+# Broadcast the contents of a file
+wall /etc/motd.maintenance
+
+# Send without the "Broadcast message from ..." banner
+echo "quick note" | wall -n
+```
+
+## Homelab uses
+
+```sh
+# Warn tmux/ssh sessions before a zypper dup + reboot on homelab
+echo "homelab rebooting in 5 minutes for updates — save your work" | wall
+
+# Same warning remotely on mediaserver
+ssh david@mediaserver 'echo "Plex going down for maintenance at 22:00" | wall'
+
+# Pair with shutdown, which broadcasts its own wall message automatically
+sudo shutdown -r +5 "Kernel update — back in a couple minutes"
+
+# Announce to a specific group only
+echo "backup window starting" | wall -g users
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-n` | suppress the banner (root only) |
+| `-g GROUP` | restrict broadcast to members of GROUP |
+| `-t SEC` | write timeout per terminal |
+
+Note: users can opt out of broadcasts with `mesg n`.

@@ -1,5 +1,61 @@
-# Create zip file
-zip archive.zip file1 directory/
+# zip — real-world examples
 
-# To list, test and extract zip archives, see unzip
+## Basics
+
+```sh
+# Create a zip file from files and a directory (-r to recurse)
+zip archive.zip file1
+zip -r archive.zip directory/
+
+# To list, test and extract zip archives, see unzip:
 cheat unzip
+```
+
+## Common variations
+
+```sh
+# Maximum compression / no compression (store only)
+zip -9 -r archive.zip directory/
+zip -0 -r archive.zip directory/
+
+# Add files to an existing archive
+zip archive.zip newfile.txt
+
+# Update only files that changed (freshen + add)
+zip -u archive.zip -r directory/
+
+# Delete a file from an archive
+zip -d archive.zip unwanted.txt
+
+# Exclude patterns
+zip -r archive.zip project/ -x '*.git*' '*node_modules*'
+```
+
+## Homelab uses
+
+```sh
+# Zip up /etc configs on homelab before a zypper dup, dated
+sudo zip -r /srv/backups/etc-$(date +%F).zip /etc
+
+# Encrypt with a password prompt (legacy zip crypto — weak; prefer 7z AES)
+zip -er secrets.zip ~/Documents/keys/
+
+# Ship a log bundle quietly from a script
+zip -q -r /tmp/logbundle.zip /var/log/plexmediaserver/
+
+# Split into 100 MB chunks for an email-size-limited transfer
+zip -r -s 100m archive.zip /srv/media/photos/2026/
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-r` | recurse into directories |
+| `-9` / `-0` | best / no compression |
+| `-u` | update changed files, add new ones |
+| `-d` | delete entries from archive |
+| `-x PATTERN` | exclude files |
+| `-e` | encrypt (prompts for password) |
+| `-q` | quiet |
+| `-s SIZE` | split archive (e.g. `100m`) |

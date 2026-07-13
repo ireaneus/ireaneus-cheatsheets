@@ -1,36 +1,87 @@
+# virsh — real-world examples
+
+CLI for managing libvirt/KVM guests. On Tumbleweed: `sudo zypper in libvirt
+virt-install`, then `sudo systemctl enable --now libvirtd`.
+
+## Connect and list
+
+```sh
 virsh help
 
-# connect to hypervisor
-virsh connect host
+# Connect to a hypervisor
+virsh connect qemu:///system
 
-# List all domains
-virsh list                # List running
-virsh list --all          # List all
+# Manage the homelab hypervisor remotely over ssh
+virsh -c qemu+ssh://david@homelab/system list --all
 
-# Control instances
+# List domains
+virsh list           # running only
+virsh list --all     # all defined guests
+```
+
+## Control instances
+
+```sh
 virsh start <instance>
-virsh shutdown <instance>
-virsh destroy <instance>
+virsh shutdown <instance>     # graceful ACPI shutdown
+virsh destroy <instance>      # hard power-off (not delete!)
 virsh suspend <instance>
 virsh resume <instance>
 
-# system state
-virsh save <instance> /tmp/vm
-virsh restore /tmp/vm
+# Autostart a guest when libvirtd comes up (e.g. a pihole VM)
+virsh autostart <instance>
+virsh autostart --disable <instance>
+```
 
-virsh console <instance> &
+## Save/restore state
 
-# Define instances
-virsh dumpxml <instance> >dump.xml
-virsh create dump.xml   # Create from XML
-virsh edit <instance>
-virsh undefine <instance>
+```sh
+virsh save <instance> /tmp/vm     # save memory state to file and stop
+virsh restore /tmp/vm             # resume from the saved file
 
+# Attach to the guest's serial console (exit with Ctrl+])
+virsh console <instance>
+```
+
+## Define and edit instances
+
+```sh
+# Dump a guest's XML definition — also a handy backup
+virsh dumpxml <instance> > dump.xml
+
+virsh create dump.xml      # start a transient guest from XML
+virsh define dump.xml      # register a persistent guest from XML
+virsh edit <instance>      # edit XML in $EDITOR with validation
+virsh undefine <instance>  # remove definition (disk images remain)
+
+# Grow a guest disk while running
 virsh blockresize <instance> --path vda --size 100G
+```
 
-virsh dominfo
-virsh vcpuinfo
+## Info and snapshots
+
+```sh
+virsh dominfo <instance>
+virsh vcpuinfo <instance>
 virsh nodeinfo
 
-virsh quit   # Leave CLI
+# Snapshot before risky guest changes, roll back if it goes sideways
+virsh snapshot-create-as <instance> pre-upgrade
+virsh snapshot-list <instance>
+virsh snapshot-revert <instance> pre-upgrade
+
 virsh ttyconsole <instance>
+virsh quit    # leave interactive CLI
+```
+
+## Command reference
+
+| Command | Purpose |
+|---------|---------|
+| `list --all` | show all guests |
+| `start` / `shutdown` / `destroy` | power management |
+| `autostart` | start guest at host boot |
+| `dumpxml` / `define` / `edit` | manage XML definitions |
+| `console` | serial console (Ctrl+] to exit) |
+| `snapshot-create-as` / `snapshot-revert` | snapshots |
+| `dominfo` / `nodeinfo` | guest / host info |

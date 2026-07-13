@@ -1,27 +1,61 @@
-# watch
--b --beep    	# beep if command has a non-zero exit
--c --color	# Interpret ANSI color and style
--d --differences # highlight changes between updates
--e --errexit	# exit if command has a non-zero exit
--g --chgexit	# exit when output from command changes
--n --interval	# seconds to wait between updates
--p --precise	# attempt to run command in precise intervals
--t --no-title	# turn off header
--x --exec	# pass command to exec instead of "sh -c"
--h --help
--v --version
+# watch — real-world examples
 
-# basic watch command - displays the command in intervals of time
+Re-run a command at intervals and display the output full-screen.
+
+## Basics
+
+```sh
+# Re-run every 2 seconds (default)
 watch ls -l
 watch df -h
-watch lsof -u user
+watch lsof -u david
 
-# watch options
-watch -t ls 				# suppress watch header
-watch -d date				# Display differences highlighted
+# Suppress the header line
+watch -t ls
 
-watch -n 5 'lsof -u user | wc -l'
-Every 5.0s: lsof -u user | wc -l
+# Highlight what changed between updates
+watch -d date
 
-# advanced option watch command
+# Custom interval — every 5 seconds
+watch -n 5 'lsof -u david | wc -l'
+```
+
+## Quoting matters
+
+```sh
+# Quote pipes/redirects so watch runs the whole pipeline
 watch 'sudo lsof -i -P -n | grep LISTEN'
+```
+
+## Homelab uses
+
+```sh
+# Watch a zypper dup download in another terminal
+watch -n 2 'du -sh /var/cache/zypp/packages'
+
+# Watch Plex transcoder load on mediaserver
+watch -n 1 'ps aux | grep -i [t]ranscoder'
+
+# Wait for a host to come back after reboot — beep on success
+watch -b -g 'ping -c1 -W1 homelab >/dev/null && echo UP'
+
+# Exit automatically the moment a service state changes
+watch -g 'systemctl is-active plexmediaserver'
+
+# Keep an eye on a RAID rebuild
+watch -d cat /proc/mdstat
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-n SEC` | interval between updates (default 2) |
+| `-d` | highlight differences between updates |
+| `-t` | no title/header |
+| `-b` | beep if command exits non-zero |
+| `-e` | exit if command exits non-zero |
+| `-g` | exit when the output changes |
+| `-c` | interpret ANSI color codes |
+| `-p` | try to run at precise intervals |
+| `-x` | pass command to exec instead of `sh -c` |

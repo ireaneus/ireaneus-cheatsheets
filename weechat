@@ -1,16 +1,56 @@
-# Set unread marker on all windows
-Ctrl-s Ctrl-u
+# weechat — real-world examples
 
-# Switch buffer left
-Ctrl-p, Alt-left
-# Switch buffer right
-Ctrl-n, Alt-right
-# Next buffer with activity
-Alt-a
-# Switch buffers
-Alt-0...9
+Terminal IRC client. On Tumbleweed: `sudo zypper in weechat`. Runs nicely
+inside a tmux session on homelab so you never miss scrollback.
 
-# Scroll buffer title
-F9/F10
-# Scroll nick list
-F11/F12
+## Getting connected
+
+```text
+/server add libera irc.libera.chat/6697 -ssl
+/connect libera
+/join #opensuse
+/nick david_hl
+/quit
+```
+
+## Buffer navigation
+
+```text
+Ctrl-s Ctrl-u       Set unread marker on all windows
+Ctrl-p, Alt-left    Switch buffer left
+Ctrl-n, Alt-right   Switch buffer right
+Alt-a               Jump to next buffer with activity
+Alt-0...9           Switch to buffer 0-9
+/buffer close       Close current buffer
+```
+
+## Scrolling
+
+```text
+PgUp/PgDn           Scroll buffer text
+F9/F10              Scroll buffer title
+F11/F12             Scroll nick list
+Alt-u               Scroll to first unread line
+```
+
+## Everyday commands
+
+```text
+/query nick         Open a private chat
+/msg nick hello     One-off private message
+/topic              Show channel topic
+/away brb coffee    Set away status
+/save               Write config to disk
+/set irc.look.*     Browse settings (tab-completes)
+```
+
+## Run it persistently on the homelab
+
+```sh
+# Start weechat inside tmux over ssh; detach with Ctrl-b d
+ssh david@homelab
+tmux new -s irc weechat
+
+# Reattach later from any machine
+tmux attach -t irc
+```

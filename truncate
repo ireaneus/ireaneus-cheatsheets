@@ -1,20 +1,55 @@
-# To clear the contents from a file:
+# truncate — real-world examples
+
+## Empty a file in place
+
+```sh
+# Clear the contents of a file (file stays, size becomes 0)
 truncate -s 0 file.txt
 
-# To truncate a file to 100 bytes:
+# Homelab: clear a runaway log without disturbing the process writing to it
+sudo truncate -s 0 "/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs/Plex Media Server.log"
+```
+
+## Shrink or grow to an exact size
+
+```sh
+# Truncate a file to exactly 100 bytes
 truncate -s 100 file.txt
 
-# To truncate a file to 100 KB:
+# Truncate a file to 100 KB
+# (M, G, T, P, E, Z, and Y may be used in place of "K" as required)
 truncate -s 100K file.txt
 
-# (M, G, T, P, E, Z, and Y may be used in place of "K" as required.)
+# Create a 10 GB sparse file instantly (e.g. a test disk image for virt-manager)
+truncate -s 10G /var/lib/libvirt/images/test-disk.raw
+```
 
-# To empty a file
-> access.log    # redirect file to null
-: > access.log  # empty file using true
+## Relative sizes
+
+```sh
+# Shrink by 1 MB / grow by 512 bytes
+truncate -s -1M bigfile.bin
+truncate -s +512 bigfile.bin
+```
+
+## Other ways to empty a file
+
+```sh
+> access.log             # redirect nothing into the file
+: > access.log           # same, using the : builtin
 true > access.log
 
-cat /dev/null access.log
+cat /dev/null > access.log
 cp /dev/null access.log
 dd if=/dev/null of=access.log
 echo -n "" > access.log
+```
+
+## Flag reference
+
+| Flag | Meaning |
+|------|---------|
+| `-s SIZE` | set size (prefix `+`/`-` for relative; K/M/G... suffixes) |
+| `-r FILE` | use FILE's size as the reference size |
+| `-c` | do not create files that don't exist |
+| `-o` | treat SIZE as number of I/O blocks |
